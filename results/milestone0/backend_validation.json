@@ -1,0 +1,13 @@
+{
+  "stimulus": "LPLC2 (left) @ 150.0 Hz, 108 neurons",
+  "t_ms": 200.0,
+  "trials": 4,
+  "active_torch": 693,
+  "active_brian2": 736,
+  "jaccard_active": 0.7576875768757687,
+  "pearson_rates_union": 0.9657244223595917,
+  "total_spike_ratio_torch_over_brian2": 1.1125083961489663,
+  "wall_s_torch_all_trials_batched": 23.873952865600586,
+  "wall_s_brian2_numpy_all_trials": 129.74331212043762,
+  "pearson_rates_network_only": 0.9716109870078492
+}

@@ -1,0 +1,60 @@
+{
+  "device": "NVIDIA GeForce GTX 1660 Ti",
+  "cpu": "Intel64 Family 6 Model 165 Stepping 2, GenuineIntel",
+  "network": {
+    "connectome": "FlyWire FAFB v783 (Dorkenwald et al. 2024)",
+    "model_files": "philshiu/Drosophila_brain_model (Shiu et al. 2024)",
+    "annotations": "flyconnectome/flywire_annotations (Schlegel et al. 2024)",
+    "n_neurons": 138639,
+    "n_edges": 15091983,
+    "n_unannotated": 1492
+  },
+  "dt_ms": 0.1,
+  "results": [
+    {
+      "batch": 1,
+      "wall_s_per_sim_s_total": 16.12362400162965,
+      "wall_s_per_sim_s_per_brain": 16.12362400162965,
+      "peak_gpu_GB": 0.199491584
+    },
+    {
+      "batch": 4,
+      "wall_s_per_sim_s_total": 95.13524599839002,
+      "wall_s_per_sim_s_per_brain": 23.783811499597505,
+      "peak_gpu_GB": 0.25289728
+    },
+    {
+      "batch": 16,
+      "wall_s_per_sim_s_total": 124.04982999898493,
+      "wall_s_per_sim_s_per_brain": 7.753114374936558,
+      "peak_gpu_GB": 0.439334912
+    },
+    {
+      "batch": 32,
+      "wall_s_per_sim_s_total": 143.65531200077385,
+      "wall_s_per_sim_s_per_brain": 4.489228500024183,
+      "peak_gpu_GB": 0.685768704
+    },
+    {
+      "batch": 64,
+      "wall_s_per_sim_s_total": 218.6228260002099,
+      "wall_s_per_sim_s_per_brain": 3.4159816562532797,
+      "peak_gpu_GB": 1.184886272
+    }
+  ],
+  "best_wall_s_per_sim_s_per_brain": 3.4159816562532797,
+  "assumptions": {
+    "neural_ms_per_game_tick": 50,
+    "ticks_per_episode": 500,
+    "episodes_per_candidate": 5,
+    "population_size": 64
+  },
+  "projection_at_best_batch": {
+    "simulated_brain_seconds_per_candidate": 125.0,
+    "wall_s_per_generation": 27327.853250026237,
+    "wall_days_1000_generations": 316.2945978012296,
+    "wall_days_10000_generations": 3162.945978012296,
+    "wall_days_100000_generations": 31629.459780122957,
+    "wall_days_1000000_generations": 316294.5978012296
+  }
+}

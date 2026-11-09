@@ -1,0 +1,301 @@
+{
+  "params": {
+    "v_0": -52.0,
+    "v_rst": -52.0,
+    "v_th": -45.0,
+    "t_mbr": 20.0,
+    "tau": 5.0,
+    "t_rfc": 2.2,
+    "t_dly": 1.8,
+    "w_syn": 0.275,
+    "f_poi": 250.0,
+    "dt": 0.1
+  },
+  "t_ms": 200.0,
+  "reps": 3,
+  "stim_rate_Hz": 150.0,
+  "A_population_to_DN": {
+    "R1-6_left": {
+      "n_stimulated": 4044,
+      "n_DN_responding_>5Hz": 0,
+      "top_DNs": [
+        "DNg106(l):0Hz",
+        "DNge116(r):0Hz",
+        "DNpe008(l):0Hz",
+        "DNge005(l):0Hz",
+        "DNge091(r):0Hz",
+        "DNge051(r):0Hz",
+        "DNg56(r):0Hz",
+        "DNpe036(r):0Hz"
+      ]
+    },
+    "R1-6_right": {
+      "n_stimulated": 3888,
+      "n_DN_responding_>5Hz": 0,
+      "top_DNs": [
+        "DNg106(l):0Hz",
+        "DNge116(r):0Hz",
+        "DNpe008(l):0Hz",
+        "DNge005(l):0Hz",
+        "DNge091(r):0Hz",
+        "DNge051(r):0Hz",
+        "DNg56(r):0Hz",
+        "DNpe036(r):0Hz"
+      ]
+    },
+    "R7R8_left": {
+      "n_stimulated": 1330,
+      "n_DN_responding_>5Hz": 0,
+      "top_DNs": [
+        "DNg106(l):0Hz",
+        "DNge116(r):0Hz",
+        "DNpe008(l):0Hz",
+        "DNge005(l):0Hz",
+        "DNge091(r):0Hz",
+        "DNge051(r):0Hz",
+        "DNg56(r):0Hz",
+        "DNpe036(r):0Hz"
+      ]
+    },
+    "R7R8_right": {
+      "n_stimulated": 1320,
+      "n_DN_responding_>5Hz": 0,
+      "top_DNs": [
+        "DNg106(l):0Hz",
+        "DNge116(r):0Hz",
+        "DNpe008(l):0Hz",
+        "DNge005(l):0Hz",
+        "DNge091(r):0Hz",
+        "DNge051(r):0Hz",
+        "DNg56(r):0Hz",
+        "DNpe036(r):0Hz"
+      ]
+    },
+    "T4T5_left": {
+      "n_stimulated": 6146,
+      "n_DN_responding_>5Hz": 94,
+      "top_DNs": [
+        "DNp26(l):183Hz",
+        "DNg46(l):168Hz",
+        "DNp31(l):158Hz",
+        "DNp22(l):145Hz",
+        "DNb06(l):130Hz",
+        "DNge088(l):123Hz",
+        "DNbe001(l):112Hz",
+        "DNae002(r):112Hz"
+      ]
+    },
+    "T4T5_right": {
+      "n_stimulated": 6100,
+      "n_DN_responding_>5Hz": 146,
+      "top_DNs": [
+        "DNg46(r):230Hz",
+        "DNp20(r):197Hz",
+        "DNb06(r):173Hz",
+        "DNp31(r):172Hz",
+        "DNp01(r):162Hz",
+        "DNp22(r):160Hz",
+        "DNp15(r):153Hz",
+        "DNp26(r):142Hz"
+      ]
+    },
+    "LPLC2_left": {
+      "n_stimulated": 108,
+      "n_DN_responding_>5Hz": 76,
+      "top_DNs": [
+        "DNp103(l):275Hz",
+        "DNp04(l):213Hz",
+        "DNp01(l):177Hz",
+        "DNp01(r):165Hz",
+        "DNp70(l):162Hz",
+        "DNg40(l):150Hz",
+        "DNp70(r):143Hz",
+        "DNg40(r):127Hz"
+      ]
+    },
+    "LPLC2_right": {
+      "n_stimulated": 102,
+      "n_DN_responding_>5Hz": 88,
+      "top_DNs": [
+        "DNp103(r):248Hz",
+        "DNp01(r):222Hz",
+        "DNp04(r):208Hz",
+        "DNp70(r):172Hz",
+        "DNpe042(r):148Hz",
+        "DNp01(l):145Hz",
+        "DNp70(l):140Hz",
+        "DNge119(r):122Hz"
+      ]
+    },
+    "LC4_left": {
+      "n_stimulated": 54,
+      "n_DN_responding_>5Hz": 39,
+      "top_DNs": [
+        "DNp04(l):272Hz",
+        "DNp11(l):197Hz",
+        "DNp02(l):193Hz",
+        "DNp05(l):140Hz",
+        "DNp01(l):128Hz",
+        "DNp03(l):125Hz",
+        "DNge119(l):88Hz",
+        "DNge119(r):78Hz"
+      ]
+    },
+    "LC4_right": {
+      "n_stimulated": 50,
+      "n_DN_responding_>5Hz": 38,
+      "top_DNs": [
+        "DNp04(r):233Hz",
+        "DNp02(r):175Hz",
+        "DNp11(r):145Hz",
+        "DNp01(r):122Hz",
+        "DNp05(r):118Hz",
+        "DNge119(r):105Hz",
+        "DNge119(l):75Hz",
+        "DNp06(l):55Hz"
+      ]
+    },
+    "LPLC1_left": {
+      "n_stimulated": 68,
+      "n_DN_responding_>5Hz": 110,
+      "top_DNs": [
+        "DNp03(l):192Hz",
+        "DNp11(l):165Hz",
+        "DNp06(l):157Hz",
+        "DNa09(r):98Hz",
+        "DNa05(r):92Hz",
+        "DNg100(r):85Hz",
+        "DNg100(l):82Hz",
+        "DNbe004(r):78Hz"
+      ]
+    },
+    "LPLC1_right": {
+      "n_stimulated": 72,
+      "n_DN_responding_>5Hz": 129,
+      "top_DNs": [
+        "DNp06(r):123Hz",
+        "DNg100(r):113Hz",
+        "DNp34(l):95Hz",
+        "DNg100(l):95Hz",
+        "DNa05(l):82Hz",
+        "DNge053(l):75Hz",
+        "DNpe040(r):72Hz",
+        "DNbe004(l):72Hz"
+      ]
+    },
+    "LC9_left": {
+      "n_stimulated": 106,
+      "n_DN_responding_>5Hz": 93,
+      "top_DNs": [
+        "DNg16(r):118Hz",
+        "DNg100(l):105Hz",
+        "DNg16(l):105Hz",
+        "DNg100(r):103Hz",
+        "DNp09(l):98Hz",
+        "DNp11(l):90Hz",
+        "DNg111(l):87Hz",
+        "DNpe016(r):85Hz"
+      ]
+    },
+    "LC9_right": {
+      "n_stimulated": 92,
+      "n_DN_responding_>5Hz": 130,
+      "top_DNs": [
+        "DNp09(r):137Hz",
+        "DNg100(r):130Hz",
+        "DNpe024(r):130Hz",
+        "DNpe037(r):130Hz",
+        "DNg100(l):125Hz",
+        "DNp05(r):115Hz",
+        "DNa01(l):115Hz",
+        "DNb09(l):107Hz"
+      ]
+    }
+  },
+  "A_lateralisation": {
+    "R1-6": [],
+    "R7R8": [],
+    "T4T5": [
+      "DNg46(r): L-R=-230Hz",
+      "DNp20(r): L-R=-197Hz",
+      "DNp26(l): L-R=+183Hz",
+      "DNb06(r): L-R=-173Hz",
+      "DNg46(l): L-R=+168Hz",
+      "DNp22(r): L-R=-160Hz"
+    ],
+    "LPLC2": [
+      "DNp103(l): L-R=+215Hz",
+      "DNp04(l): L-R=+213Hz",
+      "DNp103(r): L-R=-208Hz",
+      "DNp04(r): L-R=-208Hz",
+      "DNp55(r): L-R=-122Hz",
+      "DNpe056(l): L-R=+115Hz"
+    ],
+    "LC4": [
+      "DNp04(l): L-R=+272Hz",
+      "DNp04(r): L-R=-233Hz",
+      "DNp11(l): L-R=+197Hz",
+      "DNp02(l): L-R=+193Hz",
+      "DNp02(r): L-R=-175Hz",
+      "DNp11(r): L-R=-145Hz"
+    ],
+    "LPLC1": [
+      "DNp03(l): L-R=+192Hz",
+      "DNp11(l): L-R=+165Hz",
+      "DNp06(l): L-R=+157Hz",
+      "DNp06(r): L-R=-123Hz",
+      "DNp34(l): L-R=-95Hz",
+      "DNa05(l): L-R=-82Hz"
+    ],
+    "LC9": [
+      "DNp09(r): L-R=-137Hz",
+      "DNpe024(r): L-R=-130Hz",
+      "DNa01(l): L-R=-115Hz",
+      "DNb09(l): L-R=-107Hz",
+      "DNa06(r): L-R=-98Hz",
+      "DNp09(l): L-R=+98Hz"
+    ]
+  },
+  "B_C_LPLC2_left_dose_response_DNp01": {
+    "0Hz": {
+      "DNp01_left_Hz": 0.0,
+      "DNp01_right_Hz": 0.0,
+      "first_spike_ms_left": null
+    },
+    "10Hz": {
+      "DNp01_left_Hz": 3.3333333333333335,
+      "DNp01_right_Hz": 3.3333333333333335,
+      "first_spike_ms_left": 129.95000000000002
+    },
+    "25Hz": {
+      "DNp01_left_Hz": 50.0,
+      "DNp01_right_Hz": 36.666666666666664,
+      "first_spike_ms_left": 30.400000000000002
+    },
+    "50Hz": {
+      "DNp01_left_Hz": 98.33333333333333,
+      "DNp01_right_Hz": 105.0,
+      "first_spike_ms_left": 21.133333333333336
+    },
+    "75Hz": {
+      "DNp01_left_Hz": 120.0,
+      "DNp01_right_Hz": 126.66666666666667,
+      "first_spike_ms_left": 10.733333333333334
+    },
+    "100Hz": {
+      "DNp01_left_Hz": 140.0,
+      "DNp01_right_Hz": 135.0,
+      "first_spike_ms_left": 7.966666666666666
+    },
+    "150Hz": {
+      "DNp01_left_Hz": 168.33333333333334,
+      "DNp01_right_Hz": 166.66666666666666,
+      "first_spike_ms_left": 6.0
+    },
+    "200Hz": {
+      "DNp01_left_Hz": 196.66666666666666,
+      "DNp01_right_Hz": 176.66666666666666,
+      "first_spike_ms_left": 5.7
+    }
+  }
+}
