@@ -16,7 +16,8 @@ This is a research project, not a game demo. The controller is the **FlyWire who
 | 0. Choose a simulator; prove the connectome can be stimulated, simulated and read | ✅ done: [report](docs/RESEARCH_REPORT_00_simulator_selection.md) |
 | 1. Headless Snake core + Godot 4 replay viewer | ✅ done: [viewer](viewer/README.md) |
 | 2. A\* baseline ladder (greedy → time-aware → tail check → space check) | ✅ done: [report](docs/RESEARCH_REPORT_01_astar_baselines.md) |
-| 3–4. Visual encoder / motor decoder connected to the brain | |
+| 1c. Fly brain activity view (138,639 neurons, real recorded spikes) | ✅ done |
+| 3–4. Visual encoder / motor decoder connected to the brain | next: see [progress and next steps](docs/PROGRESS_AND_NEXT_STEPS.md) |
 | 5. Evolution | |
 | 6–7. Experiments, analysis, dashboard | |
 
@@ -29,6 +30,8 @@ Headline findings from Milestone 0 (details in the report):
 Headline findings from Stage 2: greedy A\* (the primary baseline) dies by self-trapping in 100/100 games on 20×20, mostly at length 50–100, eating 64 food on average. Adding the virtual-snake tail check raises this to 345 food (87 % of the board).
 
 ![greedy A* trapped, in the Godot replay viewer](docs/images/viewer_orbit_trap.png)
+
+**To run the viewers:** double-click `run_viewer.bat` (game replays), or run `run_viewer.bat --brain` (fly brain). See [PROGRESS_AND_NEXT_STEPS.md](docs/PROGRESS_AND_NEXT_STEPS.md).
 
 ## Quick start (Milestone 0)
 

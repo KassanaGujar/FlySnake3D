@@ -60,9 +60,22 @@ var dialog: FileDialog
 
 func _ready() -> void:
 	var args := _args()
+	if args.has("brain") and not Engine.has_meta("left_brain"):
+		get_tree().change_scene_to_file.call_deferred("res://brain.tscn")
+		return
 	_build_world()
 	_build_hud()
 	var path: String = args.get("replay", "")
+	var root := ProjectSettings.globalize_path("res://").path_join("..").simplify_path()
+	if path != "" and path.is_relative_path():
+		path = root.path_join(path).simplify_path()
+	if path == "" and Engine.has_meta("replay_path"):
+		path = Engine.get_meta("replay_path")
+	if path == "" and not args.has("check"):
+		# open the first greedy A* self-trap replay by default
+		var d := root.path_join("results/replays/stage2/astar_greedy_seed0.jsonl")
+		if FileAccess.file_exists(d):
+			path = d
 	if path != "":
 		_open(path)
 	if args.has("check"):
@@ -82,7 +95,7 @@ func _ready() -> void:
 		_take_screenshot(args["screenshot"])
 		return
 	if path == "":
-		status.text = "Press O to open a replay (results/replays/)."
+		status.text = "Press O to open a replay (results/replays/), B for the brain view."
 
 
 func _args() -> Dictionary:
@@ -105,6 +118,7 @@ func _open(path: String) -> void:
 	header = r["header"]
 	frames = r["frames"]
 	replay_path = path
+	Engine.set_meta("replay_path", path)
 	W = int(header["config"]["width"])
 	H = int(header["config"]["height"])
 	var ft = header["result"].get("first_trap_step")
@@ -408,6 +422,7 @@ func _build_hud() -> void:
 	help.text = "\n".join([
 		"Space  play / pause", "Left/Right  step", "Up/Down  speed",
 		"Home/End  start / end", "T  first trap", "1-4  camera", "O  open replay",
+		"B  fly brain view",
 		"H  hide help", "",
 		"green box = head (nose = heading)", "body darkens towards the tail", "amber = tail tip",
 		"red = food", "cyan dots = planner's path (A* only)"])
@@ -488,6 +503,8 @@ func _unhandled_input(e: InputEvent) -> void:
 				_update_camera(1.0)
 			KEY_O:
 				dialog.popup_centered_ratio(0.7)
+			KEY_B:
+				get_tree().change_scene_to_file("res://brain.tscn")
 			KEY_H:
 				show_help = not show_help
 				help.visible = show_help

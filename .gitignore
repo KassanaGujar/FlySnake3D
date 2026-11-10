@@ -9,3 +9,4 @@ results/replays/*
 !results/replays/stage2/
 results/replays/stage2/astar_tail_check_*
 !results/**/.gitkeep
+results/brain/
