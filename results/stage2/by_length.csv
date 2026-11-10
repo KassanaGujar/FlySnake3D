@@ -1,0 +1,15 @@
+agent,length_bin,deaths,self_trap_fraction
+astar_greedy,"[50, 100)",85,1.0
+astar_greedy,"[25, 50)",11,1.0
+astar_greedy,"[0, 25)",1,1.0
+astar_greedy,"[100, 150)",3,1.0
+astar_time_aware,"[50, 100)",83,1.0
+astar_time_aware,"[25, 50)",11,1.0
+astar_time_aware,"[0, 25)",1,1.0
+astar_time_aware,"[100, 150)",5,1.0
+astar_tail_check,"[200, 300)",2,1.0
+astar_tail_check,"[300, 401)",3,1.0
+astar_space_check,"[100, 150)",35,1.0
+astar_space_check,"[50, 100)",7,1.0
+astar_space_check,"[150, 200)",13,1.0
+astar_space_check,"[300, 401)",1,1.0

@@ -1,0 +1,109 @@
+{
+  "config": {
+    "episodes": 100,
+    "size": 20,
+    "replays": 3
+  },
+  "game": {
+    "width": 20,
+    "height": 20,
+    "start_length": 3,
+    "obstacles": [],
+    "max_steps_without_food": null,
+    "max_steps": 20000,
+    "random_start": false
+  },
+  "agents": {
+    "astar_greedy": {
+      "episodes": 100,
+      "food_mean": 63.9,
+      "food_median": 64.0,
+      "food_ci95": [
+        60.7,
+        67.0
+      ],
+      "final_length_mean": 66.0,
+      "max_length": 105,
+      "board_fill_mean_%": 16.5,
+      "outcomes": {
+        "SELF": 87,
+        "WALL": 13
+      },
+      "self_collision_rate": 0.87,
+      "wall_collision_rate": 0.13,
+      "self_trap_death_rate": 1.0,
+      "trap_to_death_moves_median": 36.0,
+      "steps_mean": 1019.6,
+      "decision_ms_mean": 0.173
+    },
+    "astar_time_aware": {
+      "episodes": 100,
+      "food_mean": 68.7,
+      "food_median": 70.5,
+      "food_ci95": [
+        65.0,
+        72.2
+      ],
+      "final_length_mean": 70.8,
+      "max_length": 116,
+      "board_fill_mean_%": 17.7,
+      "outcomes": {
+        "SELF": 87,
+        "WALL": 13
+      },
+      "self_collision_rate": 0.87,
+      "wall_collision_rate": 0.13,
+      "self_trap_death_rate": 1.0,
+      "trap_to_death_moves_median": 147.5,
+      "steps_mean": 1100.0,
+      "decision_ms_mean": 0.169
+    },
+    "astar_tail_check": {
+      "episodes": 100,
+      "food_mean": 345.3,
+      "food_median": 350.0,
+      "food_ci95": [
+        340.1,
+        349.6
+      ],
+      "final_length_mean": 348.3,
+      "max_length": 379,
+      "board_fill_mean_%": 87.1,
+      "outcomes": {
+        "STEP_LIMIT": 91,
+        "SELF": 5,
+        "STARVED": 4
+      },
+      "self_collision_rate": 0.05,
+      "wall_collision_rate": 0.0,
+      "self_trap_death_rate": 0.05,
+      "trap_to_death_moves_median": 14379.0,
+      "steps_mean": 19434.9,
+      "decision_ms_mean": 0.983
+    },
+    "astar_space_check": {
+      "episodes": 100,
+      "food_mean": 223.5,
+      "food_median": 159.0,
+      "food_ci95": [
+        201.1,
+        246.1
+      ],
+      "final_length_mean": 226.0,
+      "max_length": 371,
+      "board_fill_mean_%": 56.5,
+      "outcomes": {
+        "SELF": 52,
+        "STEP_LIMIT": 42,
+        "WALL": 4,
+        "STARVED": 2
+      },
+      "self_collision_rate": 0.52,
+      "wall_collision_rate": 0.04,
+      "self_trap_death_rate": 0.56,
+      "trap_to_death_moves_median": 1563.5,
+      "steps_mean": 10517.8,
+      "decision_ms_mean": 2.071
+    }
+  }
+}

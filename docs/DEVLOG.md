@@ -24,7 +24,30 @@
 1. The Torch backend gives ~11% more total spikes than Brian2 (4 trials). Rerun with ≥ 20 trials. If the gap persists, compare per-step event ordering.
 2. Retinotopic coordinates for LC/LPLC/T4/T5 are needed (FlyWire column assignment, or synapse positions).
 3. Event-driven synaptic update for a 10–50× speedup. Must be revalidated against Brian2.
-4. **Need the user's original A* code** for the baseline (Stage 2).
+4. ~~Need the user's original A* code~~. Resolved 2026-11-09: none supplied, so the baseline was written for this project (see report 01).
 5. Godot 4 is not installed on the dev machine yet.
 
 **Next:** Milestone 1, a headless Snake core with tests and a replay format, followed by the Godot viewer.
+
+## 2026-11-09: Stages 1–2: headless Snake core and A* baseline ladder
+
+**Done**
+- `game/environment.py`: deterministic Snake with relative actions (left/straight/right). The tail vacates before the collision check. Starvation and step caps. Food is placed uniformly over free cells from a seeded RNG.
+- `game/runner.py`: episode runner with per-decision measurements (reachable area, trap proxy, nearest body segment) and JSONL replays that are verified by re-simulation.
+- `agents/astar_agent.py`: A0 greedy, A1 time-aware, A2 tail check, A3 space check. Written for this project, modelled on chuyangliu/snake's graph-search solver. No author code was supplied.
+- 100 seeded games per agent on 20×20: A0 64 food, A1 69, A2 345, A3 224. A0 self-traps in every game, with a median 36 moves between first trap and death. See [RESEARCH_REPORT_01](RESEARCH_REPORT_01_astar_baselines.md).
+- 20 game and A* tests passing (27 total).
+
+**Decisions**
+| decision | alternatives | why |
+|---|---|---|
+| A0 greedy static-body A* is the primary baseline | use the strongest planner only | it is the planner the hypothesis is about; the stronger rungs are reported too so a win over A0 is not overclaimed |
+| Keep A3 even though it underperforms A2 | drop it | dropping a rung after seeing its result would be cherry-picking |
+| No Hamiltonian solvers | include one | not pathfinding; trivially fills the board by never taking risks |
+| Commit replays except A2's | commit all / none | A2's replays are 11–48 MB each |
+
+**Open issues**
+6. A2 hits the 20,000-move cap in 91 % of games. Raise the cap or score food per move before the final comparison.
+7. Run the ladder on 50×50 for the generalisation test.
+
+**Next:** Godot 4 viewer (needs Godot installed), then retinotopy for the visual encoder.

@@ -14,8 +14,8 @@ This is a research project, not a game demo. The controller is the **FlyWire who
 | stage | status |
 |---|---|
 | 0. Choose a simulator; prove the connectome can be stimulated, simulated and read | ✅ done: [report](docs/RESEARCH_REPORT_00_simulator_selection.md) |
-| 1. Headless Snake core + Godot 4 viewer | next |
-| 2. Original A\* baseline (needs the author's A\* code) | |
+| 1. Headless Snake core (✅ done) + Godot 4 viewer | viewer next |
+| 2. A\* baseline ladder (greedy → time-aware → tail check → space check) | ✅ done: [report](docs/RESEARCH_REPORT_01_astar_baselines.md) |
 | 3–4. Visual encoder / motor decoder connected to the brain | |
 | 5. Evolution | |
 | 6–7. Experiments, analysis, dashboard | |
@@ -25,6 +25,8 @@ Headline findings from Milestone 0 (details in the report):
 * Looming detectors LPLC2/LC4 drive the escape giant fiber DNp01. Object detectors drive the steering neurons DNa01/DNa02 **contralaterally**.
 * Direct photoreceptor stimulation **does not propagate** to the central brain in this LIF model. The retina and lamina use graded, sign-inverting signalling that the model does not capture. Visual input therefore enters at the optic-lobe output neurons.
 * Cost: about 3.4 GPU-seconds per simulated brain-second. One million generations at the planned evaluation budget is about 866 years on a GTX 1660 Ti, so the plan measures learning curves over achievable budgets and extrapolates from them.
+
+Headline findings from Stage 2: greedy A\* (the primary baseline) dies by self-trapping in 100/100 games on 20×20, mostly at length 50–100, eating 64 food on average. Adding the virtual-snake tail check raises this to 345 food (87 % of the board).
 
 ## Quick start (Milestone 0)
 
