@@ -25,7 +25,7 @@
 2. Retinotopic coordinates for LC/LPLC/T4/T5 are needed (FlyWire column assignment, or synapse positions).
 3. Event-driven synaptic update for a 10–50× speedup. Must be revalidated against Brian2.
 4. ~~Need the user's original A* code~~. Resolved 2026-11-09: none supplied, so the baseline was written for this project (see report 01).
-5. Godot 4 is not installed on the dev machine yet.
+5. ~~Godot 4 is not installed~~. Resolved 2026-11-10: 4.7.2 installed (checksum verified).
 
 **Next:** Milestone 1, a headless Snake core with tests and a replay format, followed by the Godot viewer.
 
@@ -51,3 +51,26 @@
 7. Run the ladder on 50×50 for the generalisation test.
 
 **Next:** Godot 4 viewer (needs Godot installed), then retinotopy for the visual encoder.
+
+## 2026-11-10: Stage 1b: Godot replay viewer
+
+**Done**
+- Godot 4.7.2 standard build downloaded from the official GitHub release. SHA-512 matched the published sums. Installed to `C:\Users\User\tools\godot-4.7.2`.
+- `viewer/`: a 3D replay viewer.
+  - Draws the arena, the snake (multimesh), the food and A*'s planned path.
+  - Four cameras: orbit, top-down, chase and head position.
+  - Playback controls, a timeline slider, a trap banner and a jump-to-trap key.
+- Headless `--check` mode validates a replay (frame count, steps, bounds, body contiguity, outcome) and draws every frame. `--screenshot` renders a PNG.
+- `tests/test_viewer.py` (28 tests total, all passing). Screenshots in `docs/images/`.
+
+**Decisions**
+| decision | alternatives | why |
+|---|---|---|
+| Build the scene in GDScript code, minimal .tscn | hand-built scenes | diffable, reviewable, no editor needed |
+| Discrete frames, no interpolation | smooth tweening | the viewer must show exactly what was recorded |
+| Head camera labelled "position only" | call it the fly's view | the brain's input comes from the Python encoder; claiming otherwise would mislead |
+
+**Open issues**
+8. Live view over WebSocket; fly-brain overlays.
+
+**Next:** retinotopic coordinates for LC/LPLC/T4/T5 (open issue 2), then the visual encoder.

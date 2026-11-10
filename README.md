@@ -14,7 +14,7 @@ This is a research project, not a game demo. The controller is the **FlyWire who
 | stage | status |
 |---|---|
 | 0. Choose a simulator; prove the connectome can be stimulated, simulated and read | ✅ done: [report](docs/RESEARCH_REPORT_00_simulator_selection.md) |
-| 1. Headless Snake core (✅ done) + Godot 4 viewer | viewer next |
+| 1. Headless Snake core + Godot 4 replay viewer | ✅ done: [viewer](viewer/README.md) |
 | 2. A\* baseline ladder (greedy → time-aware → tail check → space check) | ✅ done: [report](docs/RESEARCH_REPORT_01_astar_baselines.md) |
 | 3–4. Visual encoder / motor decoder connected to the brain | |
 | 5. Evolution | |
@@ -27,6 +27,8 @@ Headline findings from Milestone 0 (details in the report):
 * Cost: about 3.4 GPU-seconds per simulated brain-second. One million generations at the planned evaluation budget is about 866 years on a GTX 1660 Ti, so the plan measures learning curves over achievable budgets and extrapolates from them.
 
 Headline findings from Stage 2: greedy A\* (the primary baseline) dies by self-trapping in 100/100 games on 20×20, mostly at length 50–100, eating 64 food on average. Adding the virtual-snake tail check raises this to 345 food (87 % of the board).
+
+![greedy A* trapped, in the Godot replay viewer](docs/images/viewer_orbit_trap.png)
 
 ## Quick start (Milestone 0)
 
