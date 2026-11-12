@@ -7,3 +7,4 @@ scipy>=1.11
 brian2>=2.7            # reference backend for validation
 pyyaml>=6
 pytest>=8
+matplotlib>=3.8

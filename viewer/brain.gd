@@ -7,7 +7,7 @@ extends Node3D
 ## invented.
 ##
 ## Command line (after "--"):
-##   --brain[=<recording dir>]  default results/brain/looming_demo
+##   --brain[=<recording dir>]  default results/brain/looming_demo; e.g. --brain=results/brain/fly_champion
 ##   --check                    headless: load + play all bins, print BRAIN_CHECK, quit
 ##   --screenshot=<png> --bin=<n> --view=<1-3>
 ##
@@ -59,6 +59,7 @@ var info: Label
 var stim_label: Label
 var help: Label
 var slider: HSlider
+var minimap: Control       # the game, when the recording is of a brain playing Snake
 var label_nodes := {}          # label text -> Label3D
 var show_labels := true
 var group_counts := {}        # label text -> recent spike count (decaying)
@@ -300,6 +301,15 @@ func _build_hud() -> void:
 	slider.max_value = 1
 	slider.value_changed.connect(func(v): playing = false; _show(int(v)))
 	layer.add_child(slider)
+	minimap = Control.new()
+	minimap.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	minimap.offset_left = -314
+	minimap.offset_top = -354
+	minimap.offset_right = -14
+	minimap.offset_bottom = -54
+	minimap.visible = false
+	minimap.draw.connect(_draw_minimap)
+	layer.add_child(minimap)
 
 
 func _update_hud() -> void:
@@ -324,6 +334,13 @@ func _update_hud() -> void:
 		label_nodes[l["text"]].visible = show_labels and v >= 0.5
 		lines.append("  %-30s %s" % [l["text"], "|".repeat(mini(int(round(v)), 40))])
 	info.text = "\n".join(lines)
+	if act.has("game"):
+		minimap.visible = true
+		minimap.queue_redraw()
+	if b.has("caption"):
+		stim_label.text = str(b["caption"])
+		stim_label.add_theme_color_override("font_color", Color(1.0, 0.85, 0.4))
+		return
 	var on: Array = b["stimuli"]
 	if on.is_empty():
 		stim_label.text = "Input: none"
@@ -421,3 +438,26 @@ func _shot(path: String) -> void:
 	var err := get_viewport().get_texture().get_image().save_png(path)
 	print("BRAIN_SCREENSHOT %s %s" % [path, error_string(err)])
 	get_tree().quit(0 if err == OK else 1)
+
+
+# ------------------------------------------------------------------ game minimap
+func _draw_minimap() -> void:
+	var game: Dictionary = act["game"]
+	var frames: Array = game["frames"]
+	if frames.is_empty():
+		return
+	var fr: Dictionary = frames[mini(bin_i, frames.size() - 1)]
+	var w := int(game["width"])
+	var h := int(game["height"])
+	var cell := minimap.size.x / float(maxi(w, h))
+	minimap.draw_rect(Rect2(Vector2.ZERO, Vector2(w, h) * cell), Color(0.08, 0.09, 0.12, 0.92))
+	minimap.draw_rect(Rect2(Vector2.ZERO, Vector2(w, h) * cell), Color(0.4, 0.45, 0.55), false, 2.0)
+	var body: Array = fr["body"]
+	for k in range(body.size() - 1, -1, -1):
+		var c: Array = body[k]
+		var col := Color(0.35, 1.0, 0.45) if k == 0 else Color(0.2, 0.75, 0.35).lerp(
+			Color(0.06, 0.25, 0.12), float(k) / float(maxi(body.size() - 1, 1)))
+		minimap.draw_rect(Rect2(Vector2(c[0], c[1]) * cell + Vector2(1, 1), Vector2(cell - 2, cell - 2)), col)
+	if fr["food"] != null:
+		var f: Array = fr["food"]
+		minimap.draw_circle((Vector2(f[0], f[1]) + Vector2(0.5, 0.5)) * cell, cell * 0.38, Color(1.0, 0.3, 0.25))
