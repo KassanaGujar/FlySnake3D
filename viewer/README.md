@@ -34,6 +34,24 @@ What you see:
 
 The head camera sits roughly at the snake's eye position. It is **not** the fly's visual input, which is built by the encoder in Python.
 
+## Brain view
+
+`run_viewer.bat --brain` from the project root, or press **B** in the replay viewer (**G** goes back). It draws all 138,639 neurons at their FlyWire anchor positions and lights each one when it spikes, from a recording made by `experiments/record_brain_activity.py`.
+
+![brain view](../docs/images/brain_looming_behind.png)
+
+| key | action |
+|---|---|
+| Space, ← / →, ↑ / ↓, Home | play, step 2 ms, speed, restart |
+| 1 2 3 4 | view from behind / above / the right side / the front |
+| drag, wheel | rotate, zoom |
+| F | fade silent neurons |
+| L | labels (each appears only while its group is firing) |
+
+View 1 is from behind, so the fly's left is on your left. The orientation is verified against anatomical landmarks (see `docs/PROGRESS_AND_NEXT_STEPS.md`).
+
+The brain is not yet connected to the game. The recording is the Milestone 0 stimulus experiment.
+
 ## Automation
 
 ```bash
@@ -47,5 +65,5 @@ Godot_v4.7.2-stable_win64_console.exe --path viewer -- --replay=<file> --screens
 
 ## Not done yet
 - Live view of running games (WebSocket from Python).
-- Fly-brain overlays (spiking neurons, decoder output) once the brain is connected.
+- The brain view playing alongside a game, once the brain is connected.
 - Smooth interpolation between moves. Frames are shown discretely so what you see is exactly what was recorded.

@@ -90,3 +90,15 @@
 - Progress and the plan are written up in [PROGRESS_AND_NEXT_STEPS.md](PROGRESS_AND_NEXT_STEPS.md).
 
 **Open issues:** labels overlap; base colours are too bright; **verify left/right orientation**; add a brain-view test to pytest.
+
+## 2026-11-11: Brain view polish and orientation check
+
+**Done**
+- **Orientation verified from landmarks:** antennal lobe anchors at z ≈ 1,300–1,900 voxels (anterior), Kenyon cells at z ≈ 4,600 and low y (posterior, dorsal), and left-annotated neurons at lower x. The exported frame (+x right, +y dorsal, −z anterior) is right-handed, so the view is not mirrored.
+- The default view is from behind (fly's left = screen left). The view previously labelled "front" was really this one. Added a true front view (key 4). The HUD states the viewpoint.
+- Silent neurons dimmed to 45 %. Labels are shown only while their group fires, which removes the overlap.
+- `tests/test_brain_view.py`: orientation and extent checks, plus headless playback of every spike. 30 tests pass.
+
+**Observation (not yet a result):** in the recording, LC9 on the right is followed by spikes in DNa01 left and DNa02 right. That matches the contralateral DNa01 response from Milestone 0. It is one seed, so it needs repeats before it is relied on for the decoder.
+
+**Open issues:** A2 step cap; hand-check of the interactive controls.

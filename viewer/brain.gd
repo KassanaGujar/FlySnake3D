@@ -12,10 +12,11 @@ extends Node3D
 ##   --screenshot=<png> --bin=<n> --view=<1-3>
 ##
 ## Keys: Space play/pause, Left/Right step 2 ms, Up/Down speed, Home,
-##       1 front / 2 top / 3 side view, drag to rotate, wheel to zoom,
+##       1 behind / 2 top / 3 side / 4 front view, drag to rotate, wheel to zoom,
 ##       F fade silent neurons, L labels, G game replay viewer, H help.
 
 const FIRE := Color(4.0, 3.2, 1.2)          # HDR so it glows
+const BASE_DIM := 0.45                      # silent neurons stay well below the firing glow
 const DECAY := 0.72                         # per 2 ms bin
 const CLASS_COLORS := {
 	"optic": Color(0.10, 0.16, 0.30),
@@ -49,6 +50,7 @@ var yaw := 0.0
 var pitch := 0.15
 var dist := 900.0
 var dragging := false
+var view := 1
 
 var mm_inst: MultiMeshInstance3D
 var camera: Camera3D
@@ -57,6 +59,8 @@ var info: Label
 var stim_label: Label
 var help: Label
 var slider: HSlider
+var label_nodes := {}          # label text -> Label3D
+var show_labels := true
 var group_counts := {}        # label text -> recent spike count (decaying)
 
 
@@ -171,7 +175,7 @@ func _build_brain() -> void:
 		if c == 255:
 			t = t.scaled(Vector3.ZERO)       # no position in the annotations
 		else:
-			col = CLASS_COLORS.get(names[c], Color(0.2, 0.2, 0.2))
+			col = CLASS_COLORS.get(names[c], Color(0.2, 0.2, 0.2)) * BASE_DIM
 		base_col[i] = col
 		mm.set_instance_transform(i, t)
 		mm.set_instance_color(i, col)
@@ -183,7 +187,6 @@ func _build_brain() -> void:
 func _build_labels() -> void:
 	labels_root = Node3D.new()
 	add_child(labels_root)
-	labels_root.visible = false   # press L; labels overlap at full zoom
 	for l in meta["labels"]:
 		var lab := Label3D.new()
 		lab.text = l["text"]
@@ -197,6 +200,8 @@ func _build_labels() -> void:
 		lab.outline_size = 8
 		lab.modulate = Color(0.85, 0.95, 1.0)
 		labels_root.add_child(lab)
+		lab.visible = false
+		label_nodes[l["text"]] = lab
 		group_counts[l["text"]] = 0.0
 
 
@@ -278,8 +283,8 @@ func _build_hud() -> void:
 	help.position = Vector2(-14, 10)
 	help.text = "\n".join([
 		"Space  play / pause", "Left/Right  step 2 ms", "Up/Down  speed", "Home  restart",
-		"1 / 2 / 3  front / top / side", "drag  rotate,  wheel  zoom",
-		"F  fade silent neurons", "L  labels", "G  game replays", "H  hide help", "",
+		"1 / 2 / 3 / 4  behind / top / side / front", "drag  rotate,  wheel  zoom",
+		"F  fade silent neurons", "L  labels (shown while firing)", "G  game replays", "H  hide help", "",
 		"each dot = one neuron at its FlyWire position",
 		"bright yellow = spiked in the last few ms",
 		"blue = optic lobe, purple = central brain,",
@@ -306,13 +311,17 @@ func _update_hud() -> void:
 		str(act["title"]),
 		"%d neurons   t = %.0f ms   %s   %.0fx slow motion" % [n, float(b["t_ms"]),
 			"playing" if playing else "paused", 1000.0 / (bins_per_s * float(act["bin_ms"]))],
-		"spiking now: %d   glowing: %d" % [int(b["n_spiking"]), glow.size()],
+		"spiking now: %d   glowing: %d   view: %s" % [int(b["n_spiking"]), glow.size(),
+			["", "from behind (fly's left = your left)", "from above", "from the right side",
+			"from the front (fly's left = your right)"][view]],
 		"most active types: " + ", ".join(b["top_types"].map(func(x): return "%s %d" % [x[0], int(x[1])])),
 		"",
 		"labelled groups (recent spikes):",
 	]
 	for l in meta["labels"]:
 		var v: float = group_counts[l["text"]]
+		# a label is shown only while its group is firing, so labels do not pile up
+		label_nodes[l["text"]].visible = show_labels and v >= 0.5
 		lines.append("  %-30s %s" % [l["text"], "|".repeat(mini(int(round(v)), 40))])
 	info.text = "\n".join(lines)
 	var on: Array = b["stimuli"]
@@ -331,9 +340,11 @@ func _update_hud() -> void:
 # ------------------------------------------------------------------ camera / input
 func _set_view(v: int) -> void:
 	match v:
-		1: yaw = 0.0; pitch = 0.15
-		2: yaw = 0.0; pitch = 1.45
-		3: yaw = PI / 2; pitch = 0.1
+		1: yaw = 0.0; pitch = 0.15          # from behind: fly's left is on screen left
+		2: yaw = 0.0; pitch = 1.45          # from above, front of the brain at the top
+		3: yaw = PI / 2; pitch = 0.1         # from the fly's right side
+		4: yaw = PI; pitch = 0.15           # from the front: fly's left is on screen right
+	view = v
 
 
 func _update_camera() -> void:
@@ -361,7 +372,7 @@ func _unhandled_input(e: InputEvent) -> void:
 				bins_per_s = maxf(bins_per_s / 2.0, 1.0)
 			KEY_HOME:
 				_show(0)
-			KEY_1, KEY_2, KEY_3:
+			KEY_1, KEY_2, KEY_3, KEY_4:
 				_set_view(e.keycode - KEY_0)
 			KEY_F:
 				fade_silent = not fade_silent
@@ -369,7 +380,7 @@ func _unhandled_input(e: InputEvent) -> void:
 					if not glow.has(i):
 						mm_inst.multimesh.set_instance_color(i, _base(i))
 			KEY_L:
-				labels_root.visible = not labels_root.visible
+				show_labels = not show_labels
 			KEY_H:
 				help.visible = not help.visible
 			KEY_G:
