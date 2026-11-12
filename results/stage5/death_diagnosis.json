@@ -1,0 +1,89 @@
+{
+ "fly_24ms": {
+  "food": 17.234375,
+  "deaths": 384,
+  "by_outcome": {
+   "SELF": 238,
+   "WALL": 146
+  },
+  "crashes_with_a_safe_move": 384,
+  "crashes_with_no_safe_move": 0,
+  "avoidable_crash_action": {
+   "left": 159,
+   "straight": 116,
+   "right": 109
+  },
+  "avoidable_straight_into_adjacent_obstacle": 116,
+  "avoidable_turned_into_adjacent_obstacle": 268,
+  "mean_length_at_death": 4.98,
+  "fraction_avoidable": 1.0
+ },
+ "fly_agreement_random_views": {
+  "views": 25,
+  "mean_agreement": 0.886,
+  "min_agreement": 0.609,
+  "views_below_90pct": 12
+ },
+ "fly_agreement_views_before_avoidable_crash": {
+  "views": 24,
+  "mean_agreement": 0.883,
+  "min_agreement": 0.547,
+  "views_below_90pct": 8
+ },
+ "fly_24ms_reset_every_decision": {
+  "food": 21.9375,
+  "deaths": 535,
+  "by_outcome": {
+   "WALL": 346,
+   "SELF": 189
+  },
+  "crashes_with_a_safe_move": 535,
+  "crashes_with_no_safe_move": 0,
+  "avoidable_crash_action": {
+   "straight": 327,
+   "left": 106,
+   "right": 102
+  },
+  "avoidable_straight_into_adjacent_obstacle": 327,
+  "avoidable_turned_into_adjacent_obstacle": 208,
+  "mean_length_at_death": 5.08,
+  "fraction_avoidable": 1.0
+ },
+ "fly_48ms": {
+  "food": 18.890625,
+  "deaths": 390,
+  "by_outcome": {
+   "SELF": 266,
+   "WALL": 117,
+   "STARVED": 7
+  },
+  "crashes_with_a_safe_move": 383,
+  "crashes_with_no_safe_move": 0,
+  "avoidable_crash_action": {
+   "right": 117,
+   "straight": 87,
+   "left": 179
+  },
+  "avoidable_straight_into_adjacent_obstacle": 87,
+  "avoidable_turned_into_adjacent_obstacle": 296,
+  "mean_length_at_death": 5.15,
+  "fraction_avoidable": 0.982
+ },
+ "ann": {
+  "food": 22.21875,
+  "deaths": 158,
+  "by_outcome": {
+   "SELF": 158
+  },
+  "crashes_with_a_safe_move": 158,
+  "crashes_with_no_safe_move": 0,
+  "avoidable_crash_action": {
+   "right": 107,
+   "left": 51
+  },
+  "avoidable_straight_into_adjacent_obstacle": 0,
+  "avoidable_turned_into_adjacent_obstacle": 158,
+  "mean_length_at_death": 8.47,
+  "fraction_avoidable": 1.0
+ }
+}

@@ -63,13 +63,18 @@ def main():
     ap.add_argument("--sigma0", type=float, default=0.2)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--device", default=None)
+    ap.add_argument("--death_penalty", type=float, default=0.5,
+                    help="fitness = food - death_penalty * deaths")
+    ap.add_argument("--init_from", default=None,
+                    help="start the search at a saved genome (.npy) instead of the default")
     a = ap.parse_args()
     run = ROOT / "results" / "evolution" / (a.run or a.controller)
     run.mkdir(parents=True, exist_ok=True)
     cfg = train_config(a.size)
 
     is_fly = a.controller.startswith("fly")
-    es = ES(FLY_INIT_MEAN if is_fly else ANN_INIT_MEAN, sigma0=a.sigma0, pop=a.pop, seed=a.seed)
+    init = np.load(a.init_from) if a.init_from else (FLY_INIT_MEAN if is_fly else ANN_INIT_MEAN)
+    es = ES(init, sigma0=a.sigma0, pop=a.pop, seed=a.seed)
     hist_path, ck_path = run / "history.csv", run / "checkpoint.npz"
     history = []
     if ck_path.exists():
@@ -97,8 +102,9 @@ def main():
             policy = AnnPolicy(genomes)
         seeds = np.full(a.pop, 10_000 + a.seed * 1_000_000 + gen)   # same games for everyone
         res = play_budget(policy, cfg, seeds, a.decisions)
-        info = es.tell(res["fitness"])
-        best = int(np.argmax(res["fitness"]))
+        fit = res["food"] - a.death_penalty * res["deaths"]
+        info = es.tell(fit)
+        best = int(np.argmax(fit))
         row = {"generation": gen, **info,
                "champion_food": float(res["food"][0]), "champion_deaths": float(res["deaths"][0]),
                "best_food": float(res["food"][best]), "best_deaths": float(res["deaths"][best]),

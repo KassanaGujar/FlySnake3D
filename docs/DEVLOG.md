@@ -102,3 +102,11 @@
 **Observation (not yet a result):** in the recording, LC9 on the right is followed by spikes in DNa01 left and DNa02 right. That matches the contralateral DNa01 response from Milestone 0. It is one seed, so it needs repeats before it is relied on for the decoder.
 
 **Open issues:** A2 step cap; hand-check of the interactive controls.
+
+## 2026-11-12: first full fly evolution run, and why it stalls
+
+- `fly_main`: 60 generations, population 64, 300 moves each, about 90 s per generation. Mean fitness -6.9 to about 14 by generation 20, flat afterwards.
+- Wrote `experiments/diagnose_deaths.py`. Findings: all 384 crashes avoidable at mean length 5; 70% are turns into an adjacent obstacle; resetting the brain each move trades body crashes for wall crashes; identical views give the same action 89% of the time; 48 ms window does not reduce deaths. Full table in `docs/PROGRESS_AND_NEXT_STEPS.md`.
+- Decision: cancelled the shuffled-wiring control until the fly setup is fixed. A control on a broken setup would not be interpretable.
+- Added `--death_penalty` and `--init_from` to `experiments/evolve.py` (defaults unchanged, so `fly_main` and `ann_main` are reproducible).
+- Uncertain: whether the 54-gene interface can reach ANN-level safety at all. The ANN has 131 free weights and no spike noise.
