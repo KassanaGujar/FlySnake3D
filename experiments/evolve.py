@@ -63,6 +63,10 @@ def main():
     ap.add_argument("--sigma0", type=float, default=0.2)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--device", default=None)
+    ap.add_argument("--readout_from_ms", type=float, default=0.0,
+                    help="ignore descending-neuron spikes earlier than this in each window")
+    ap.add_argument("--regular_input", action="store_true",
+                    help="evenly spaced input spikes instead of Poisson (removes input noise)")
     ap.add_argument("--death_penalty", type=float, default=0.5,
                     help="fitness = food - death_penalty * deaths")
     ap.add_argument("--init_from", default=None,
@@ -90,7 +94,8 @@ def main():
         conn = load_connectome()
         W = shuffled_wiring(conn.W) if a.controller == "fly_shuffled" else None
         policy = FlyPolicy(conn, es.ask(), dt=a.dt, window_ms=a.window_ms, device=a.device,
-                           seed=a.seed, W=W)
+                           seed=a.seed, W=W, readout_from_ms=a.readout_from_ms,
+                           regular_input=a.regular_input)
 
     while es.generation < a.generations:
         gen = es.generation

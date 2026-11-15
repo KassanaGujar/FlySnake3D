@@ -1,0 +1,16 @@
+{
+ "controller": "fly",
+ "run": "fly_v2_penalty2",
+ "generations": 60,
+ "pop": 64,
+ "decisions": 300,
+ "size": 20,
+ "dt": 0.6,
+ "window_ms": 24.0,
+ "sigma0": 0.1,
+ "seed": 0,
+ "device": null,
+ "death_penalty": 2.0,
+ "init_from": "results/evolution/fly_main/champion.npy",
+ "genome_size": 54
+}

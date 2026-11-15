@@ -75,6 +75,8 @@ def main():
     cfg = train_config(20)
     fly_cfg = json.loads((EVO / a.fly / "config.json").read_text())
     dt, window = fly_cfg["dt"], fly_cfg["window_ms"]
+    late = fly_cfg.get("readout_from_ms", 0.0)
+    reg = fly_cfg.get("regular_input", False)
     report: dict = {"held_out_seeds": [int(HELD_OUT[0]), int(HELD_OUT[-1])], "decisions": DECISIONS,
                     "fly_settings": {"dt_ms": dt, "window_ms": window}}
 
@@ -84,7 +86,7 @@ def main():
     fly_final = np.load(EVO / a.fly / "champion.npy")
 
     # ---- A. held-out progress of the fly
-    policy = FlyPolicy(conn, same(FLY_INIT_MEAN), dt=dt, window_ms=window, seed=1)
+    policy = FlyPolicy(conn, same(FLY_INIT_MEAN), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=1)
     prog = {}
     raw = {}
     for name, g in [("start (not evolved)", FLY_INIT_MEAN)] + checkpoints(EVO / a.fly):
@@ -115,8 +117,8 @@ def main():
     has_shuf = (EVO / a.shuffled / "champion.npy").exists()
     if has_shuf:
         del policy
-        sp_ = FlyPolicy(conn, same(np.load(EVO / a.shuffled / "champion.npy")), dt=dt,
-                        window_ms=window, seed=1, W=shuffled_wiring(conn.W))
+        sp_ = FlyPolicy(conn, same(np.load(EVO / a.shuffled / "champion.npy")), dt=dt, window_ms=window,
+                        readout_from_ms=late, regular_input=reg, seed=1, W=shuffled_wiring(conn.W))
         report["controls_held_out"]["fly, shuffled wiring (evolved)"] = summarise(
             play_budget(sp_, cfg, HELD_OUT, DECISIONS))
         # the real-wiring champion's interface on shuffled wiring: does it depend on the wiring?
@@ -124,18 +126,18 @@ def main():
         report["controls_held_out"]["fly champion's genome on shuffled wiring"] = summarise(
             play_budget(sp_, cfg, HELD_OUT, DECISIONS))
         del sp_
-        policy = FlyPolicy(conn, same(fly_final), dt=dt, window_ms=window, seed=1)
+        policy = FlyPolicy(conn, same(fly_final), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=1)
     for k, v in report["controls_held_out"].items():
         print(k, v, flush=True)
 
     # ---- C. published time step
     if not a.skip_dt_check:
         del policy
-        fine = FlyPolicy(conn, same(fly_final), dt=0.1, window_ms=window, seed=1)
+        fine = FlyPolicy(conn, same(fly_final), dt=0.1, window_ms=window, readout_from_ms=late, regular_input=reg, seed=1)
         report["fly_final_at_dt_0.1ms"] = summarise(play_budget(fine, cfg, HELD_OUT, DECISIONS))
         print("dt 0.1:", report["fly_final_at_dt_0.1ms"], flush=True)
         del fine
-        policy = FlyPolicy(conn, same(fly_final), dt=dt, window_ms=window, seed=1)
+        policy = FlyPolicy(conn, same(fly_final), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=1)
 
     # ---- D. full episodes, A* benchmark rules
     ecfg = GameConfig(width=20, height=20, max_steps=20000)
@@ -160,7 +162,7 @@ def main():
     report["full_episodes"] = full
 
     # ---- E. one recorded champion game (replay + every spike)
-    one = FlyPolicy(conn, fly_final[None], dt=dt, window_ms=window, seed=2, record_col=0)
+    one = FlyPolicy(conn, fly_final[None], dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=2, record_col=0)
     res, frames = play_episodes(one, ecfg, np.array([0]), a.episodes_cap, name="fly (evolved)",
                                 record_col=0)
     rep = ROOT / "results" / "replays" / "stage5"

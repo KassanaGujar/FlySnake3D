@@ -16,6 +16,7 @@ Writes results/stage5/death_diagnosis.json
 """
 from __future__ import annotations
 
+import argparse
 import copy
 import json
 from collections import Counter
@@ -120,34 +121,40 @@ def agreement(policy, views) -> dict:
 
 def main():
     from brain.connectome_loader import load_connectome
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--run", default="fly_main")
+    ap.add_argument("--quick", action="store_true", help="skip the reset/48 ms/ANN variants")
+    a = ap.parse_args()
     cfg = train_config(20)
-    champ = np.load(EVO / "fly_main" / "champion.npy")
+    rc = json.loads((EVO / a.run / "config.json").read_text())
+    kw = dict(dt=rc["dt"], window_ms=rc["window_ms"], readout_from_ms=rc.get("readout_from_ms", 0.0),
+              regular_input=rc.get("regular_input", False))
+    champ = np.load(EVO / a.run / "champion.npy")
     genomes = np.repeat(champ[None], B, 0)
     conn = load_connectome()
     res = {}
 
-    fly = FlyPolicy(conn, genomes)
+    fly = FlyPolicy(conn, genomes, **kw)
     score, log, views = play_logged(fly, cfg)
-    res["fly_24ms"] = score | summarise(log)
+    res["fly_as_trained"] = score | summarise(log) | kw
     fatal = [d["feats"] for d in log if d["safe"]][:24]
     res["fly_agreement_random_views"] = agreement(fly, views)
     if fatal:
         res["fly_agreement_views_before_avoidable_crash"] = agreement(fly, fatal)
-    score, log, _ = play_logged(fly, cfg, reset_each=True)
-    res["fly_24ms_reset_every_decision"] = score | summarise(log)
-    del fly
-
-    fly48 = FlyPolicy(conn, genomes, window_ms=48.0)
-    score, log, _ = play_logged(fly48, cfg)
-    res["fly_48ms"] = score | summarise(log)
-    del fly48
-
-    ann = AnnPolicy(np.repeat(np.load(EVO / "ann_main" / "champion.npy")[None], B, 0))
-    score, log, _ = play_logged(ann, cfg)
-    res["ann"] = score | summarise(log)
+    if not a.quick:
+        score, log, _ = play_logged(fly, cfg, reset_each=True)
+        res["fly_reset_every_decision"] = score | summarise(log)
+        del fly
+        fly48 = FlyPolicy(conn, genomes, **(kw | {"window_ms": 48.0}))
+        score, log, _ = play_logged(fly48, cfg)
+        res["fly_48ms"] = score | summarise(log)
+        del fly48
+        ann = AnnPolicy(np.repeat(np.load(EVO / "ann_main" / "champion.npy")[None], B, 0))
+        score, log, _ = play_logged(ann, cfg)
+        res["ann"] = score | summarise(log)
 
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "death_diagnosis.json").write_text(json.dumps(res, indent=1, default=int))
+    (OUT / ("death_diagnosis.json" if a.run == "fly_main" else f"death_diagnosis_{a.run}.json")).write_text(json.dumps(res, indent=1, default=int))
     print(json.dumps(res, indent=1, default=int))
 
 

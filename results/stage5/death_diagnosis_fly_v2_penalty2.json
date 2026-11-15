@@ -1,0 +1,36 @@
+{
+ "fly_as_trained": {
+  "food": 16.875,
+  "deaths": 299,
+  "by_outcome": {
+   "WALL": 126,
+   "SELF": 173
+  },
+  "crashes_with_a_safe_move": 299,
+  "crashes_with_no_safe_move": 0,
+  "avoidable_crash_action": {
+   "straight": 104,
+   "left": 126,
+   "right": 69
+  },
+  "avoidable_straight_into_adjacent_obstacle": 104,
+  "avoidable_turned_into_adjacent_obstacle": 195,
+  "mean_length_at_death": 5.49,
+  "fraction_avoidable": 1.0,
+  "dt": 0.6,
+  "window_ms": 24.0,
+  "readout_from_ms": 0.0
+ },
+ "fly_agreement_random_views": {
+  "views": 25,
+  "mean_agreement": 0.852,
+  "min_agreement": 0.516,
+  "views_below_90pct": 11
+ },
+ "fly_agreement_views_before_avoidable_crash": {
+  "views": 24,
+  "mean_agreement": 0.884,
+  "min_agreement": 0.609,
+  "views_below_90pct": 12
+ }
+}

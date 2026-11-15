@@ -49,7 +49,8 @@ class FlyPolicy:
     name = "fly"
 
     def __init__(self, conn, genomes: np.ndarray, dt: float = 0.6, window_ms: float = 24.0,
-                 device: str | None = None, seed: int = 0, W=None, record_col: int | None = None):
+                 device: str | None = None, seed: int = 0, W=None, record_col: int | None = None,
+                 readout_from_ms: float = 0.0, regular_input: bool = False):
         import torch
 
         from brain.event_simulator import EventLIF
@@ -61,6 +62,12 @@ class FlyPolicy:
         self.enc = Encoder(conn, torch, dev)
         self.dec = Decoder(conn, torch, dev)
         self.steps = int(round(window_ms / dt))
+        # Descending-neuron spikes before this time are not counted: early in the
+        # window they still reflect the previous view (signals need several
+        # synaptic delays to cross the brain). The brain itself runs throughout.
+        self.skip = int(round(readout_from_ms / dt))
+        self.regular_input = regular_input
+        assert 0 <= self.skip < self.steps
         self.set_genomes(genomes)
         self.record_col = record_col
         self.spike_log: list[np.ndarray] = []      # per decision: neurons that spiked in record_col
@@ -79,13 +86,15 @@ class FlyPolicy:
     def act(self, feats: np.ndarray) -> np.ndarray:
         sim = self.sim
         sim.clear_inputs()
-        sim.set_poisson_input(self.enc.indices, self.enc.rates(feats, self.gains))
+        sim.set_poisson_input(self.enc.indices, self.enc.rates(feats, self.gains),
+                              regular=self.regular_input)
         counts = self.dec.new_counts(self.B)
         rec = []
-        for _ in range(self.steps):
+        for i in range(self.steps):
             pre, b = sim.step()
             if len(pre):
-                self.dec.accumulate(counts, pre, b, self.B)
+                if i >= self.skip:
+                    self.dec.accumulate(counts, pre, b, self.B)
                 if self.record_col is not None:
                     rec.append(pre[b == self.record_col])
         if self.record_col is not None:

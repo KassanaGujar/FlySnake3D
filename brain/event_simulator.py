@@ -52,6 +52,11 @@ class EventLIF:
         self.rfc_steps = int(round(p.t_rfc / p.dt))
         self.rfc_per_neuron = t.full((self.N,), self.rfc_steps, device=self.device, dtype=t.int16)
         self._inputs: list[tuple] = []
+        # Phase of each neuron's regular input train (used only by regular inputs).
+        # Random and different per brain, so trains are not synchronised.
+        # Drawn from its own generator so the Poisson stream is unchanged.
+        pgen = t.Generator(device=self.device).manual_seed(seed + 7919)
+        self.phase = t.rand((self.N, self.B), generator=pgen, device=self.device)
         self.reset()
 
     # -- state -------------------------------------------------------------
@@ -92,8 +97,14 @@ class EventLIF:
         self._inputs = []
         self.rfc_per_neuron.fill_(self.rfc_steps)
 
-    def set_poisson_input(self, indices, rates_hz):
-        """Same contract as TorchLIF.set_poisson_input (stimulated neurons have no refractory period)."""
+    def set_poisson_input(self, indices, rates_hz, regular: bool = False):
+        """Same contract as TorchLIF.set_poisson_input (stimulated neurons have no refractory period).
+
+        regular=True replaces the Poisson train by an evenly spaced train of the
+        same rate (a phase accumulator per neuron). The mean drive is identical;
+        only the spike-count randomness of the input is removed. This is a
+        deviation from Shiu et al., who use Poisson input.
+        """
         t = self.torch
         idx = t.as_tensor(np.asarray(indices), device=self.device, dtype=t.long)
         r = t.as_tensor(rates_hz, device=self.device, dtype=self.dtype) if t.is_tensor(rates_hz) \
@@ -103,7 +114,7 @@ class EventLIF:
         if r.ndim == 1:
             r = r[:, None].expand(len(idx), self.B)
         p_spike = (r * self.p.dt * 1e-3).clamp(0, 1).contiguous()
-        self._inputs.append((idx, p_spike))
+        self._inputs.append((idx, p_spike, regular))
         self.rfc_per_neuron[idx] = 0
 
     # -- integration -------------------------------------------------------
@@ -146,8 +157,13 @@ class EventLIF:
         if ev is not None:
             self._deliver(*ev)
         self.ring[slot] = (pre, b) if len(pre) else None
-        for idx, p_spike in self._inputs:
-            hits = t.rand(p_spike.shape, generator=self.gen, device=self.device) < p_spike
+        for idx, p_spike, regular in self._inputs:
+            if regular:
+                ph = self.phase[idx] + p_spike
+                hits = ph >= 1.0
+                self.phase[idx] = ph - hits.to(self.dtype)
+            else:
+                hits = t.rand(p_spike.shape, generator=self.gen, device=self.device) < p_spike
             self.u[idx] += hits.to(self.dtype) * (p.w_syn * p.f_poi)
 
         # 4) reset the neurons that spiked and start their refractory period
