@@ -224,7 +224,7 @@ def figure(a, report, has_shuf):
             ax[0].plot(h.generation, h.mean_fitness, color=col, label=f"{label}: population mean")
             ax[0].plot(h.generation, h.champion_fitness.rolling(5, min_periods=1).mean(), color=col,
                        ls="--", label=f"{label}: champion (5-gen average)")
-    ax[0].set_xlabel("generation"); ax[0].set_ylabel("fitness = food - 0.5 x deaths (300 moves)")
+    ax[0].set_xlabel("generation"); ax[0].set_ylabel("training fitness (300 moves; death penalty per run config)")
     ax[0].set_title("Training (fresh seeds every generation)"); ax[0].legend(fontsize=7); ax[0].grid(alpha=.3)
     prog = report["fly_held_out_progress"]
     names = list(prog)

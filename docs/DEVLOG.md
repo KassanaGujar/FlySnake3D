@@ -110,3 +110,12 @@
 - Decision: cancelled the shuffled-wiring control until the fly setup is fixed. A control on a broken setup would not be interpretable.
 - Added `--death_penalty` and `--init_from` to `experiments/evolve.py` (defaults unchanged, so `fly_main` and `ann_main` are reproducible).
 - Uncertain: whether the 54-gene interface can reach ANN-level safety at all. The ANN has 131 free weights and no spike noise.
+
+## 2026-11-15: training setups screened, shuffled control, held-out evaluation
+
+- Screened death penalty 2 (`fly_v2`), late readout (`fly_v3`), 36 ms window (`fly_v4`, cut at gen 13 by sleep) and evenly spaced input (`fly_v5`), each from the `fly_main` champion. Deaths per 300 unseen moves 6.0 -> 4.7 / 4.2 / 5.3 / 3.3.
+- Added `regular=True` to `EventLIF.set_poisson_input` (phase accumulator, its own RNG so the Poisson stream is unchanged; tests pass). Deviation from Shiu et al., documented in Report 02.
+- Shuffled wiring with v5 settings: every candidate always goes straight. `experiments/shuffled_reach_probe.py`: 0 readout spikes on shuffled vs 143-150 on real wiring (3 seeds).
+- `fly_v5_scratch` (v5 settings from scratch, 40 gens) reached only about 15 food and 5 deaths. A harsh penalty from the start slows learning.
+- Ran `experiments/evaluate_evolution.py --fly fly_v5_regular_late12 --shuffled fly_v5_shuffled`; results in Report 02. Fixed the viewer path in docs: `--brain=` paths are relative to the repo root.
+- The computer slept for about 18 h during the screening; runs since then use the app's keep-awake.

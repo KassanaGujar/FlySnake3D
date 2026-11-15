@@ -17,8 +17,8 @@ This is a research project, not a game demo. The controller is the **FlyWire who
 | 1. Headless Snake core + Godot 4 replay viewer | ✅ done: [viewer](viewer/README.md) |
 | 2. A\* baseline ladder (greedy → time-aware → tail check → space check) | ✅ done: [report](docs/RESEARCH_REPORT_01_astar_baselines.md) |
 | 1c. Fly brain activity view (138,639 neurons, real recorded spikes) | ✅ done |
-| 3–4. Visual encoder / motor decoder connected to the brain | next: see [progress and next steps](docs/PROGRESS_AND_NEXT_STEPS.md) |
-| 5. Evolution | |
+| 3–4. Visual encoder / motor decoder connected to the brain | ✅ done |
+| 5. Evolution (fly, ANN and shuffled-wiring controls, held-out evaluation) | ✅ done: [report](docs/RESEARCH_REPORT_02_evolution.md) |
 | 6–7. Experiments, analysis, dashboard | |
 
 Headline findings from Milestone 0 (details in the report):
@@ -29,9 +29,13 @@ Headline findings from Milestone 0 (details in the report):
 
 Headline findings from Stage 2: greedy A\* (the primary baseline) dies by self-trapping in 100/100 games on 20×20, mostly at length 50–100, eating 64 food on average. Adding the virtual-snake tail check raises this to 345 food (87 % of the board).
 
+Headline findings from Stage 5: evolution works (the evolved interface beats the un-evolved one on 64 of 64 unseen games), but the fly plays like a beginner. It eats 18 food per 300 moves with 3.7 deaths, against 22 food and 2.6 deaths for a small neural network on the same inputs, and dies at about 7 cells, long before it could self-trap. On shuffled wiring no visual signal reaches the steering neurons at all. Next steps are in [PROGRESS_AND_NEXT_STEPS.md](docs/PROGRESS_AND_NEXT_STEPS.md).
+
+![evolution results](docs/images/evolution_results.png)
+
 ![greedy A* trapped, in the Godot replay viewer](docs/images/viewer_orbit_trap.png)
 
-**To run the viewers:** double-click `run_viewer.bat` (game replays), or run `run_viewer.bat --brain` (fly brain). See [PROGRESS_AND_NEXT_STEPS.md](docs/PROGRESS_AND_NEXT_STEPS.md).
+**To run the viewers:** double-click `run_viewer.bat` (game replays), run `run_viewer.bat --brain` (fly brain), or `run_viewer.bat --brain=results/brain/fly_champion` (the evolved fly playing, with every spike). See [PROGRESS_AND_NEXT_STEPS.md](docs/PROGRESS_AND_NEXT_STEPS.md).
 
 ## Quick start (Milestone 0)
 

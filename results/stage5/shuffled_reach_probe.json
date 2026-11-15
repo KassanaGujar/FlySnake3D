@@ -1,0 +1,42 @@
+{
+ "stimulus": "all encoder input neurons at 200 Hz, 240 ms, dt 0.6 ms",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "real": [
+  {
+   "neurons_active": 4153,
+   "total_spikes": 100460,
+   "readout_spikes": 150
+  },
+  {
+   "neurons_active": 4100,
+   "total_spikes": 100685,
+   "readout_spikes": 143
+  },
+  {
+   "neurons_active": 4070,
+   "total_spikes": 99643,
+   "readout_spikes": 148
+  }
+ ],
+ "shuffled": [
+  {
+   "neurons_active": 5879,
+   "total_spikes": 120741,
+   "readout_spikes": 0
+  },
+  {
+   "neurons_active": 5870,
+   "total_spikes": 121197,
+   "readout_spikes": 0
+  },
+  {
+   "neurons_active": 5836,
+   "total_spikes": 119920,
+   "readout_spikes": 0
+  }
+ ]
+}

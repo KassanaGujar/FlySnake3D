@@ -1,0 +1,85 @@
+{"type": "header", "config": {"width": 20, "height": 20, "start_length": 3, "obstacles": [], "max_steps_without_food": null, "max_steps": 20000, "random_start": false}, "result": {"agent": "fly (evolved)", "seed": 0, "board": "20x20", "outcome": "WALL", "food_eaten": 5, "final_length": 8, "steps": 83, "first_trap_step": null, "self_trap_death": false, "moves_trap_to_death": null}}
+{"type": "frame", "step": 0, "body": [[10, 10], [9, 10], [8, 10]], "heading": [1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 1, "body": [[10, 11], [10, 10], [9, 10]], "heading": [0, 1], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 2, "body": [[9, 11], [10, 11], [10, 10]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 3, "body": [[8, 11], [9, 11], [10, 11]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 4, "body": [[7, 11], [8, 11], [9, 11]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 5, "body": [[7, 12], [7, 11], [8, 11]], "heading": [0, 1], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 6, "body": [[7, 13], [7, 12], [7, 11]], "heading": [0, 1], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 7, "body": [[7, 14], [7, 13], [7, 12]], "heading": [0, 1], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 8, "body": [[6, 14], [7, 14], [7, 13]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 9, "body": [[5, 14], [6, 14], [7, 14]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 10, "body": [[4, 14], [5, 14], [6, 14]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 11, "body": [[4, 15], [4, 14], [5, 14]], "heading": [0, 1], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 12, "body": [[4, 16], [4, 15], [4, 14]], "heading": [0, 1], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 13, "body": [[3, 16], [4, 16], [4, 15]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 14, "body": [[2, 16], [3, 16], [4, 16]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 15, "body": [[1, 16], [2, 16], [3, 16]], "heading": [-1, 0], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 16, "body": [[1, 17], [1, 16], [2, 16]], "heading": [0, 1], "food": [0, 17], "food_eaten": 0, "outcome": "RUNNING"}
+{"type": "frame", "step": 17, "body": [[0, 17], [1, 17], [1, 16], [2, 16]], "heading": [-1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 18, "body": [[0, 16], [0, 17], [1, 17], [1, 16]], "heading": [0, -1], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 19, "body": [[0, 15], [0, 16], [0, 17], [1, 17]], "heading": [0, -1], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 20, "body": [[0, 14], [0, 15], [0, 16], [0, 17]], "heading": [0, -1], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 21, "body": [[1, 14], [0, 14], [0, 15], [0, 16]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 22, "body": [[2, 14], [1, 14], [0, 14], [0, 15]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 23, "body": [[3, 14], [2, 14], [1, 14], [0, 14]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 24, "body": [[4, 14], [3, 14], [2, 14], [1, 14]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 25, "body": [[5, 14], [4, 14], [3, 14], [2, 14]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 26, "body": [[6, 14], [5, 14], [4, 14], [3, 14]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 27, "body": [[7, 14], [6, 14], [5, 14], [4, 14]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 28, "body": [[7, 13], [7, 14], [6, 14], [5, 14]], "heading": [0, -1], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 29, "body": [[7, 12], [7, 13], [7, 14], [6, 14]], "heading": [0, -1], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 30, "body": [[8, 12], [7, 12], [7, 13], [7, 14]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 31, "body": [[9, 12], [8, 12], [7, 12], [7, 13]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 32, "body": [[10, 12], [9, 12], [8, 12], [7, 12]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 33, "body": [[11, 12], [10, 12], [9, 12], [8, 12]], "heading": [1, 0], "food": [12, 12], "food_eaten": 1, "outcome": "RUNNING"}
+{"type": "frame", "step": 34, "body": [[12, 12], [11, 12], [10, 12], [9, 12], [8, 12]], "heading": [1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 35, "body": [[13, 12], [12, 12], [11, 12], [10, 12], [9, 12]], "heading": [1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 36, "body": [[14, 12], [13, 12], [12, 12], [11, 12], [10, 12]], "heading": [1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 37, "body": [[14, 11], [14, 12], [13, 12], [12, 12], [11, 12]], "heading": [0, -1], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 38, "body": [[13, 11], [14, 11], [14, 12], [13, 12], [12, 12]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 39, "body": [[12, 11], [13, 11], [14, 11], [14, 12], [13, 12]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 40, "body": [[11, 11], [12, 11], [13, 11], [14, 11], [14, 12]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 41, "body": [[10, 11], [11, 11], [12, 11], [13, 11], [14, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 42, "body": [[9, 11], [10, 11], [11, 11], [12, 11], [13, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 43, "body": [[8, 11], [9, 11], [10, 11], [11, 11], [12, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 44, "body": [[7, 11], [8, 11], [9, 11], [10, 11], [11, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 45, "body": [[6, 11], [7, 11], [8, 11], [9, 11], [10, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 46, "body": [[5, 11], [6, 11], [7, 11], [8, 11], [9, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 47, "body": [[4, 11], [5, 11], [6, 11], [7, 11], [8, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 48, "body": [[3, 11], [4, 11], [5, 11], [6, 11], [7, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 49, "body": [[3, 10], [3, 11], [4, 11], [5, 11], [6, 11]], "heading": [0, -1], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 50, "body": [[3, 9], [3, 10], [3, 11], [4, 11], [5, 11]], "heading": [0, -1], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 51, "body": [[2, 9], [3, 9], [3, 10], [3, 11], [4, 11]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 52, "body": [[2, 10], [2, 9], [3, 9], [3, 10], [3, 11]], "heading": [0, 1], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 53, "body": [[2, 11], [2, 10], [2, 9], [3, 9], [3, 10]], "heading": [0, 1], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 54, "body": [[1, 11], [2, 11], [2, 10], [2, 9], [3, 9]], "heading": [-1, 0], "food": [1, 10], "food_eaten": 2, "outcome": "RUNNING"}
+{"type": "frame", "step": 55, "body": [[1, 10], [1, 11], [2, 11], [2, 10], [2, 9], [3, 9]], "heading": [0, -1], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 56, "body": [[1, 9], [1, 10], [1, 11], [2, 11], [2, 10], [2, 9]], "heading": [0, -1], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 57, "body": [[1, 8], [1, 9], [1, 10], [1, 11], [2, 11], [2, 10]], "heading": [0, -1], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 58, "body": [[2, 8], [1, 8], [1, 9], [1, 10], [1, 11], [2, 11]], "heading": [1, 0], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 59, "body": [[3, 8], [2, 8], [1, 8], [1, 9], [1, 10], [1, 11]], "heading": [1, 0], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 60, "body": [[4, 8], [3, 8], [2, 8], [1, 8], [1, 9], [1, 10]], "heading": [1, 0], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 61, "body": [[4, 7], [4, 8], [3, 8], [2, 8], [1, 8], [1, 9]], "heading": [0, -1], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 62, "body": [[4, 6], [4, 7], [4, 8], [3, 8], [2, 8], [1, 8]], "heading": [0, -1], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 63, "body": [[4, 5], [4, 6], [4, 7], [4, 8], [3, 8], [2, 8]], "heading": [0, -1], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 64, "body": [[4, 4], [4, 5], [4, 6], [4, 7], [4, 8], [3, 8]], "heading": [0, -1], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 65, "body": [[5, 4], [4, 4], [4, 5], [4, 6], [4, 7], [4, 8]], "heading": [1, 0], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 66, "body": [[6, 4], [5, 4], [4, 4], [4, 5], [4, 6], [4, 7]], "heading": [1, 0], "food": [6, 5], "food_eaten": 3, "outcome": "RUNNING"}
+{"type": "frame", "step": 67, "body": [[6, 5], [6, 4], [5, 4], [4, 4], [4, 5], [4, 6], [4, 7]], "heading": [0, 1], "food": [6, 6], "food_eaten": 4, "outcome": "RUNNING"}
+{"type": "frame", "step": 68, "body": [[6, 6], [6, 5], [6, 4], [5, 4], [4, 4], [4, 5], [4, 6], [4, 7]], "heading": [0, 1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 69, "body": [[6, 7], [6, 6], [6, 5], [6, 4], [5, 4], [4, 4], [4, 5], [4, 6]], "heading": [0, 1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 70, "body": [[7, 7], [6, 7], [6, 6], [6, 5], [6, 4], [5, 4], [4, 4], [4, 5]], "heading": [1, 0], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 71, "body": [[8, 7], [7, 7], [6, 7], [6, 6], [6, 5], [6, 4], [5, 4], [4, 4]], "heading": [1, 0], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 72, "body": [[8, 6], [8, 7], [7, 7], [6, 7], [6, 6], [6, 5], [6, 4], [5, 4]], "heading": [0, -1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 73, "body": [[8, 5], [8, 6], [8, 7], [7, 7], [6, 7], [6, 6], [6, 5], [6, 4]], "heading": [0, -1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 74, "body": [[8, 4], [8, 5], [8, 6], [8, 7], [7, 7], [6, 7], [6, 6], [6, 5]], "heading": [0, -1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 75, "body": [[9, 4], [8, 4], [8, 5], [8, 6], [8, 7], [7, 7], [6, 7], [6, 6]], "heading": [1, 0], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 76, "body": [[10, 4], [9, 4], [8, 4], [8, 5], [8, 6], [8, 7], [7, 7], [6, 7]], "heading": [1, 0], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 77, "body": [[11, 4], [10, 4], [9, 4], [8, 4], [8, 5], [8, 6], [8, 7], [7, 7]], "heading": [1, 0], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 78, "body": [[12, 4], [11, 4], [10, 4], [9, 4], [8, 4], [8, 5], [8, 6], [8, 7]], "heading": [1, 0], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 79, "body": [[12, 3], [12, 4], [11, 4], [10, 4], [9, 4], [8, 4], [8, 5], [8, 6]], "heading": [0, -1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 80, "body": [[12, 2], [12, 3], [12, 4], [11, 4], [10, 4], [9, 4], [8, 4], [8, 5]], "heading": [0, -1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 81, "body": [[12, 1], [12, 2], [12, 3], [12, 4], [11, 4], [10, 4], [9, 4], [8, 4]], "heading": [0, -1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 82, "body": [[12, 0], [12, 1], [12, 2], [12, 3], [12, 4], [11, 4], [10, 4], [9, 4]], "heading": [0, -1], "food": [16, 0], "food_eaten": 5, "outcome": "RUNNING"}
+{"type": "frame", "step": 83, "body": [[12, 0], [12, 1], [12, 2], [12, 3], [12, 4], [11, 4], [10, 4], [9, 4]], "heading": [0, -1], "food": [16, 0], "food_eaten": 5, "outcome": "WALL"}

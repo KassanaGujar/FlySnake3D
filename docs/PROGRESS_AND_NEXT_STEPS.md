@@ -100,3 +100,17 @@ Nothing improves after about generation 20. These are training scores; the held-
 3. Train on full games instead of 300 moves so length can grow.
 4. Richer vision: several directions per eye and a body/wall distinction. No planning.
 5. Only then: shuffled-wiring control, held-out evaluation, A* comparison, Report 02.
+
+---
+
+## Endpoint, 15 November 2026 (stage 5 complete)
+
+Full write-up: [RESEARCH_REPORT_02_evolution.md](RESEARCH_REPORT_02_evolution.md).
+
+- **Best setup:** `fly_v5_regular_late12` (death penalty 2, steering read from the last 12 of 24 ms, evenly spaced input spikes). Held-out: 18.0 food and 3.7 deaths per 300 moves; evolved beats un-evolved on 64 of 64 unseen games; same result at dt 0.1 ms.
+- **Controls:** ANN 22.0 food / 2.6 deaths; hand-written reflex 17.1 / 0.4; random 0.7 / 4.6.
+- **Shuffled wiring:** visual input never reaches the steering neurons (0 spikes against about 145), so evolution cannot start.
+- **Full games:** fly 4.5 food per game, A0 greedy A* 61.7. The fly dies at about 7 cells, so the long-length comparison with A* is not reachable yet.
+- **Champion viewable:** `run_viewer.bat --brain=results/brain/fly_champion` (game minimap plus every spike).
+
+**Next, in order:** train on full games with a length bonus; richer vision (several directions per eye, body vs wall); per-neuron gains; degree-preserving wiring control; repeat seeds; 50×50 test.
