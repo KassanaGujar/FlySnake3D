@@ -21,10 +21,26 @@ import numpy as np
 
 from brain.motor_decoder import N_OUT, Decoder
 from brain.neural_simulator import LIFParams
-from brain.visual_encoder import N_FEAT, N_POP, Encoder
+from brain.visual_encoder import N_FEAT, N_FEAT_V1, N_POP, Encoder
 
 # ----------------------------------------------------------------- fly brain
 FLY_GENOME = N_FEAT * N_POP + N_OUT + 1
+FLY_GENOME_V1 = N_FEAT_V1 * N_POP + N_OUT + 1      # stage 3-5 genomes (54 genes)
+
+
+def upgrade_fly_genome(g: np.ndarray) -> np.ndarray:
+    """Stage 3-5 genome -> current layout, with gain 0 for the added features.
+
+    Gains are stored feature-major and the new features were appended, so the
+    old gains keep their meaning and the brain behaves exactly as before.
+    """
+    g = np.asarray(g, np.float32)
+    if g.shape[-1] == FLY_GENOME:
+        return g
+    assert g.shape[-1] == FLY_GENOME_V1, g.shape
+    k = N_FEAT_V1 * N_POP
+    pad = np.zeros(g.shape[:-1] + ((N_FEAT - N_FEAT_V1) * N_POP,), np.float32)
+    return np.concatenate([g[..., :k], pad, g[..., k:]], -1)
 FLY_INIT_MEAN = np.concatenate([np.full(N_FEAT * N_POP, 0.25), np.full(N_OUT, 0.5), [0.25]])
 
 
@@ -74,7 +90,7 @@ class FlyPolicy:
         self.last_counts = None
 
     def set_genomes(self, genomes: np.ndarray):
-        g = self.t.as_tensor(np.asarray(genomes, np.float32), device=self.sim.device)
+        g = self.t.as_tensor(upgrade_fly_genome(genomes), device=self.sim.device)
         k = N_FEAT * N_POP
         self.gains = g[:, :k].reshape(self.B, N_FEAT, N_POP).contiguous()
         self.weights = g[:, k:k + N_OUT] * 2 - 1
@@ -109,6 +125,7 @@ ANN_HIDDEN = 8
 ANN_IN = 2 * N_FEAT
 ANN_GENOME = ANN_IN * ANN_HIDDEN + ANN_HIDDEN + ANN_HIDDEN * 3 + 3
 ANN_INIT_MEAN = np.full(ANN_GENOME, 0.5)
+ANN_GENOME_V1 = 2 * N_FEAT_V1 * ANN_HIDDEN + ANN_HIDDEN + ANN_HIDDEN * 3 + 3   # stage 3-5 (131)
 
 
 class AnnPolicy:
@@ -118,8 +135,11 @@ class AnnPolicy:
     def __init__(self, genomes: np.ndarray):
         w = (np.asarray(genomes, np.float32) - 0.5) * 4.0
         self.B = len(w)
+        # Stage 3-5 genomes only see the first six features of each eye.
+        self.n_feat = N_FEAT_V1 if w.shape[1] == ANN_GENOME_V1 else N_FEAT
+        n_in = 2 * self.n_feat
         i = 0
-        self.W1 = w[:, i:i + ANN_IN * ANN_HIDDEN].reshape(self.B, ANN_IN, ANN_HIDDEN); i += ANN_IN * ANN_HIDDEN
+        self.W1 = w[:, i:i + n_in * ANN_HIDDEN].reshape(self.B, n_in, ANN_HIDDEN); i += n_in * ANN_HIDDEN
         self.b1 = w[:, i:i + ANN_HIDDEN]; i += ANN_HIDDEN
         self.W2 = w[:, i:i + ANN_HIDDEN * 3].reshape(self.B, ANN_HIDDEN, 3); i += ANN_HIDDEN * 3
         self.b2 = w[:, i:i + 3]
@@ -128,7 +148,7 @@ class AnnPolicy:
         pass
 
     def act(self, feats: np.ndarray) -> np.ndarray:
-        x = feats.reshape(self.B, ANN_IN)
+        x = feats[:, :, :self.n_feat].reshape(self.B, 2 * self.n_feat)
         h = np.tanh(np.einsum("bi,bih->bh", x, self.W1) + self.b1)
         return (np.einsum("bh,bho->bo", h, self.W2) + self.b2).argmax(1)
 

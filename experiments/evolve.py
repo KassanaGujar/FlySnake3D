@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from agents.policies import ANN_INIT_MEAN, FLY_INIT_MEAN, AnnPolicy, FlyPolicy
+from agents.policies import ANN_INIT_MEAN, FLY_INIT_MEAN, AnnPolicy, FlyPolicy, upgrade_fly_genome
 from evolution.es import ES
 from evolution.rollout import play_budget
 from game.environment import GameConfig
@@ -67,6 +67,9 @@ def main():
                     help="ignore descending-neuron spikes earlier than this in each window")
     ap.add_argument("--regular_input", action="store_true",
                     help="evenly spaced input spikes instead of Poisson (removes input noise)")
+    ap.add_argument("--fitness", choices=["penalty", "per_life"], default="penalty",
+                    help="penalty: food - death_penalty * deaths;  per_life: food / (deaths + 1), "
+                         "i.e. food per life, which rewards surviving long enough to grow")
     ap.add_argument("--death_penalty", type=float, default=0.5,
                     help="fitness = food - death_penalty * deaths")
     ap.add_argument("--init_from", default=None,
@@ -78,6 +81,8 @@ def main():
 
     is_fly = a.controller.startswith("fly")
     init = np.load(a.init_from) if a.init_from else (FLY_INIT_MEAN if is_fly else ANN_INIT_MEAN)
+    if is_fly:
+        init = upgrade_fly_genome(init)
     es = ES(init, sigma0=a.sigma0, pop=a.pop, seed=a.seed)
     hist_path, ck_path = run / "history.csv", run / "checkpoint.npz"
     history = []
@@ -107,7 +112,10 @@ def main():
             policy = AnnPolicy(genomes)
         seeds = np.full(a.pop, 10_000 + a.seed * 1_000_000 + gen)   # same games for everyone
         res = play_budget(policy, cfg, seeds, a.decisions)
-        fit = res["food"] - a.death_penalty * res["deaths"]
+        if a.fitness == "per_life":
+            fit = res["food"] / (res["deaths"] + 1)
+        else:
+            fit = res["food"] - a.death_penalty * res["deaths"]
         info = es.tell(fit)
         best = int(np.argmax(fit))
         row = {"generation": gen, **info,

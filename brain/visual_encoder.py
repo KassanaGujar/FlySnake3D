@@ -45,7 +45,13 @@ from game.environment import HEADINGS, SnakeGame
 
 POPULATIONS = ["LPLC2", "LC4", "LPLC1", "LC6", "LC16", "LC9", "LC10a", "LC11"]
 FEATURES = ["obstacle_side", "obstacle_diagonal", "obstacle_front", "looming_front",
-            "food_side", "food_front"]
+            "food_side", "food_front",
+            # Added in stage 6: the same three directions, but only when the first
+            # thing seen is the snake's own body (0 when it is a wall). Lets the
+            # interface treat body and wall differently. Still purely what is
+            # visible from the head: no path, no plan, no look-ahead.
+            "body_side", "body_diagonal", "body_front"]
+N_FEAT_V1 = 6                      # stage 3-5 feature set (first six above)
 N_FEAT = len(FEATURES)
 N_POP = len(POPULATIONS)
 SIDES = ("left", "right")
@@ -54,12 +60,19 @@ MAX_RATE_HZ = 200.0
 
 def _ray(game: SnakeGame, d: tuple[int, int]) -> int:
     """Cells from the head to the first wall/body/obstacle cell along ``d`` (>= 1)."""
+    return _ray_hit(game, d)[0]
+
+
+def _ray_hit(game: SnakeGame, d: tuple[int, int]) -> tuple[int, bool]:
+    """(cells to the first blocking cell along ``d``, whether it is the snake's body)."""
     x, y = game.head
     n = 1
     while True:
         c = (x + d[0] * n, y + d[1] * n)
-        if not game.in_bounds(c) or c in game.obstacles or c in game.occupied:
-            return n
+        if not game.in_bounds(c) or c in game.obstacles:
+            return n, False
+        if c in game.occupied:
+            return n, True
         n += 1
 
 
@@ -69,7 +82,17 @@ def view_features(game: SnakeGame, prev_front: float | None = None) -> tuple[np.
     i = HEADINGS.index(game.heading)
     f = game.heading
     left, right = HEADINGS[(i - 1) % 4], HEADINGS[(i + 1) % 4]
-    size = lambda d: 1.0 / _ray(game, d)                      # apparent size ~ 1 / distance
+    hits = {}
+
+    def size(d):                                               # apparent size ~ 1 / distance
+        if d not in hits:
+            hits[d] = _ray_hit(game, d)
+        return 1.0 / hits[d][0]
+
+    def body(d):
+        size(d)
+        return 1.0 / hits[d][0] if hits[d][1] else 0.0
+
     front = size(f)
     loom = 0.0 if prev_front is None else min(1.0, 2.0 * max(0.0, front - prev_front))
     out = np.zeros((2, N_FEAT), np.float32)
@@ -78,6 +101,9 @@ def view_features(game: SnakeGame, prev_front: float | None = None) -> tuple[np.
         out[e, 1] = size((f[0] + side[0], f[1] + side[1]))
         out[e, 2] = front
         out[e, 3] = loom
+        out[e, 6] = body(side)
+        out[e, 7] = body((f[0] + side[0], f[1] + side[1]))
+        out[e, 8] = body(f)
     if game.food is not None:
         dx, dy = game.food[0] - game.head[0], game.food[1] - game.head[1]
         ahead = dx * f[0] + dy * f[1]

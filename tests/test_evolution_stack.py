@@ -150,3 +150,31 @@ def test_ann_policy_evolves_on_small_board():
         first = info["mean_fitness"] if first is None else first
         last = info["mean_fitness"]
     assert last > first
+
+
+# ------------------------------------------------------------ stage 6 additions
+def test_body_features_distinguish_body_from_wall():
+    # Head (5,5) heading north; body curls to the west of the head, wall far to the east.
+    g = place(SnakeGame(GameConfig(10, 10)), [(5, 5), (5, 6), (4, 6), (4, 5), (4, 4)], NORTH, (0, 0))
+    f, _ = view_features(g)
+    assert f[0, F["obstacle_side"]] == pytest.approx(1.0)        # body cell (4,5) right next to the head
+    assert f[0, F["body_side"]] == pytest.approx(1.0)
+    assert f[1, F["obstacle_side"]] == pytest.approx(1 / 5)      # east wall
+    assert f[1, F["body_side"]] == 0                             # a wall is not body
+    assert f[0, F["body_diagonal"]] == pytest.approx(1.0)        # (4,4) is diagonally ahead-left
+    assert f[0, F["body_front"]] == f[1, F["body_front"]] == 0   # wall straight ahead
+
+
+def test_old_genomes_still_load_and_behave_the_same():
+    from agents.policies import (ANN_GENOME_V1, FLY_GENOME, FLY_GENOME_V1, upgrade_fly_genome)
+    old = np.random.default_rng(0).random((3, FLY_GENOME_V1)).astype(np.float32)
+    new = upgrade_fly_genome(old)
+    assert new.shape == (3, FLY_GENOME)
+    k = 6 * 8
+    assert (new[:, :k] == old[:, :k]).all() and (new[:, -6:] == old[:, -6:]).all()
+    assert (new[:, k:k + 3 * 8] == 0).all()                      # added features start switched off
+    # A stage 3-5 ANN genome ignores the added features.
+    ann = AnnPolicy(np.full((2, ANN_GENOME_V1), 0.7))
+    x = np.random.default_rng(1).random((2, 2, N_FEAT)).astype(np.float32)
+    y = x.copy(); y[:, :, 6:] = 0
+    assert (ann.act(x) == ann.act(y)).all()
