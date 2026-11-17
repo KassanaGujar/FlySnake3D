@@ -146,3 +146,15 @@ Mistake and fix: pausing stopped the training process but not the queue script, 
 diagnosed the half-trained separation run and later skipped it as done. The partial diagnosis
 was renamed `_PARTIAL_gen10`, the run resumed from its checkpoint, and the queue now counts a
 run as done only when history.csv has all 40 generations.
+
+## 16 Nov 2026 (night): steering decisions rest on about 3 spikes
+
+`experiments/readout_spike_probe.py` on the stage 5 champion (64 unseen games, 100 moves):
+mean 3.2 readout spikes per decision (median 3; 61% of decisions have 3 or fewer; 5% have none),
+summed over all five descending types and both sides. 89% of decisions are within one weighted
+spike of the turn threshold, and one DNp09 spike (weight 0.93 vs threshold 0.82) is enough to
+turn. So each move is close to a coin toss on a few spikes. This explains the ~0.83 decision
+agreement and the avoidable over-turning crashes better than anything tested so far, and it was
+missed: the 24 ms window (12 ms read) is far shorter than the time real descending neurons
+integrate over. Candidate fixes: much longer brain time per move, more readout neurons, or
+averaging several copies of the brain per decision. Results: results/stage6/readout_spike_probe_*.json

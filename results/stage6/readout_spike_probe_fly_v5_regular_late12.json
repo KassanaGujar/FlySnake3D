@@ -1,0 +1,24 @@
+{
+ "run": "fly_v5_regular_late12",
+ "decisions": 6400,
+ "readout_spikes_per_decision_mean": 3.17,
+ "readout_spikes_per_decision_median": 3.0,
+ "share_of_decisions_with_0_spikes": 0.052,
+ "share_with_at_most_3_spikes": 0.614,
+ "mean_spikes_per_type": {
+  "DNa01": 0.9900000095367432,
+  "DNa02": 0.5299999713897705,
+  "DNa03": 0.009999999776482582,
+  "DNg13": 1.0499999523162842,
+  "DNp09": 0.6000000238418579
+ },
+ "weights": {
+  "DNa01": -0.1589999943971634,
+  "DNa02": 0.23000000417232513,
+  "DNa03": 0.22200000286102295,
+  "DNg13": 0.24400000274181366,
+  "DNp09": 0.9309999942779541
+ },
+ "threshold": 0.818,
+ "share_of_decisions_within_1_weighted_spike_of_threshold": 0.89
+}
