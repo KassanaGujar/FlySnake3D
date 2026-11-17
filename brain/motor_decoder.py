@@ -50,11 +50,11 @@ class Decoder:
         if bool(m.any()):
             counts.index_add_(0, s[m] * B + b[m], self.t.ones(int(m.sum()), device=self.device))
 
-    def actions(self, counts, weights, theta, B: int) -> np.ndarray:
+    def actions(self, counts, weights, theta, B: int, theta_scale: float = THETA_SCALE) -> np.ndarray:
         """counts (2*N_OUT*B,), weights (B, N_OUT) in [-1, 1], theta (B,) in [0, 1] -> actions (B,)."""
         c = counts.view(N_OUT, 2, B)
         turn = ((c[:, 1] - c[:, 0]).T * weights).sum(1)          # right minus left
-        th = theta * THETA_SCALE
+        th = theta * theta_scale
         act = self.t.ones(B, dtype=self.t.long, device=self.device)      # STRAIGHT
         act[turn > th] = 2
         act[turn < -th] = 0

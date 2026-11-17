@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from brain.mushroom_body import odour_features
 from brain.visual_encoder import N_FEAT, view_features
 from game.environment import GameConfig, Outcome, SnakeGame
 from game.runner import _measure
@@ -29,6 +30,30 @@ def fitness(food: np.ndarray, deaths: np.ndarray) -> np.ndarray:
     return food - DEATH_PENALTY * deaths
 
 
+def act(policy, feats, games, alive=None):
+    """policy.act with smell for policies that use it (stage 7)."""
+    if not getattr(policy, "uses_odour", False):
+        return policy.act(feats)
+    od = np.zeros((len(games), 2), np.float32)
+    for b, g in enumerate(games):
+        if alive is None or alive[b]:
+            od[b] = odour_features(g)
+    return policy.act(feats, od)
+
+
+def feedback(policy, ate, died):
+    """Tell learning policies what happened after the last move (no-op for others)."""
+    f = getattr(policy, "feedback", None)
+    if f is not None:
+        f(ate, died)
+
+
+def new_evaluation(policy):
+    f = getattr(policy, "new_evaluation", None)
+    if f is not None:
+        f()
+
+
 def play_budget(policy, cfg: GameConfig, seeds, n_decisions: int) -> dict:
     B = len(seeds)
     games = [SnakeGame(cfg, int(s)) for s in seeds]
@@ -38,17 +63,23 @@ def play_budget(policy, cfg: GameConfig, seeds, n_decisions: int) -> dict:
     deaths = np.zeros(B)
     max_len = np.zeros(B, np.int64)
     acts_hist = np.zeros(3, np.int64)
+    new_evaluation(policy)
     policy.reset(np.ones(B, bool))
     feats = np.zeros((B, 2, N_FEAT), np.float32)
     for _ in range(n_decisions):
         for b, g in enumerate(games):
             feats[b], prev[b] = view_features(g, prev[b])
-        acts = policy.act(feats)
+        acts = act(policy, feats, games)
         acts_hist += np.bincount(acts, minlength=3)
         restart = np.zeros(B, bool)
+        ate = np.zeros(B, bool)
+        died = np.zeros(B, bool)
         for b, g in enumerate(games):
+            before = g.food_eaten
             g.step(int(acts[b]))
+            ate[b] = g.food_eaten > before
             if g.done:
+                died[b] = g.outcome in DEATHS
                 food[b] += g.food_eaten
                 max_len[b] = max(max_len[b], g.length)
                 deaths[b] += g.outcome in DEATHS
@@ -56,6 +87,7 @@ def play_budget(policy, cfg: GameConfig, seeds, n_decisions: int) -> dict:
                 games[b] = SnakeGame(cfg, int(seeds[b]) + LIFE_SEED_STEP * int(lives[b]))
                 prev[b] = None
                 restart[b] = True
+        feedback(policy, ate, died)
         if restart.any():
             policy.reset(restart)
     for b, g in enumerate(games):
@@ -74,6 +106,7 @@ def play_episodes(policy, cfg: GameConfig, seeds, max_decisions: int, name: str 
     first_trap = [None] * B
     alive = np.ones(B, bool)
     frames = [games[record_col].snapshot()] if record_col is not None else None
+    new_evaluation(policy)
     policy.reset(np.ones(B, bool))
     feats = np.zeros((B, 2, N_FEAT), np.float32)
     for _ in range(max_decisions):
@@ -83,14 +116,20 @@ def play_episodes(policy, cfg: GameConfig, seeds, max_decisions: int, name: str 
                 feats[b], prev[b] = view_features(g, prev[b])
                 if first_trap[b] is None and _measure(g)["trapped"]:
                     first_trap[b] = g.steps
-        acts = policy.act(feats)
+        acts = act(policy, feats, games, alive)
+        ate = np.zeros(B, bool)
+        died = np.zeros(B, bool)
         for b, g in enumerate(games):
             if alive[b]:
+                before = g.food_eaten
                 g.step(int(acts[b]))
+                ate[b] = g.food_eaten > before
                 if b == record_col:
                     frames.append(g.snapshot())
                 if g.done:
                     alive[b] = False
+                    died[b] = g.outcome in DEATHS
+        feedback(policy, ate, died)
         if not alive.any():
             break
     out = []

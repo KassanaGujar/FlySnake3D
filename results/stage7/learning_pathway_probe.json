@@ -1,0 +1,216 @@
+{
+ "group_sizes": {
+  "ORN": 2275,
+  "ALPN": 685,
+  "KC": 5177,
+  "MBON": 96,
+  "PAM": 307,
+  "PPL1": 16,
+  "visual_in": 1289,
+  "readout_DN": 14
+ },
+ "direct_synapses": {
+  "ORN->ALPN": 166161.0,
+  "ALPN->KC": 329394.0,
+  "visual_in->KC": 1.0,
+  "KC->MBON": 256719.0,
+  "PAM->MBON": 11092.0,
+  "PPL1->MBON": 4127.0,
+  "PAM->KC": 42911.0,
+  "PPL1->KC": 16366.0,
+  "MBON->readout_DN": 902.0,
+  "visual_in->readout_DN": 2105.0
+ },
+ "activity": {
+  "smell (all ORNs 200 Hz)": [
+   {
+    "ORN": 97638,
+    "ALPN": 22325,
+    "KC": 82935,
+    "MBON": 3157,
+    "PAM": 3534,
+    "PPL1": 641,
+    "visual_in": 0,
+    "readout_DN": 68,
+    "KC_active": 4002,
+    "MBON_active": 76
+   },
+   {
+    "ORN": 98002,
+    "ALPN": 22323,
+    "KC": 82693,
+    "MBON": 3146,
+    "PAM": 3521,
+    "PPL1": 634,
+    "visual_in": 0,
+    "readout_DN": 64,
+    "KC_active": 3999,
+    "MBON_active": 75
+   },
+   {
+    "ORN": 97538,
+    "ALPN": 22314,
+    "KC": 82866,
+    "MBON": 3154,
+    "PAM": 3542,
+    "PPL1": 638,
+    "visual_in": 0,
+    "readout_DN": 65,
+    "KC_active": 4003,
+    "MBON_active": 76
+   }
+  ],
+  "vision (encoder neurons 200 Hz)": [
+   {
+    "ORN": 0,
+    "ALPN": 0,
+    "KC": 0,
+    "MBON": 30,
+    "PAM": 0,
+    "PPL1": 48,
+    "visual_in": 55063,
+    "readout_DN": 150,
+    "KC_active": 0,
+    "MBON_active": 6
+   },
+   {
+    "ORN": 0,
+    "ALPN": 0,
+    "KC": 0,
+    "MBON": 31,
+    "PAM": 0,
+    "PPL1": 45,
+    "visual_in": 55164,
+    "readout_DN": 143,
+    "KC_active": 0,
+    "MBON_active": 6
+   },
+   {
+    "ORN": 0,
+    "ALPN": 0,
+    "KC": 0,
+    "MBON": 30,
+    "PAM": 0,
+    "PPL1": 48,
+    "visual_in": 54691,
+    "readout_DN": 148,
+    "KC_active": 0,
+    "MBON_active": 6
+   }
+  ],
+  "Kenyon cells 50 Hz": [
+   {
+    "ORN": 3282,
+    "ALPN": 13630,
+    "KC": 101924,
+    "MBON": 4086,
+    "PAM": 4943,
+    "PPL1": 722,
+    "visual_in": 0,
+    "readout_DN": 52,
+    "KC_active": 5177,
+    "MBON_active": 95
+   },
+   {
+    "ORN": 3322,
+    "ALPN": 13745,
+    "KC": 101980,
+    "MBON": 4102,
+    "PAM": 4925,
+    "PPL1": 723,
+    "visual_in": 0,
+    "readout_DN": 47,
+    "KC_active": 5177,
+    "MBON_active": 95
+   },
+   {
+    "ORN": 3290,
+    "ALPN": 13655,
+    "KC": 102028,
+    "MBON": 4086,
+    "PAM": 4937,
+    "PPL1": 727,
+    "visual_in": 0,
+    "readout_DN": 53,
+    "KC_active": 5177,
+    "MBON_active": 95
+   }
+  ],
+  "PAM 100 Hz": [
+   {
+    "ORN": 0,
+    "ALPN": 2,
+    "KC": 0,
+    "MBON": 438,
+    "PAM": 6893,
+    "PPL1": 0,
+    "visual_in": 0,
+    "readout_DN": 38,
+    "KC_active": 0,
+    "MBON_active": 35
+   },
+   {
+    "ORN": 0,
+    "ALPN": 3,
+    "KC": 0,
+    "MBON": 431,
+    "PAM": 6889,
+    "PPL1": 0,
+    "visual_in": 0,
+    "readout_DN": 38,
+    "KC_active": 0,
+    "MBON_active": 35
+   },
+   {
+    "ORN": 0,
+    "ALPN": 2,
+    "KC": 0,
+    "MBON": 427,
+    "PAM": 6970,
+    "PPL1": 0,
+    "visual_in": 0,
+    "readout_DN": 37,
+    "KC_active": 0,
+    "MBON_active": 31
+   }
+  ],
+  "PPL1 100 Hz": [
+   {
+    "ORN": 0,
+    "ALPN": 34,
+    "KC": 0,
+    "MBON": 298,
+    "PAM": 42,
+    "PPL1": 386,
+    "visual_in": 0,
+    "readout_DN": 31,
+    "KC_active": 0,
+    "MBON_active": 42
+   },
+   {
+    "ORN": 1461,
+    "ALPN": 6572,
+    "KC": 23626,
+    "MBON": 1154,
+    "PAM": 1012,
+    "PPL1": 573,
+    "visual_in": 0,
+    "readout_DN": 48,
+    "KC_active": 3871,
+    "MBON_active": 73
+   },
+   {
+    "ORN": 0,
+    "ALPN": 35,
+    "KC": 0,
+    "MBON": 325,
+    "PAM": 43,
+    "PPL1": 399,
+    "visual_in": 0,
+    "readout_DN": 29,
+    "KC_active": 0,
+    "MBON_active": 38
+   }
+  ]
+ }
+}

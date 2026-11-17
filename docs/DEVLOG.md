@@ -158,3 +158,35 @@ agreement and the avoidable over-turning crashes better than anything tested so 
 missed: the 24 ms window (12 ms read) is far shorter than the time real descending neurons
 integrate over. Candidate fixes: much longer brain time per move, more readout neurons, or
 averaging several copies of the brain per decision. Results: results/stage6/readout_spike_probe_*.json
+
+## 16-17 Nov 2026: stage 7 started (dopamine learning + smell); olfactory lock-up found
+
+User direction: the fly should learn within its life through its own dopamine system, smell
+should be added alongside vision, and the readout should be fixed. Built (all off by default,
+42 tests pass, earlier results unchanged):
+- `EventLIF.enable_plasticity`: per-brain scales on all 62,261 Kenyon cell -> MBON synapses;
+  dopamine x recent-KC-activity weakens them, slow recovery to the published strength. Which
+  dopamine neuron acts on which MBON = its FlyWire synapse count onto that MBON (1,990 pairs).
+  Checked: rate 0 gives spike-for-spike the same result as no plasticity.
+- `brain/mushroom_body.py`: food odour at left/right antenna -> ORNs of 6 food-odour glomeruli;
+  the 8 visual types with most synapses onto KCs (aMe12, MTe32, ...) driven by the visual
+  features (the stage 3-6 LC/LPLC types have 1 synapse onto KCs in total); eating -> PAM,
+  crashing -> PPL1. FlyPolicy(learning=True), 162 genes; ANN control gets smell too (195).
+- Rollout tells policies what happened after each move (`feedback`) and resets learning at the
+  start of each evaluation (`new_evaluation`).
+
+Probes (experiments/learning_pathway_probe.py, experiments/olfactory_lockup_probe.py):
+- smell -> PN -> KC -> MBON -> readout DNs carries signal; vision (LC types) -> KC does not.
+- BLOCKER: in the unmodified LIF model any olfactory input (even 2 Hz into DM1 alone, all 3
+  seeds) switches the olfactory system (ORNs via feedback, AL local neurons, PNs, ~3,840 KCs,
+  APL, DPM) into permanent firing at the model's maximum rate (333 Hz). Removing all 379k
+  KC->KC synapses does not prevent it. One glomerulus activates almost the same KCs as another
+  (overlap ~1.0), so the code carries no odour information, and the learning rule just weakens
+  every synapse. Vision never triggers it.
+- Spike-frequency adaptation (`EventLIF.enable_adaptation`, not in Shiu et al.) of 2 mV per
+  spike with 1 s decay stops the lock-up (0 KCs active 120 ms after input) and leaves
+  vision -> DN intact (32 vs 35 spikes), but KC activity stays dense (~2,500 of 5,177) and
+  non-specific. Real KC coding is sparse (~5-10% per odour; from memory, needs checking).
+- Speed: learning fly ~3.9 s per move for 64 brains at 72 ms per move (plain 1.1 s), mostly from
+  the runaway activity; expected to drop once activity is fixed.
+Decision needed from the user before continuing: how far to modify the published model.

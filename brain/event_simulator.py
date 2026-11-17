@@ -57,7 +57,23 @@ class EventLIF:
         # Drawn from its own generator so the Poisson stream is unchanged.
         pgen = t.Generator(device=self.device).manual_seed(seed + 7919)
         self.phase = t.rand((self.N, self.B), generator=pgen, device=self.device)
+        self.pscale = None                                 # set by enable_plasticity
+        self.adapt_mv = 0.0                                # set by enable_adaptation
         self.reset()
+
+    def enable_adaptation(self, step_mv: float, tau_ms: float):
+        """Spike-frequency adaptation (NOT in Shiu et al. 2024; off by default).
+
+        Each spike raises that neuron's threshold by ``step_mv``; the extra
+        threshold decays with time constant ``tau_ms``. Real neurons slow down
+        under sustained drive; the published LIF model does not, and in the
+        olfactory system that lets activity lock at the maximum rate forever
+        (experiments/olfactory_lockup_probe.py).
+        """
+        t = self.torch
+        self.adapt_mv = float(step_mv)
+        self.adapt_decay = float(np.exp(-self.p.dt / tau_ms))
+        self.a = t.zeros((self.N, self.B), device=self.device, dtype=self.dtype)
 
     # -- state -------------------------------------------------------------
     # The membrane is stored as u = v - v_0 so the sub-threshold update is two
@@ -83,6 +99,8 @@ class EventLIF:
             return
         self.u[:, m] = 0
         self.g[:, m] = 0
+        if self.adapt_mv:
+            self.a[:, m] = 0
         for k, ev in enumerate(self.ring):
             if ev is not None:
                 keep = ~m[ev[1]]
@@ -118,6 +136,95 @@ class EventLIF:
         self.rfc_per_neuron[idx] = 0
 
     # -- integration -------------------------------------------------------
+    # -- dopamine-gated plasticity (stage 7) -------------------------------
+    def enable_plasticity(self, pre_idx, post_idx, mod_idx, mod_to_post):
+        """Make every existing synapse from ``pre_idx`` onto ``post_idx`` plastic.
+
+        Used for Kenyon cell -> MBON synapses. Each brain (batch column) has its
+        own multiplicative scale per plastic synapse, starting at 1 (the
+        published strength). Which synapses exist is never changed.
+
+        The rule (applied by ``learn``) is the standard mushroom-body rule:
+        a synapse is weakened when its presynaptic Kenyon cell was active
+        shortly before a dopamine neuron that innervates that MBON fired, and
+        it slowly recovers towards its published strength otherwise.
+
+        mod_idx      dopamine neuron indices
+        mod_to_post  (len(post_idx), len(mod_idx)) non-negative weights: how
+                     much each dopamine neuron acts on each MBON (from the wiring)
+        """
+        t = self.torch
+        pre_idx = np.asarray(pre_idx, np.int64)
+        post_idx = np.asarray(post_idx, np.int64)
+        pre_pos = np.full(self.N, -1, np.int64); pre_pos[pre_idx] = np.arange(len(pre_idx))
+        post_pos = np.full(self.N, -1, np.int64); post_pos[post_idx] = np.arange(len(post_idx))
+        indptr = self.indptr.cpu().numpy()
+        rows = self.rows.cpu().numpy().astype(np.int64)
+        # presynaptic neuron of every stored synapse
+        pre_of = np.repeat(np.arange(self.N), np.diff(indptr))
+        m = (pre_pos[pre_of] >= 0) & (post_pos[rows] >= 0)
+        syn = np.flatnonzero(m)
+        pidx = np.full(len(rows), -1, np.int32)
+        pidx[syn] = np.arange(len(syn), dtype=np.int32)
+        self.pidx = t.from_numpy(pidx).to(self.device)
+        self.p_pre = t.from_numpy(pre_pos[pre_of[syn]]).to(self.device)     # into pre_idx
+        self.p_post = t.from_numpy(post_pos[rows[syn]]).to(self.device)     # into post_idx
+        self.n_plastic = len(syn)
+        self.pscale = t.ones((self.n_plastic, self.B), device=self.device)
+        mod_idx = np.asarray(mod_idx, np.int64)
+        mod_pos = np.full(self.N, -1, np.int64); mod_pos[mod_idx] = np.arange(len(mod_idx))
+        self.pl_M = t.as_tensor(np.asarray(mod_to_post, np.float32), device=self.device)
+        assert self.pl_M.shape == (len(post_idx), len(mod_idx))
+        self.pl_pre_pos = t.from_numpy(pre_pos).to(self.device)
+        self.pl_mod_pos = t.from_numpy(mod_pos).to(self.device)
+        self.e_pre = t.zeros((len(pre_idx), self.B), device=self.device)    # Kenyon cell eligibility
+        self.e_mod = t.zeros((len(mod_idx), self.B), device=self.device)    # dopamine trace
+        self.set_learning(np.zeros(self.B), np.zeros(self.B), np.full(self.B, 20.0), np.full(self.B, 20.0))
+
+    def set_learning(self, rate, recovery, tau_pre_ms, tau_mod_ms):
+        """Per-brain learning parameters (arrays of length B).
+
+        rate        weakening per unit (eligibility x dopamine) per ms
+        recovery    fraction of the gap to 1 recovered per second
+        tau_*_ms    decay times of the Kenyon cell and dopamine traces
+        """
+        t = self.torch
+        f = lambda x: t.as_tensor(np.asarray(x, np.float32), device=self.device)
+        dt = self.p.dt
+        self.l_rate = f(rate) * dt
+        self.l_rec = f(recovery) * dt * 1e-3
+        self.l_dpre = t.exp(-dt / f(tau_pre_ms))
+        self.l_dmod = t.exp(-dt / f(tau_mod_ms))
+
+    def reset_plasticity(self, mask):
+        """Back to the published synapse strengths for brains where ``mask`` is True."""
+        if getattr(self, "pscale", None) is None:
+            return
+        m = self.torch.as_tensor(np.asarray(mask), device=self.device, dtype=self.torch.bool)
+        self.pscale[:, m] = 1.0
+        self.e_pre[:, m] = 0
+        self.e_mod[:, m] = 0
+
+    def _learn(self, pre, b):
+        """Update traces with this step's spikes, then the plastic synapse scales."""
+        t = self.torch
+        self.e_pre.mul_(self.l_dpre)
+        self.e_mod.mul_(self.l_dmod)
+        if len(pre):
+            kp = self.pl_pre_pos[pre]
+            m = kp >= 0
+            if bool(m.any()):
+                self.e_pre.index_put_((kp[m], b[m]), t.ones(int(m.sum()), device=self.device), accumulate=True)
+            dp = self.pl_mod_pos[pre]
+            m = dp >= 0
+            if bool(m.any()):
+                self.e_mod.index_put_((dp[m], b[m]), t.ones(int(m.sum()), device=self.device), accumulate=True)
+        da = self.pl_M @ self.e_mod                          # dopamine reaching each MBON (n_post, B)
+        dw = self.e_pre[self.p_pre] * da[self.p_post]        # coincidence per plastic synapse
+        self.pscale.add_(dw * self.l_rate, alpha=-1.0)
+        self.pscale.add_((1.0 - self.pscale) * self.l_rec)
+        self.pscale.clamp_(0.0, 1.0)
+
     def _deliver(self, pre, b):
         """g[post, b] += w for every synapse of every (pre, b) spike event."""
         t = self.torch
@@ -129,8 +236,16 @@ class EventLIF:
         ev = t.repeat_interleave(t.arange(len(pre), device=self.device), lens)
         first = t.cumsum(lens, 0) - lens
         syn = starts[ev] + (t.arange(total, device=self.device) - first[ev])
-        flat = self.rows[syn].long() * self.B + b[ev]
-        self.g.view(-1).index_add_(0, flat, self.vals[syn])
+        bb = b[ev]
+        flat = self.rows[syn].long() * self.B + bb
+        vals = self.vals[syn]
+        if getattr(self, "pscale", None) is not None:
+            pi = self.pidx[syn]
+            m = pi >= 0
+            if bool(m.any()):
+                vals = vals.clone()
+                vals[m] = vals[m] * self.pscale[pi[m].long(), bb[m]]
+        self.g.view(-1).index_add_(0, flat, vals)
 
     def step(self):
         t = self.torch
@@ -148,8 +263,17 @@ class EventLIF:
             self.g.view(-1)[hidx] = hg
 
         # 2) threshold
-        nz = (self.u > (p.v_th - p.v_0)).nonzero()
+        if self.adapt_mv:
+            self.a.mul_(self.adapt_decay)
+            nz = (self.u - self.a > (p.v_th - p.v_0)).nonzero()
+        else:
+            nz = (self.u > (p.v_th - p.v_0)).nonzero()
         pre, b = nz[:, 0], nz[:, 1]
+        if self.adapt_mv and len(pre):
+            self.a.view(-1).index_add_(0, pre * self.B + b,
+                                       self.torch.full((len(pre),), self.adapt_mv, device=self.device))
+        if self.pscale is not None:
+            self._learn(pre, b)
 
         # 3) synaptic input from spikes emitted delay_steps ago, then Poisson input
         slot = self.t_step % self.delay_steps
