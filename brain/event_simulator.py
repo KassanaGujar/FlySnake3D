@@ -59,6 +59,7 @@ class EventLIF:
         self.phase = t.rand((self.N, self.B), generator=pgen, device=self.device)
         self.pscale = None                                 # set by enable_plasticity
         self.adapt_mv = 0.0                                # set by enable_adaptation
+        self.theta_off = None                              # set by set_threshold_offset
         self.reset()
 
     def enable_adaptation(self, step_mv: float, tau_ms: float):
@@ -74,6 +75,27 @@ class EventLIF:
         self.adapt_mv = float(step_mv)
         self.adapt_decay = float(np.exp(-self.p.dt / tau_ms))
         self.a = t.zeros((self.N, self.B), device=self.device, dtype=self.dtype)
+
+    def set_threshold_offset(self, indices, mv: float):
+        """Raise the spike threshold of ``indices`` by ``mv`` (NOT in Shiu et al.; stage 7
+        calibration of Kenyon cell sparseness)."""
+        t = self.torch
+        off = t.zeros((self.N, 1), device=self.device, dtype=self.dtype)
+        off[t.as_tensor(np.asarray(indices), device=self.device, dtype=t.long)] = float(mv)
+        self.theta_off = off
+
+    def scale_synapses(self, pre_idx, post_idx, factor: float):
+        """Multiply every synapse from ``pre_idx`` onto ``post_idx`` by ``factor``
+        (NOT in Shiu et al.; stage 7 calibration of APL inhibition onto Kenyon cells)."""
+        t = self.torch
+        pre = np.zeros(self.N, bool); pre[np.asarray(pre_idx)] = True
+        post = np.zeros(self.N, bool); post[np.asarray(post_idx)] = True
+        indptr = self.indptr.cpu().numpy()
+        rows = self.rows.cpu().numpy()
+        pre_of = np.repeat(np.arange(self.N), np.diff(indptr))
+        m = t.from_numpy(pre[pre_of] & post[rows]).to(self.device)
+        self.vals[m] *= float(factor)
+        return int(m.sum())
 
     # -- state -------------------------------------------------------------
     # The membrane is stored as u = v - v_0 so the sub-threshold update is two
@@ -263,11 +285,13 @@ class EventLIF:
             self.g.view(-1)[hidx] = hg
 
         # 2) threshold
+        x = self.u
         if self.adapt_mv:
             self.a.mul_(self.adapt_decay)
-            nz = (self.u - self.a > (p.v_th - p.v_0)).nonzero()
-        else:
-            nz = (self.u > (p.v_th - p.v_0)).nonzero()
+            x = x - self.a
+        if self.theta_off is not None:
+            x = x - self.theta_off
+        nz = (x > (p.v_th - p.v_0)).nonzero()
         pre, b = nz[:, 0], nz[:, 1]
         if self.adapt_mv and len(pre):
             self.a.view(-1).index_add_(0, pre * self.B + b,

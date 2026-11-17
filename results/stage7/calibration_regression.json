@@ -1,0 +1,30 @@
+{
+ "published model": {
+  "fitness_mean": 15.5,
+  "fitness_ci95": [
+   14.86,
+   16.12
+  ],
+  "food_mean": 17.42,
+  "food_ci95": [
+   16.75,
+   18.06
+  ],
+  "deaths_mean": 3.84,
+  "max_length": 15
+ },
+ "stage 7 calibration": {
+  "fitness_mean": 10.28,
+  "fitness_ci95": [
+   9.74,
+   10.82
+  ],
+  "food_mean": 13.66,
+  "food_ci95": [
+   13.08,
+   14.23
+  ],
+  "deaths_mean": 6.75,
+  "max_length": 11
+ }
+}

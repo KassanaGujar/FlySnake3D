@@ -1,0 +1,116 @@
+{
+ "adapt_mv": 2.0,
+ "adapt_tau_ms": 1000.0,
+ "rows": [
+  {
+   "kc_threshold_mv": 0,
+   "apl_factor": 1.0,
+   "kc_active_pct_single_glomerulus": 45.7,
+   "kc_active_after_off": 0.3333333333333333,
+   "jaccard_between_glomeruli": 0.89,
+   "kc_active_pct_six_glomeruli": 51.5,
+   "mbon_spikes_six": 167,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 0,
+   "apl_factor": 4.0,
+   "kc_active_pct_single_glomerulus": 3.1,
+   "kc_active_after_off": 3.5,
+   "jaccard_between_glomeruli": 0.7,
+   "kc_active_pct_six_glomeruli": 4.0,
+   "mbon_spikes_six": 14,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 4,
+   "apl_factor": 1.0,
+   "kc_active_pct_single_glomerulus": 18.7,
+   "kc_active_after_off": 0.0,
+   "jaccard_between_glomeruli": 0.81,
+   "kc_active_pct_six_glomeruli": 24.6,
+   "mbon_spikes_six": 67,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 4,
+   "apl_factor": 4.0,
+   "kc_active_pct_single_glomerulus": 1.0,
+   "kc_active_after_off": 0.0,
+   "jaccard_between_glomeruli": 0.69,
+   "kc_active_pct_six_glomeruli": 1.6,
+   "mbon_spikes_six": 10,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 8,
+   "apl_factor": 1.0,
+   "kc_active_pct_single_glomerulus": 6.2,
+   "kc_active_after_off": 0.0,
+   "jaccard_between_glomeruli": 0.75,
+   "kc_active_pct_six_glomeruli": 9.8,
+   "mbon_spikes_six": 24,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 8,
+   "apl_factor": 4.0,
+   "kc_active_pct_single_glomerulus": 0.2,
+   "kc_active_after_off": 0.0,
+   "jaccard_between_glomeruli": 0.35,
+   "kc_active_pct_six_glomeruli": 0.4,
+   "mbon_spikes_six": 10,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 12,
+   "apl_factor": 1.0,
+   "kc_active_pct_single_glomerulus": 1.9,
+   "kc_active_after_off": 0.0,
+   "jaccard_between_glomeruli": 0.59,
+   "kc_active_pct_six_glomeruli": 3.1,
+   "mbon_spikes_six": 14,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 12,
+   "apl_factor": 4.0,
+   "kc_active_pct_single_glomerulus": 0.0,
+   "kc_active_after_off": 0.0,
+   "jaccard_between_glomeruli": 0.0,
+   "kc_active_pct_six_glomeruli": 0.1,
+   "mbon_spikes_six": 10,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 16,
+   "apl_factor": 1.0,
+   "kc_active_pct_single_glomerulus": 0.4,
+   "kc_active_after_off": 0.0,
+   "jaccard_between_glomeruli": 0.5,
+   "kc_active_pct_six_glomeruli": 1.0,
+   "mbon_spikes_six": 10,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  },
+  {
+   "kc_threshold_mv": 16,
+   "apl_factor": 4.0,
+   "kc_active_pct_single_glomerulus": 0.0,
+   "kc_active_after_off": 0.0,
+   "jaccard_between_glomeruli": 0.0,
+   "kc_active_pct_six_glomeruli": 0.0,
+   "mbon_spikes_six": 10,
+   "dn_spikes_six": 8,
+   "dn_spikes_vision": 32
+  }
+ ]
+}

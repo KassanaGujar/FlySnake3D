@@ -86,7 +86,8 @@ class FlyPolicy:
     def __init__(self, conn, genomes: np.ndarray, dt: float = 0.6, window_ms: float = 24.0,
                  device: str | None = None, seed: int = 0, W=None, record_col: int | None = None,
                  readout_from_ms: float = 0.0, regular_input: bool = False,
-                 learning: bool = False, theta_scale: float | None = None):
+                 learning: bool = False, theta_scale: float | None = None,
+                 calibrated: bool | None = None, plasticity: bool = True):
         import torch
 
         from brain.event_simulator import EventLIF
@@ -108,6 +109,15 @@ class FlyPolicy:
         self.theta_scale = THETA_SCALE if theta_scale is None else theta_scale
         # Stage 7: smell, vision into the mushroom body, dopamine learning.
         self.learning = learning
+        # plasticity=False: same brain, smell and dopamine input, but synapses never
+        # change (learning rate forced to 0). The matched control for learning.
+        self.plasticity = plasticity
+        # Stage 7 model calibration (adaptation + sparse Kenyon cells). On by
+        # default whenever learning is on, because smell locks up without it.
+        self.calibrated = learning if calibrated is None else calibrated
+        if self.calibrated:
+            from brain.mushroom_body import apply_calibration
+            apply_calibration(self.sim, conn)
         self.uses_odour = learning
         if learning:
             from brain.mushroom_body import MB_VISUAL, ODOUR_GLOMERULI, SideEncoder, mushroom_body_wiring
@@ -137,6 +147,8 @@ class FlyPolicy:
             self.orn_gains = g[:, i:i + N_ODOUR].reshape(self.B, 1, N_ODOUR).contiguous()
             i += N_ODOUR
             lp = learning_params(genomes[:, i:i + N_LEARN])
+            if not self.plasticity:
+                lp["rate"] = lp["rate"] * 0.0
             self.sim.set_learning(lp["rate"], lp["recovery"], lp["tau_pre_ms"], lp["tau_mod_ms"])
             self.reward_hz = self.t.as_tensor(lp["reward_hz"], device=self.sim.device, dtype=self.t.float32)
             self.punish_hz = self.t.as_tensor(lp["punish_hz"], device=self.sim.device, dtype=self.t.float32)

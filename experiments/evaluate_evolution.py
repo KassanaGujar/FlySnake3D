@@ -29,7 +29,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from agents.policies import (ANN_INIT_MEAN, FLY_INIT_MEAN, AnnPolicy, FlyPolicy, RandomPolicy,
+from agents.policies import (ANN_INIT_MEAN, FLY_INIT_MEAN, FLY_INIT_MEAN_LEARN, AnnPolicy, FlyPolicy, RandomPolicy,
                              ReactivePolicy, fly_genome_names)
 from evolution.rollout import play_budget, play_episodes
 from experiments.evolve import shuffled_wiring, train_config
@@ -84,6 +84,8 @@ def main():
     dt, window = fly_cfg["dt"], fly_cfg["window_ms"]
     late = fly_cfg.get("readout_from_ms", 0.0)
     reg = fly_cfg.get("regular_input", False)
+    s7 = dict(learning=fly_cfg.get("learning", False), plasticity=not fly_cfg.get("no_plasticity", False),
+              theta_scale=fly_cfg.get("theta_scale"))
     report: dict = {"held_out_seeds": [int(HELD_OUT[0]), int(HELD_OUT[-1])], "decisions": DECISIONS,
                     "fly_settings": {"dt_ms": dt, "window_ms": window}}
 
@@ -93,10 +95,10 @@ def main():
     fly_final = np.load(EVO / a.fly / "champion.npy")
 
     # ---- A. held-out progress of the fly
-    policy = FlyPolicy(conn, same(FLY_INIT_MEAN), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=1)
+    policy = FlyPolicy(conn, same((FLY_INIT_MEAN_LEARN if s7['learning'] else FLY_INIT_MEAN)), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, **s7, seed=1)
     prog = {}
     raw = {}
-    for name, g in [("start (not evolved)", FLY_INIT_MEAN)] + checkpoints(EVO / a.fly):
+    for name, g in [("start (not evolved)", FLY_INIT_MEAN_LEARN if s7["learning"] else FLY_INIT_MEAN)] + checkpoints(EVO / a.fly):
         policy.set_genomes(same(g))
         r = play_budget(policy, cfg, HELD_OUT, DECISIONS)
         prog[name], raw[name] = summarise(r), r["fitness"]
@@ -125,7 +127,7 @@ def main():
     if has_shuf:
         del policy
         sp_ = FlyPolicy(conn, same(np.load(EVO / a.shuffled / "champion.npy")), dt=dt, window_ms=window,
-                        readout_from_ms=late, regular_input=reg, seed=1, W=shuffled_wiring(conn.W))
+                        readout_from_ms=late, regular_input=reg, **s7, seed=1, W=shuffled_wiring(conn.W))
         report["controls_held_out"]["fly, shuffled wiring (evolved)"] = summarise(
             play_budget(sp_, cfg, HELD_OUT, DECISIONS))
         # the real-wiring champion's interface on shuffled wiring: does it depend on the wiring?
@@ -133,18 +135,18 @@ def main():
         report["controls_held_out"]["fly champion's genome on shuffled wiring"] = summarise(
             play_budget(sp_, cfg, HELD_OUT, DECISIONS))
         del sp_
-        policy = FlyPolicy(conn, same(fly_final), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=1)
+        policy = FlyPolicy(conn, same(fly_final), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, **s7, seed=1)
     for k, v in report["controls_held_out"].items():
         print(k, v, flush=True)
 
     # ---- C. published time step
     if not a.skip_dt_check:
         del policy
-        fine = FlyPolicy(conn, same(fly_final), dt=0.1, window_ms=window, readout_from_ms=late, regular_input=reg, seed=1)
+        fine = FlyPolicy(conn, same(fly_final), dt=0.1, window_ms=window, readout_from_ms=late, regular_input=reg, **s7, seed=1)
         report["fly_final_at_dt_0.1ms"] = summarise(play_budget(fine, cfg, HELD_OUT, DECISIONS))
         print("dt 0.1:", report["fly_final_at_dt_0.1ms"], flush=True)
         del fine
-        policy = FlyPolicy(conn, same(fly_final), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=1)
+        policy = FlyPolicy(conn, same(fly_final), dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, **s7, seed=1)
 
     # ---- D. full episodes, A* benchmark rules
     ecfg = GameConfig(width=20, height=20, max_steps=20000)
@@ -192,7 +194,7 @@ def main():
             print("50x50", k, v, flush=True)
 
     # ---- E. one recorded champion game (replay + every spike)
-    one = FlyPolicy(conn, fly_final[None], dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=2, record_col=0)
+    one = FlyPolicy(conn, fly_final[None], dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, **s7, seed=2, record_col=0)
     res, frames = play_episodes(one, ecfg, np.array([0]), a.episodes_cap, name="fly (evolved)",
                                 record_col=0)
     rep = ROOT / "results" / "replays" / a.stage
@@ -204,7 +206,7 @@ def main():
     write_brain_recording(conn, one.spike_log, frames, window, res[0], ecfg, "fly_champion" + suffix)
     report["recorded_game"] = res[0]
 
-    report["fly_champion_genome"] = dict(zip(fly_genome_names(), np.round(fly_final, 3).tolist()))
+    report["fly_champion_genome"] = np.round(fly_final, 3).tolist() if s7["learning"] else dict(zip(fly_genome_names(), np.round(fly_final, 3).tolist()))
     (OUT / "evaluation.json").write_text(json.dumps(report, indent=1))
     figure(a, report, has_shuf, suffix)
     print(json.dumps({k: report[k] for k in ("fly_final_minus_start", "fly_training_trend",

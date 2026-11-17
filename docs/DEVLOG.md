@@ -190,3 +190,32 @@ Probes (experiments/learning_pathway_probe.py, experiments/olfactory_lockup_prob
 - Speed: learning fly ~3.9 s per move for 64 brains at 72 ms per move (plain 1.1 s), mostly from
   the runaway activity; expected to drop once activity is fixed.
 Decision needed from the user before continuing: how far to modify the published model.
+
+## 17 Nov 2026: stage 7 calibration chosen (user: "Adaptation + sparse cells"); runs queued
+
+Calibration (experiments/kc_sparseness_calibration.py; both changes are NOT in Shiu et al. 2024
+and apply only to stage 7 runs, `calibrated=True`):
+- every neuron: spike-frequency adaptation, +2 mV threshold per spike decaying over 1 s;
+- Kenyon cells: +8 mV threshold. APL unchanged.
+Result: 5-6% of Kenyon cells active per odour (target 5-10%), no activity after the odour stops,
+vision -> steering neurons unchanged (32 spikes either way).
+Not fixed: one glomerulus already activates ~500 of 685 projection neurons (~150 types) in the
+antennal lobe, so different odours still recruit overlapping Kenyon cells (Jaccard ~0.65-0.75).
+Odour identity is lost before the mushroom body. Accepted for Snake (one food odour); recorded
+as a limitation.
+
+Regression (experiments/calibration_regression.py): the stage 5 champion on the calibrated model
+drops from 17.4 food / 3.8 deaths to 13.7 / 6.8 on the same unseen games. Expected (its interface
+was evolved without adaptation), and it means the learning test needs a matched control evolved on
+the calibrated model, not a comparison with old champions.
+
+Readout fix: 72 ms per move, spikes read from 12 ms (60 ms read). Readout spikes per decision
+2.1 -> 6.6 (decisions on 3 or fewer spikes 79% -> 37%); 120 ms gives 10.2 at 1.7x the cost.
+Spikes grow more slowly than the window because adaptation tires the descending neurons.
+Decoder threshold range doubled (theta_scale 8). Speed: 1.67 s per move for 64 learning brains
+(the earlier 3.9 s at 24 ms came from the runaway activity, now gone).
+
+Queued (scripts/stage7_queue.sh, resumable; resume_stage7.bat): ann_v7_odour (ANN + smell),
+fly_v7_learn and fly_v7_control (identical, learning forced off), both from the
+fly_v6_body_penalty2 champion, death costs 2 food, 600 moves, 40 generations; then diagnosis
+and full evaluation of both. About 11 h per fly run.

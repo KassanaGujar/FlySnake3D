@@ -24,7 +24,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from agents.policies import ANN_INIT_MEAN, FLY_INIT_MEAN, AnnPolicy, FlyPolicy, upgrade_fly_genome
+from agents.policies import (ANN_INIT_MEAN, ANN_INIT_MEAN_ODOUR, FLY_INIT_MEAN, FLY_INIT_MEAN_LEARN, AnnPolicy,
+                             FlyPolicy, to_learning_genome, upgrade_fly_genome)
 from evolution.es import ES
 from evolution.rollout import play_budget
 from game.environment import GameConfig
@@ -72,6 +73,13 @@ def main():
                          "i.e. food per life, which rewards surviving long enough to grow")
     ap.add_argument("--death_penalty", type=float, default=0.5,
                     help="fitness = food - death_penalty * deaths")
+    ap.add_argument("--learning", action="store_true",
+                    help="stage 7: smell, vision into the mushroom body, dopamine learning, calibrated model")
+    ap.add_argument("--no_plasticity", action="store_true",
+                    help="with --learning: everything the same but synapses never change (control)")
+    ap.add_argument("--theta_scale", type=float, default=None,
+                    help="decoder threshold range in weighted spikes (default 4)")
+    ap.add_argument("--odour", action="store_true", help="ANN control also smells (stage 7)")
     ap.add_argument("--init_from", default=None,
                     help="start the search at a saved genome (.npy) instead of the default")
     a = ap.parse_args()
@@ -80,9 +88,13 @@ def main():
     cfg = train_config(a.size)
 
     is_fly = a.controller.startswith("fly")
-    init = np.load(a.init_from) if a.init_from else (FLY_INIT_MEAN if is_fly else ANN_INIT_MEAN)
     if is_fly:
-        init = upgrade_fly_genome(init)
+        default = FLY_INIT_MEAN_LEARN if a.learning else FLY_INIT_MEAN
+    else:
+        default = ANN_INIT_MEAN_ODOUR if a.odour else ANN_INIT_MEAN
+    init = np.load(a.init_from) if a.init_from else default
+    if is_fly:
+        init = to_learning_genome(init) if a.learning else upgrade_fly_genome(init)
     es = ES(init, sigma0=a.sigma0, pop=a.pop, seed=a.seed)
     hist_path, ck_path = run / "history.csv", run / "checkpoint.npz"
     history = []
@@ -100,7 +112,8 @@ def main():
         W = shuffled_wiring(conn.W) if a.controller == "fly_shuffled" else None
         policy = FlyPolicy(conn, es.ask(), dt=a.dt, window_ms=a.window_ms, device=a.device,
                            seed=a.seed, W=W, readout_from_ms=a.readout_from_ms,
-                           regular_input=a.regular_input)
+                           regular_input=a.regular_input, learning=a.learning,
+                           plasticity=not a.no_plasticity, theta_scale=a.theta_scale)
 
     while es.generation < a.generations:
         gen = es.generation

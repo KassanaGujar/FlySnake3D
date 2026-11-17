@@ -49,6 +49,13 @@ N_ODOUR = len(ODOUR_GLOMERULI)
 # (hemibrain names; ranked in experiments/learning_pathway_probe.py's companion survey).
 MB_VISUAL = ["aMe12", "MTe32", "MTe30", "LTe25", "MTe40", "aMe20", "aMe26", "LTe16"]
 N_MBV = len(MB_VISUAL)
+# Stage 7 calibration of the LIF model (NOT in Shiu et al. 2024; chosen in
+# experiments/kc_sparseness_calibration.py, see docs/DEVLOG.md 17 Nov 2026):
+#   every neuron: +2 mV threshold per spike, decaying over 1 s (spike-frequency
+#   adaptation), which stops the olfactory lock-up; Kenyon cells: +8 mV
+#   threshold, which gives 5-6% of Kenyon cells per odour. APL unchanged.
+ADAPT_MV, ADAPT_TAU_MS = 2.0, 1000.0
+KC_THRESHOLD_MV = 8.0
 N_LEARN = 6               # rate, recovery, tau_kc, tau_da, reward drive, punishment drive
 MAX_RATE_HZ = 200.0
 SIDES = ("left", "right")
@@ -106,6 +113,14 @@ class SideEncoder:
         x = t.as_tensor(inputs, device=self.device, dtype=t.float32)
         drive = t.einsum("bef,bfp->bep", x, gains).clamp_(0, 1) * MAX_RATE_HZ
         return drive.reshape(drive.shape[0], -1).T[self.group]
+
+
+def apply_calibration(sim, conn):
+    """Adaptation for every neuron + raised Kenyon cell threshold (stage 7)."""
+    import numpy as _np
+    sim.enable_adaptation(ADAPT_MV, ADAPT_TAU_MS)
+    kc = _np.flatnonzero((conn.annotations.cell_class == "Kenyon_Cell").to_numpy())
+    sim.set_threshold_offset(kc, KC_THRESHOLD_MV)
 
 
 def mushroom_body_wiring(conn):
