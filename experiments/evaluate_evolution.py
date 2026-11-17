@@ -14,8 +14,10 @@ E. Recording           One champion game: a replay for the game viewer plus ever
 F. Figure              Learning curves and held-out scores.
 
 Run:  python -m experiments.evaluate_evolution [--fly fly_main] [--ann ann_main] [--shuffled fly_shuffled]
-Writes results/stage5/* , results/replays/stage5/* , results/brain/fly_champion/* ,
-       docs/images/evolution_*.png
+                                             [--stage stage5] [--big]
+Writes results/<stage>/* , results/replays/<stage>/* , results/brain/fly_champion[_<stage>]/* ,
+       docs/images/evolution_results[_<stage>].png
+--big also plays full games on a 50x50 board (generalisation; training was 20x20 only).
 """
 from __future__ import annotations
 
@@ -35,7 +37,7 @@ from game.environment import GameConfig
 
 ROOT = Path(__file__).resolve().parents[1]
 EVO = ROOT / "results" / "evolution"
-OUT = ROOT / "results" / "stage5"
+OUT = ROOT / "results" / "stage5"         # replaced by --stage in main()
 B = 64
 HELD_OUT = 500_000 + np.arange(B)          # training used 10_000 + generation
 DECISIONS = 300
@@ -70,7 +72,12 @@ def main():
     ap.add_argument("--shuffled", default="fly_shuffled")
     ap.add_argument("--episodes_cap", type=int, default=3000)
     ap.add_argument("--skip_dt_check", action="store_true")
+    ap.add_argument("--stage", default="stage5", help="output folder name under results/")
+    ap.add_argument("--big", action="store_true", help="also play full games on a 50x50 board")
     a = ap.parse_args()
+    global OUT
+    OUT = ROOT / "results" / a.stage
+    suffix = "" if a.stage == "stage5" else f"_{a.stage}"
     OUT.mkdir(parents=True, exist_ok=True)
     cfg = train_config(20)
     fly_cfg = json.loads((EVO / a.fly / "config.json").read_text())
@@ -160,29 +167,52 @@ def main():
                       "outcomes": dd.outcome.value_counts().to_dict(),
                       "self_trap_death_rate": round(float(dd.self_trap_death.mean()), 3)}
     report["full_episodes"] = full
+    for k, v in full.items():
+        print("full", k, v, flush=True)
+
+    # ---- D2. generalisation: full games on a 50x50 board (never seen in training)
+    if a.big:
+        bcfg = GameConfig(width=50, height=50, max_steps=20000)
+        policy.set_genomes(same(fly_final))
+        brows, _ = play_episodes(policy, bcfg, seeds, a.episodes_cap, name="fly (evolved)")
+        for k in ("reactive (hand-written)", "ann (evolved)"):
+            if k in controls:
+                rr, _ = play_episodes(controls[k], bcfg, seeds, 20000, name=k)
+                brows += rr
+        bep = pd.DataFrame(brows)
+        bep.to_csv(OUT / "episodes_50x50.csv", index=False)
+        report["full_episodes_50x50"] = {
+            name: {"episodes": len(dd), "food_mean": round(float(dd.food_eaten.mean()), 1),
+                   "food_ci95": ci(dd.food_eaten), "food_max": int(dd.food_eaten.max()),
+                   "steps_mean": round(float(dd.steps.mean()), 1),
+                   "outcomes": dd.outcome.value_counts().to_dict(),
+                   "self_trap_death_rate": round(float(dd.self_trap_death.mean()), 3)}
+            for name, dd in bep.groupby("agent", sort=False)}
+        for k, v in report["full_episodes_50x50"].items():
+            print("50x50", k, v, flush=True)
 
     # ---- E. one recorded champion game (replay + every spike)
     one = FlyPolicy(conn, fly_final[None], dt=dt, window_ms=window, readout_from_ms=late, regular_input=reg, seed=2, record_col=0)
     res, frames = play_episodes(one, ecfg, np.array([0]), a.episodes_cap, name="fly (evolved)",
                                 record_col=0)
-    rep = ROOT / "results" / "replays" / "stage5"
+    rep = ROOT / "results" / "replays" / a.stage
     rep.mkdir(parents=True, exist_ok=True)
     with open(rep / "fly_champion_seed0.jsonl", "w") as f:
         f.write(json.dumps({"type": "header", "config": asdict(ecfg), "result": res[0]}) + "\n")
         for fr in frames:
             f.write(json.dumps({"type": "frame", **fr}) + "\n")
-    write_brain_recording(conn, one.spike_log, frames, window, res[0], ecfg)
+    write_brain_recording(conn, one.spike_log, frames, window, res[0], ecfg, "fly_champion" + suffix)
     report["recorded_game"] = res[0]
 
     report["fly_champion_genome"] = dict(zip(fly_genome_names(), np.round(fly_final, 3).tolist()))
     (OUT / "evaluation.json").write_text(json.dumps(report, indent=1))
-    figure(a, report, has_shuf)
+    figure(a, report, has_shuf, suffix)
     print(json.dumps({k: report[k] for k in ("fly_final_minus_start", "fly_training_trend",
                                              "full_episodes")}, indent=1))
 
 
-def write_brain_recording(conn, spike_log, frames, window_ms, result, cfg):
-    out = ROOT / "results" / "brain" / "fly_champion"
+def write_brain_recording(conn, spike_log, frames, window_ms, result, cfg, folder="fly_champion"):
+    out = ROOT / "results" / "brain" / folder
     out.mkdir(parents=True, exist_ok=True)
     types = conn.annotations.cell_type.fillna(conn.annotations.hemibrain_type).fillna("?").to_numpy()
     names = ["LEFT", "STRAIGHT", "RIGHT"]
@@ -209,7 +239,7 @@ def write_brain_recording(conn, spike_log, frames, window_ms, result, cfg):
                  "frames": [{"body": fr["body"], "food": fr["food"]} for fr in frames[:n]]}}))
 
 
-def figure(a, report, has_shuf):
+def figure(a, report, has_shuf, suffix=""):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -224,7 +254,7 @@ def figure(a, report, has_shuf):
             ax[0].plot(h.generation, h.mean_fitness, color=col, label=f"{label}: population mean")
             ax[0].plot(h.generation, h.champion_fitness.rolling(5, min_periods=1).mean(), color=col,
                        ls="--", label=f"{label}: champion (5-gen average)")
-    ax[0].set_xlabel("generation"); ax[0].set_ylabel("training fitness (300 moves; death penalty per run config)")
+    ax[0].set_xlabel("generation"); ax[0].set_ylabel("training fitness (scoring per run config)")
     ax[0].set_title("Training (fresh seeds every generation)"); ax[0].legend(fontsize=7); ax[0].grid(alpha=.3)
     prog = report["fly_held_out_progress"]
     names = list(prog)
@@ -240,7 +270,7 @@ def figure(a, report, has_shuf):
             ax[1].axhline(v["fitness_mean"], ls=":", color="k", lw=.8)
             ax[1].text(len(names) - .5, v["fitness_mean"], " " + k, fontsize=7, va="bottom", ha="right")
     fig.tight_layout()
-    fig.savefig(ROOT / "docs" / "images" / "evolution_results.png", dpi=130)
+    fig.savefig(ROOT / "docs" / "images" / f"evolution_results{suffix}.png", dpi=130)
 
 
 if __name__ == "__main__":

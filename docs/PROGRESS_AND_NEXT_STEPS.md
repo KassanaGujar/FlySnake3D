@@ -114,3 +114,17 @@ Full write-up: [RESEARCH_REPORT_02_evolution.md](RESEARCH_REPORT_02_evolution.md
 - **Champion viewable:** `run_viewer.bat --brain=results/brain/fly_champion` (game minimap plus every spike).
 
 **Next, in order:** train on full games with a length bonus; richer vision (several directions per eye, body vs wall); per-neuron gains; degree-preserving wiring control; repeat seeds; 50×50 test.
+
+---
+
+## Endpoint, 16 November 2026 (stage 6 complete)
+
+Full write-up: [RESEARCH_REPORT_03_body_vision.md](RESEARCH_REPORT_03_body_vision.md).
+
+- **Body-vs-wall vision + food-per-life scoring** (3 seeds): 13–15 food, 1.3–2.3 deaths per 300 unseen moves. Fewer deaths than stage 5 (3.3) but less food (18.0). Stage 5 champion is still the best fly on food − 0.5 × deaths.
+- **Separation test** (new vision, old scoring): 16.7 food, 2.3 deaths. Vision alone removes about 1 death; per-life scoring removes about 0.5 more and costs about 2.5 food.
+- **Still a steering failure:** 95–98 % of crashes avoidable, length at death 7–9.
+- **Full games:** fly 8.6 food (stage 5: 4.5), ANN 36.2, greedy A* 61.7. **50×50:** fly 9.5, ANN 69.0, reflex 68.7.
+- **ANN with the new vision** self-traps in 94 % of full-game deaths, so the A* long-length comparison can now be run with the ANN.
+
+**Next, in order:** per-neuron gains and more readout types; average several brain samples per decision; A* long-length comparison with the ANN; degree-preserving wiring control.

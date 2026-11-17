@@ -119,3 +119,30 @@
 - `fly_v5_scratch` (v5 settings from scratch, 40 gens) reached only about 15 food and 5 deaths. A harsh penalty from the start slows learning.
 - Ran `experiments/evaluate_evolution.py --fly fly_v5_regular_late12 --shuffled fly_v5_shuffled`; results in Report 02. Fixed the viewer path in docs: `--brain=` paths are relative to the repo root.
 - The computer slept for about 18 h during the screening; runs since then use the app's keep-awake.
+
+## 15 Nov 2026 (late): stage 6 first results (body-vs-wall vision + food-per-life scoring)
+
+Run `fly_v6_body_perlife` (40 gens, 600-move budget, from the v5 champion) vs `ann_v6_body_perlife`.
+Held-out, 64 seeds, 300 moves (fitness = food - 0.5 x deaths for all):
+- fly v6: 13.7 food, 1.47 deaths (v5 was 18.0 / 3.7). Fewer deaths but less food; held-out
+  fitness peaked at gen 8 (17.2 food / 2.8 deaths) and drifted down after, so per-life scoring
+  traded food for survival.
+- ANN v6: 20.7 food, 0.02 deaths. Reflex: 17.1 / 0.39.
+Full games 20x20: fly 8.6 food (v5 4.5), 206 steps, self-trap deaths 11%; ANN 36.2 food (self-trap 94%);
+reflex 29.7; greedy A* 61.7.
+50x50 (never trained): fly 9.5 food, ANN 69.0, reflex 68.7.
+Diagnosis (seeds 700000+): 85 of 87 crashes still had a safe move; 53 were turns into an adjacent
+obstacle; mean length at death 6.6. Still a steering failure, not self-trapping.
+Caveat: vision and scoring changed together. Ablation (`fly_v6_body_penalty2`) and repeats
+(seeds 1, 2) queued in scripts/stage6_queue.sh; outputs in results/stage6_queue.log.
+Note: the ANN with body vision now dies of self-trapping 94% of the time, so the long-length
+question is now testable for the ANN control, but not yet for the fly.
+
+## 16 Nov 2026: stage 6 complete
+
+Repeats (seeds 1, 2) and the separation test finished; see Report 03. Unseen-game results:
+seed 1 14.3 food / 2.3 deaths, seed 2 15.2 / 1.3; new vision + old scoring 16.7 / 2.3.
+Mistake and fix: pausing stopped the training process but not the queue script, which then
+diagnosed the half-trained separation run and later skipped it as done. The partial diagnosis
+was renamed `_PARTIAL_gen10`, the run resumed from its checkpoint, and the queue now counts a
+run as done only when history.csv has all 40 generations.

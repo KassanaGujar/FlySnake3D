@@ -1,0 +1,19 @@
+{
+ "controller": "fly",
+ "run": "fly_v6_body_perlife_s1",
+ "generations": 40,
+ "pop": 64,
+ "decisions": 600,
+ "size": 20,
+ "dt": 0.6,
+ "window_ms": 24.0,
+ "sigma0": 0.15,
+ "seed": 1,
+ "device": null,
+ "readout_from_ms": 12.0,
+ "regular_input": true,
+ "fitness": "per_life",
+ "death_penalty": 0.5,
+ "init_from": "results/evolution/fly_v5_regular_late12/champion.npy",
+ "genome_size": 78
+}

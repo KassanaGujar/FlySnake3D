@@ -13,3 +13,6 @@ results/brain/*
 !results/brain/fly_champion/
 !results/replays/stage5/
 results/evolution/fly_main/checkpoint.npz.tmp
+!results/brain/fly_champion_stage6/
+!results/replays/stage6/
+results/*.log
