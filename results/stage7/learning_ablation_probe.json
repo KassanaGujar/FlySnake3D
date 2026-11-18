@@ -1,0 +1,38 @@
+{
+ "learning on": {
+  "food_mean": 19.828,
+  "deaths_mean": 2.359,
+  "plastic_synapses": 62261,
+  "mean_depression": 0.00571,
+  "frac_below_0.9": 0.01487,
+  "frac_below_0.5": 0.00057,
+  "min_scale": 0.0
+ },
+ "learning off": {
+  "food_mean": 20.172,
+  "deaths_mean": 2.438,
+  "plastic_synapses": 62261,
+  "mean_depression": 0.0,
+  "frac_below_0.9": 0.0,
+  "frac_below_0.5": 0.0,
+  "min_scale": 1.0
+ },
+ "paired_food_on_minus_off": {
+  "mean": -0.344,
+  "ci95": [
+   -0.844,
+   0.156
+  ],
+  "seeds_on_better": 21,
+  "seeds_equal": 13
+ },
+ "paired_deaths_on_minus_off": {
+  "mean": -0.078,
+  "ci95": [
+   -0.453,
+   0.297
+  ],
+  "seeds_on_better": 21,
+  "seeds_equal": 23
+ }
+}

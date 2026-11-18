@@ -1,0 +1,577 @@
+agent,seed,board,outcome,food_eaten,final_length,steps,first_trap_step,self_trap_death,moves_trap_to_death
+fly (evolved),0,20x20,SELF,4,6,59,,False,
+fly (evolved),1,20x20,WALL,4,7,26,,False,
+fly (evolved),2,20x20,SELF,8,10,98,,False,
+fly (evolved),3,20x20,WALL,1,4,15,,False,
+fly (evolved),4,20x20,WALL,29,32,422,,False,
+fly (evolved),5,20x20,SELF,6,8,68,,False,
+fly (evolved),6,20x20,SELF,13,15,160,,False,
+fly (evolved),7,20x20,WALL,1,4,18,,False,
+fly (evolved),8,20x20,WALL,4,7,49,,False,
+fly (evolved),9,20x20,WALL,8,11,91,,False,
+fly (evolved),10,20x20,WALL,4,7,57,,False,
+fly (evolved),11,20x20,WALL,3,6,55,,False,
+fly (evolved),12,20x20,SELF,3,5,54,,False,
+fly (evolved),13,20x20,WALL,16,19,317,,False,
+fly (evolved),14,20x20,WALL,1,4,18,,False,
+fly (evolved),15,20x20,WALL,8,11,74,,False,
+fly (evolved),16,20x20,SELF,2,4,18,,False,
+fly (evolved),17,20x20,SELF,2,4,16,,False,
+fly (evolved),18,20x20,WALL,1,4,17,,False,
+fly (evolved),19,20x20,WALL,13,16,206,,False,
+fly (evolved),20,20x20,WALL,1,4,17,,False,
+fly (evolved),21,20x20,SELF,20,22,241,,False,
+fly (evolved),22,20x20,WALL,11,14,193,,False,
+fly (evolved),23,20x20,SELF,17,19,279,,False,
+fly (evolved),24,20x20,WALL,2,5,18,,False,
+fly (evolved),25,20x20,SELF,3,5,43,,False,
+fly (evolved),26,20x20,WALL,5,8,92,,False,
+fly (evolved),27,20x20,WALL,5,8,72,,False,
+fly (evolved),28,20x20,SELF,6,8,74,,False,
+fly (evolved),29,20x20,WALL,2,5,52,,False,
+fly (evolved),30,20x20,SELF,10,12,184,,False,
+fly (evolved),31,20x20,SELF,6,8,103,,False,
+fly (evolved),32,20x20,SELF,7,9,69,,False,
+fly (evolved),33,20x20,WALL,24,27,324,,False,
+fly (evolved),34,20x20,WALL,3,6,61,,False,
+fly (evolved),35,20x20,SELF,6,8,117,,False,
+fly (evolved),36,20x20,SELF,12,14,123,,False,
+fly (evolved),37,20x20,SELF,23,25,287,,False,
+fly (evolved),38,20x20,SELF,5,7,76,,False,
+fly (evolved),39,20x20,SELF,16,18,293,,False,
+fly (evolved),40,20x20,WALL,3,6,39,,False,
+fly (evolved),41,20x20,WALL,2,5,19,,False,
+fly (evolved),42,20x20,WALL,1,4,30,,False,
+fly (evolved),43,20x20,WALL,9,12,158,,False,
+fly (evolved),44,20x20,WALL,8,11,130,,False,
+fly (evolved),45,20x20,WALL,21,24,286,,False,
+fly (evolved),46,20x20,SELF,20,22,325,,False,
+fly (evolved),47,20x20,WALL,1,4,19,,False,
+fly (evolved),48,20x20,WALL,2,5,35,,False,
+fly (evolved),49,20x20,SELF,4,6,71,,False,
+fly (evolved),50,20x20,WALL,9,12,110,,False,
+fly (evolved),51,20x20,WALL,8,11,119,,False,
+fly (evolved),52,20x20,WALL,7,10,125,,False,
+fly (evolved),53,20x20,WALL,8,11,102,,False,
+fly (evolved),54,20x20,WALL,6,9,116,,False,
+fly (evolved),55,20x20,WALL,8,11,108,,False,
+fly (evolved),56,20x20,WALL,9,12,153,,False,
+fly (evolved),57,20x20,SELF,7,9,81,,False,
+fly (evolved),58,20x20,SELF,17,19,237,,False,
+fly (evolved),59,20x20,SELF,3,5,45,,False,
+fly (evolved),60,20x20,WALL,5,8,85,,False,
+fly (evolved),61,20x20,SELF,2,4,8,,False,
+fly (evolved),62,20x20,WALL,14,17,184,,False,
+fly (evolved),63,20x20,WALL,13,16,177,,False,
+random,0,20x20,WALL,0,3,44,,False,
+random,1,20x20,SELF,2,4,12,,False,
+random,2,20x20,WALL,0,3,44,,False,
+random,3,20x20,WALL,1,4,60,,False,
+random,4,20x20,WALL,0,3,41,,False,
+random,5,20x20,WALL,0,3,30,,False,
+random,6,20x20,WALL,0,3,46,,False,
+random,7,20x20,WALL,0,3,55,,False,
+random,8,20x20,WALL,1,4,95,,False,
+random,9,20x20,WALL,1,4,148,,False,
+random,10,20x20,WALL,0,3,32,,False,
+random,11,20x20,WALL,0,3,120,,False,
+random,12,20x20,WALL,1,4,54,,False,
+random,13,20x20,WALL,0,3,51,,False,
+random,14,20x20,WALL,0,3,30,,False,
+random,15,20x20,WALL,0,3,24,,False,
+random,16,20x20,WALL,0,3,73,,False,
+random,17,20x20,WALL,0,3,24,,False,
+random,18,20x20,WALL,0,3,33,,False,
+random,19,20x20,WALL,1,4,140,,False,
+random,20,20x20,WALL,0,3,69,,False,
+random,21,20x20,WALL,0,3,18,,False,
+random,22,20x20,WALL,0,3,50,,False,
+random,23,20x20,WALL,0,3,54,,False,
+random,24,20x20,WALL,1,4,78,,False,
+random,25,20x20,WALL,0,3,333,,False,
+random,26,20x20,WALL,0,3,34,,False,
+random,27,20x20,WALL,0,3,43,,False,
+random,28,20x20,WALL,0,3,26,,False,
+random,29,20x20,WALL,0,3,147,,False,
+random,30,20x20,WALL,0,3,41,,False,
+random,31,20x20,WALL,0,3,32,,False,
+random,32,20x20,WALL,0,3,34,,False,
+random,33,20x20,WALL,0,3,21,,False,
+random,34,20x20,WALL,0,3,22,,False,
+random,35,20x20,WALL,0,3,67,,False,
+random,36,20x20,WALL,0,3,97,,False,
+random,37,20x20,WALL,0,3,90,,False,
+random,38,20x20,WALL,0,3,15,,False,
+random,39,20x20,WALL,0,3,32,,False,
+random,40,20x20,WALL,0,3,73,,False,
+random,41,20x20,WALL,0,3,70,,False,
+random,42,20x20,WALL,0,3,78,,False,
+random,43,20x20,WALL,0,3,15,,False,
+random,44,20x20,WALL,0,3,53,,False,
+random,45,20x20,WALL,0,3,189,,False,
+random,46,20x20,WALL,1,4,33,,False,
+random,47,20x20,WALL,1,4,33,,False,
+random,48,20x20,WALL,0,3,100,,False,
+random,49,20x20,WALL,0,3,58,,False,
+random,50,20x20,WALL,0,3,37,,False,
+random,51,20x20,WALL,1,4,61,,False,
+random,52,20x20,WALL,0,3,115,,False,
+random,53,20x20,WALL,0,3,93,,False,
+random,54,20x20,WALL,0,3,28,,False,
+random,55,20x20,WALL,0,3,18,,False,
+random,56,20x20,WALL,0,3,18,,False,
+random,57,20x20,WALL,0,3,32,,False,
+random,58,20x20,WALL,0,3,53,,False,
+random,59,20x20,WALL,0,3,100,,False,
+random,60,20x20,WALL,1,4,126,,False,
+random,61,20x20,WALL,0,3,47,,False,
+random,62,20x20,WALL,0,3,37,,False,
+random,63,20x20,WALL,0,3,38,,False,
+reactive (hand-written),0,20x20,SELF,41,43,688,677.0,True,11.0
+reactive (hand-written),1,20x20,STARVED,3,6,414,,False,
+reactive (hand-written),2,20x20,SELF,60,62,1057,877.0,True,180.0
+reactive (hand-written),3,20x20,SELF,41,43,670,456.0,True,214.0
+reactive (hand-written),4,20x20,SELF,46,48,856,697.0,True,159.0
+reactive (hand-written),5,20x20,SELF,37,39,708,696.0,True,12.0
+reactive (hand-written),6,20x20,STARVED,21,24,680,,False,
+reactive (hand-written),7,20x20,SELF,51,53,1061,744.0,True,317.0
+reactive (hand-written),8,20x20,SELF,43,45,743,736.0,True,7.0
+reactive (hand-written),9,20x20,STARVED,2,5,417,,False,
+reactive (hand-written),10,20x20,SELF,34,36,721,719.0,True,2.0
+reactive (hand-written),11,20x20,STARVED,17,20,641,277.0,False,
+reactive (hand-written),12,20x20,SELF,30,32,479,465.0,True,14.0
+reactive (hand-written),13,20x20,STARVED,11,14,564,,False,
+reactive (hand-written),14,20x20,STARVED,24,27,828,,False,
+reactive (hand-written),15,20x20,SELF,29,31,562,270.0,True,292.0
+reactive (hand-written),16,20x20,SELF,31,33,653,651.0,True,2.0
+reactive (hand-written),17,20x20,SELF,33,35,519,517.0,True,2.0
+reactive (hand-written),18,20x20,SELF,28,30,454,452.0,True,2.0
+reactive (hand-written),19,20x20,STARVED,2,5,420,,False,
+reactive (hand-written),20,20x20,STARVED,29,32,818,251.0,False,
+reactive (hand-written),21,20x20,STARVED,14,17,617,261.0,False,
+reactive (hand-written),22,20x20,STARVED,17,20,715,,False,
+reactive (hand-written),23,20x20,SELF,48,50,833,822.0,True,11.0
+reactive (hand-written),24,20x20,SELF,48,50,861,341.0,True,520.0
+reactive (hand-written),25,20x20,STARVED,3,6,437,,False,
+reactive (hand-written),26,20x20,SELF,44,46,821,819.0,True,2.0
+reactive (hand-written),27,20x20,WALL,42,45,752,740.0,True,12.0
+reactive (hand-written),28,20x20,STARVED,15,18,617,262.0,False,
+reactive (hand-written),29,20x20,STARVED,1,4,412,,False,
+reactive (hand-written),30,20x20,SELF,56,58,904,887.0,True,17.0
+reactive (hand-written),31,20x20,SELF,66,68,1166,882.0,True,284.0
+reactive (hand-written),32,20x20,SELF,35,37,443,437.0,True,6.0
+reactive (hand-written),33,20x20,STARVED,30,33,827,503.0,False,
+reactive (hand-written),34,20x20,STARVED,31,34,1050,400.0,False,
+reactive (hand-written),35,20x20,SELF,55,57,1359,1029.0,True,330.0
+reactive (hand-written),36,20x20,SELF,37,39,650,438.0,True,212.0
+reactive (hand-written),37,20x20,SELF,46,48,813,729.0,True,84.0
+reactive (hand-written),38,20x20,SELF,41,43,809,781.0,True,28.0
+reactive (hand-written),39,20x20,SELF,43,45,857,854.0,True,3.0
+reactive (hand-written),40,20x20,STARVED,3,6,458,,False,
+reactive (hand-written),41,20x20,STARVED,1,4,407,,False,
+reactive (hand-written),42,20x20,SELF,22,24,347,342.0,True,5.0
+reactive (hand-written),43,20x20,STARVED,15,18,672,,False,
+reactive (hand-written),44,20x20,SELF,39,41,667,387.0,True,280.0
+reactive (hand-written),45,20x20,SELF,44,46,711,316.0,True,395.0
+reactive (hand-written),46,20x20,SELF,27,29,406,399.0,True,7.0
+reactive (hand-written),47,20x20,SELF,28,30,457,402.0,True,55.0
+reactive (hand-written),48,20x20,SELF,41,43,829,401.0,True,428.0
+reactive (hand-written),49,20x20,STARVED,4,7,466,,False,
+reactive (hand-written),50,20x20,STARVED,28,31,802,251.0,False,
+reactive (hand-written),51,20x20,SELF,34,36,605,331.0,True,274.0
+reactive (hand-written),52,20x20,SELF,38,40,709,707.0,True,2.0
+reactive (hand-written),53,20x20,STARVED,17,20,624,,False,
+reactive (hand-written),54,20x20,SELF,38,40,598,592.0,True,6.0
+reactive (hand-written),55,20x20,STARVED,15,18,614,271.0,False,
+reactive (hand-written),56,20x20,STARVED,4,7,450,,False,
+reactive (hand-written),57,20x20,SELF,52,54,1030,619.0,True,411.0
+reactive (hand-written),58,20x20,SELF,39,41,756,754.0,True,2.0
+reactive (hand-written),59,20x20,STARVED,2,5,419,,False,
+reactive (hand-written),60,20x20,STARVED,16,19,654,313.0,False,
+reactive (hand-written),61,20x20,STARVED,6,9,450,,False,
+reactive (hand-written),62,20x20,SELF,54,56,1007,507.0,True,500.0
+reactive (hand-written),63,20x20,SELF,48,50,878,264.0,True,614.0
+ann (evolved),0,20x20,SELF,6,8,90,,False,
+ann (evolved),1,20x20,SELF,20,22,260,,False,
+ann (evolved),2,20x20,SELF,21,23,291,,False,
+ann (evolved),3,20x20,SELF,44,46,607,,False,
+ann (evolved),4,20x20,SELF,10,12,115,,False,
+ann (evolved),5,20x20,SELF,6,8,75,,False,
+ann (evolved),6,20x20,SELF,29,31,387,381.0,True,6.0
+ann (evolved),7,20x20,SELF,25,27,349,,False,
+ann (evolved),8,20x20,SELF,18,20,251,,False,
+ann (evolved),9,20x20,SELF,27,29,311,309.0,True,2.0
+ann (evolved),10,20x20,SELF,28,30,432,,False,
+ann (evolved),11,20x20,SELF,9,11,108,,False,
+ann (evolved),12,20x20,SELF,12,14,191,,False,
+ann (evolved),13,20x20,SELF,28,30,463,,False,
+ann (evolved),14,20x20,SELF,20,22,342,,False,
+ann (evolved),15,20x20,SELF,35,37,565,564.0,True,1.0
+ann (evolved),16,20x20,SELF,39,41,686,,False,
+ann (evolved),17,20x20,WALL,19,22,251,,False,
+ann (evolved),18,20x20,WALL,9,12,121,,False,
+ann (evolved),19,20x20,SELF,19,21,286,285.0,True,1.0
+ann (evolved),20,20x20,SELF,34,36,437,,False,
+ann (evolved),21,20x20,SELF,20,22,268,266.0,True,2.0
+ann (evolved),22,20x20,SELF,36,38,538,533.0,True,5.0
+ann (evolved),23,20x20,SELF,32,34,381,,False,
+ann (evolved),24,20x20,SELF,24,26,318,,False,
+ann (evolved),25,20x20,SELF,29,31,462,,False,
+ann (evolved),26,20x20,SELF,27,29,381,,False,
+ann (evolved),27,20x20,SELF,16,18,269,,False,
+ann (evolved),28,20x20,SELF,20,22,279,278.0,True,1.0
+ann (evolved),29,20x20,SELF,26,28,364,,False,
+ann (evolved),30,20x20,SELF,17,19,277,275.0,True,2.0
+ann (evolved),31,20x20,SELF,13,15,182,180.0,True,2.0
+ann (evolved),32,20x20,SELF,38,40,447,446.0,True,1.0
+ann (evolved),33,20x20,SELF,35,37,529,525.0,True,4.0
+ann (evolved),34,20x20,SELF,16,18,311,,False,
+ann (evolved),35,20x20,SELF,35,37,597,596.0,True,1.0
+ann (evolved),36,20x20,WALL,30,33,357,,False,
+ann (evolved),37,20x20,SELF,46,48,665,,False,
+ann (evolved),38,20x20,SELF,17,19,271,,False,
+ann (evolved),39,20x20,SELF,15,17,231,,False,
+ann (evolved),40,20x20,SELF,15,17,224,,False,
+ann (evolved),41,20x20,SELF,35,37,479,470.0,True,9.0
+ann (evolved),42,20x20,SELF,10,12,158,157.0,True,1.0
+ann (evolved),43,20x20,SELF,29,31,482,,False,
+ann (evolved),44,20x20,SELF,14,16,222,,False,
+ann (evolved),45,20x20,SELF,33,35,411,,False,
+ann (evolved),46,20x20,SELF,16,18,236,,False,
+ann (evolved),47,20x20,SELF,8,10,95,,False,
+ann (evolved),48,20x20,SELF,33,35,523,,False,
+ann (evolved),49,20x20,SELF,32,34,552,,False,
+ann (evolved),50,20x20,SELF,20,22,237,232.0,True,5.0
+ann (evolved),51,20x20,WALL,35,38,521,,False,
+ann (evolved),52,20x20,SELF,34,36,493,492.0,True,1.0
+ann (evolved),53,20x20,SELF,26,28,360,359.0,True,1.0
+ann (evolved),54,20x20,SELF,26,28,353,351.0,True,2.0
+ann (evolved),55,20x20,SELF,27,29,436,,False,
+ann (evolved),56,20x20,WALL,5,8,76,,False,
+ann (evolved),57,20x20,SELF,20,22,282,,False,
+ann (evolved),58,20x20,SELF,26,28,368,,False,
+ann (evolved),59,20x20,SELF,33,35,424,423.0,True,1.0
+ann (evolved),60,20x20,SELF,15,17,212,,False,
+ann (evolved),61,20x20,SELF,24,26,304,301.0,True,3.0
+ann (evolved),62,20x20,SELF,17,19,189,,False,
+ann (evolved),63,20x20,SELF,13,15,163,162.0,True,1.0
+ann start (not evolved),0,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),1,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),2,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),3,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),4,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),5,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),6,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),7,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),8,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),9,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),10,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),11,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),12,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),13,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),14,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),15,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),16,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),17,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),18,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),19,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),20,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),21,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),22,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),23,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),24,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),25,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),26,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),27,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),28,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),29,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),30,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),31,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),32,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),33,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),34,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),35,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),36,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),37,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),38,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),39,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),40,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),41,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),42,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),43,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),44,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),45,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),46,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),47,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),48,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),49,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),50,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),51,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),52,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),53,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),54,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),55,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),56,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),57,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),58,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),59,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),60,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),61,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),62,20x20,STARVED,0,3,400,,False,
+ann start (not evolved),63,20x20,STARVED,0,3,400,,False,
+astar_greedy,0,20x20,SELF,58,60,900,852.0,True,48.0
+astar_greedy,1,20x20,SELF,65,67,1063,1027.0,True,36.0
+astar_greedy,2,20x20,SELF,63,65,860,812.0,True,48.0
+astar_greedy,3,20x20,SELF,54,56,770,714.0,True,56.0
+astar_greedy,4,20x20,SELF,74,76,1170,779.0,True,391.0
+astar_greedy,5,20x20,SELF,39,41,510,499.0,True,11.0
+astar_greedy,6,20x20,SELF,53,55,868,813.0,True,55.0
+astar_greedy,7,20x20,SELF,60,62,851,836.0,True,15.0
+astar_greedy,8,20x20,SELF,84,86,1442,1132.0,True,310.0
+astar_greedy,9,20x20,SELF,78,80,1262,1203.0,True,59.0
+astar_greedy,10,20x20,SELF,50,52,853,801.0,True,52.0
+astar_greedy,11,20x20,SELF,50,52,878,826.0,True,52.0
+astar_greedy,12,20x20,WALL,51,54,806,791.0,True,15.0
+astar_greedy,13,20x20,SELF,63,65,1067,1027.0,True,40.0
+astar_greedy,14,20x20,WALL,25,28,399,396.0,True,3.0
+astar_greedy,15,20x20,SELF,68,70,1138,1106.0,True,32.0
+astar_greedy,16,20x20,WALL,66,69,1107,689.0,True,418.0
+astar_greedy,17,20x20,SELF,83,85,1402,1394.0,True,8.0
+astar_greedy,18,20x20,SELF,62,64,892,886.0,True,6.0
+astar_greedy,19,20x20,SELF,55,57,961,904.0,True,57.0
+astar_greedy,20,20x20,SELF,72,74,1029,1008.0,True,21.0
+astar_greedy,21,20x20,SELF,20,22,256,252.0,True,4.0
+astar_greedy,22,20x20,SELF,64,66,1031,1014.0,True,17.0
+astar_greedy,23,20x20,SELF,25,27,293,285.0,True,8.0
+astar_greedy,24,20x20,SELF,64,66,951,891.0,True,60.0
+astar_greedy,25,20x20,SELF,65,67,962,563.0,True,399.0
+astar_greedy,26,20x20,SELF,74,76,1188,820.0,True,368.0
+astar_greedy,27,20x20,SELF,60,62,1012,950.0,True,62.0
+astar_greedy,28,20x20,SELF,83,85,1330,1312.0,True,18.0
+astar_greedy,29,20x20,SELF,60,62,840,839.0,True,1.0
+astar_greedy,30,20x20,SELF,98,100,1652,522.0,True,1130.0
+astar_greedy,31,20x20,SELF,72,74,1046,1036.0,True,10.0
+astar_greedy,32,20x20,SELF,81,83,1395,990.0,True,405.0
+astar_greedy,33,20x20,SELF,59,61,853,818.0,True,35.0
+astar_greedy,34,20x20,SELF,62,64,1095,793.0,True,302.0
+astar_greedy,35,20x20,SELF,38,40,651,623.0,True,28.0
+astar_greedy,36,20x20,SELF,35,37,428,209.0,True,219.0
+astar_greedy,37,20x20,WALL,41,44,526,519.0,True,7.0
+astar_greedy,38,20x20,SELF,55,57,768,767.0,True,1.0
+astar_greedy,39,20x20,SELF,69,71,1093,1069.0,True,24.0
+astar_greedy,40,20x20,SELF,48,50,831,830.0,True,1.0
+astar_greedy,41,20x20,SELF,72,74,1220,1035.0,True,185.0
+astar_greedy,42,20x20,SELF,93,95,1733,1401.0,True,332.0
+astar_greedy,43,20x20,SELF,63,65,1069,1042.0,True,27.0
+astar_greedy,44,20x20,SELF,75,77,1195,1159.0,True,36.0
+astar_greedy,45,20x20,SELF,58,60,818,512.0,True,306.0
+astar_greedy,46,20x20,SELF,76,78,1299,1099.0,True,200.0
+astar_greedy,47,20x20,WALL,82,85,1346,1233.0,True,113.0
+astar_greedy,48,20x20,SELF,48,50,668,657.0,True,11.0
+astar_greedy,49,20x20,SELF,48,50,800,786.0,True,14.0
+astar_greedy,50,20x20,SELF,86,88,1252,1250.0,True,2.0
+astar_greedy,51,20x20,SELF,66,68,1121,1053.0,True,68.0
+astar_greedy,52,20x20,WALL,41,44,592,578.0,True,14.0
+astar_greedy,53,20x20,SELF,36,38,494,478.0,True,16.0
+astar_greedy,54,20x20,SELF,51,53,810,770.0,True,40.0
+astar_greedy,55,20x20,SELF,46,48,600,570.0,True,30.0
+astar_greedy,56,20x20,SELF,103,105,1653,1617.0,True,36.0
+astar_greedy,57,20x20,SELF,32,34,384,368.0,True,16.0
+astar_greedy,58,20x20,WALL,76,79,1198,1182.0,True,16.0
+astar_greedy,59,20x20,SELF,60,62,853,846.0,True,7.0
+astar_greedy,60,20x20,SELF,88,90,1529,1429.0,True,100.0
+astar_greedy,61,20x20,SELF,74,76,1278,961.0,True,317.0
+astar_greedy,62,20x20,SELF,76,78,1088,933.0,True,155.0
+astar_greedy,63,20x20,SELF,53,55,887,832.0,True,55.0
+astar_time_aware,0,20x20,SELF,89,91,1399,636.0,True,763.0
+astar_time_aware,1,20x20,SELF,87,89,1538,991.0,True,547.0
+astar_time_aware,2,20x20,SELF,61,63,956,893.0,True,63.0
+astar_time_aware,3,20x20,SELF,62,64,907,885.0,True,22.0
+astar_time_aware,4,20x20,SELF,72,74,1064,1047.0,True,17.0
+astar_time_aware,5,20x20,SELF,39,41,502,491.0,True,11.0
+astar_time_aware,6,20x20,SELF,57,59,808,715.0,True,93.0
+astar_time_aware,7,20x20,SELF,50,52,791,739.0,True,52.0
+astar_time_aware,8,20x20,SELF,49,51,683,673.0,True,10.0
+astar_time_aware,9,20x20,WALL,82,85,1332,667.0,True,665.0
+astar_time_aware,10,20x20,SELF,82,84,1284,1117.0,True,167.0
+astar_time_aware,11,20x20,WALL,79,82,1225,757.0,True,468.0
+astar_time_aware,12,20x20,SELF,73,75,1254,971.0,True,283.0
+astar_time_aware,13,20x20,WALL,72,75,1276,1042.0,True,234.0
+astar_time_aware,14,20x20,WALL,25,28,399,396.0,True,3.0
+astar_time_aware,15,20x20,SELF,80,82,1340,1177.0,True,163.0
+astar_time_aware,16,20x20,SELF,73,75,1277,686.0,True,591.0
+astar_time_aware,17,20x20,SELF,45,47,587,567.0,True,20.0
+astar_time_aware,18,20x20,SELF,62,64,942,933.0,True,9.0
+astar_time_aware,19,20x20,SELF,66,68,972,854.0,True,118.0
+astar_time_aware,20,20x20,SELF,67,69,952,922.0,True,30.0
+astar_time_aware,21,20x20,SELF,20,22,256,252.0,True,4.0
+astar_time_aware,22,20x20,SELF,79,81,1285,1280.0,True,5.0
+astar_time_aware,23,20x20,WALL,64,67,1065,1038.0,True,27.0
+astar_time_aware,24,20x20,SELF,83,85,1397,735.0,True,662.0
+astar_time_aware,25,20x20,SELF,105,107,1574,744.0,True,830.0
+astar_time_aware,26,20x20,SELF,76,78,1158,714.0,True,444.0
+astar_time_aware,27,20x20,SELF,68,70,1170,1100.0,True,70.0
+astar_time_aware,28,20x20,SELF,80,82,1280,1246.0,True,34.0
+astar_time_aware,29,20x20,WALL,66,69,973,673.0,True,300.0
+astar_time_aware,30,20x20,SELF,60,62,928,516.0,True,412.0
+astar_time_aware,31,20x20,SELF,74,76,1114,829.0,True,285.0
+astar_time_aware,32,20x20,SELF,71,73,1145,509.0,True,636.0
+astar_time_aware,33,20x20,SELF,92,94,1393,856.0,True,537.0
+astar_time_aware,34,20x20,WALL,82,85,1536,791.0,True,745.0
+astar_time_aware,35,20x20,SELF,69,71,1223,871.0,True,352.0
+astar_time_aware,36,20x20,SELF,35,37,448,428.0,True,20.0
+astar_time_aware,37,20x20,SELF,75,77,1120,1093.0,True,27.0
+astar_time_aware,38,20x20,SELF,55,57,726,721.0,True,5.0
+astar_time_aware,39,20x20,SELF,67,69,1105,973.0,True,132.0
+astar_time_aware,40,20x20,SELF,90,92,1762,658.0,True,1104.0
+astar_time_aware,41,20x20,SELF,69,71,1018,969.0,True,49.0
+astar_time_aware,42,20x20,SELF,58,60,856,821.0,True,35.0
+astar_time_aware,43,20x20,SELF,94,96,1657,1143.0,True,514.0
+astar_time_aware,44,20x20,SELF,76,78,1235,979.0,True,256.0
+astar_time_aware,45,20x20,SELF,77,79,1086,1056.0,True,30.0
+astar_time_aware,46,20x20,SELF,74,76,1150,1119.0,True,31.0
+astar_time_aware,47,20x20,WALL,70,73,1071,1058.0,True,13.0
+astar_time_aware,48,20x20,SELF,78,80,1233,1103.0,True,130.0
+astar_time_aware,49,20x20,SELF,48,50,812,798.0,True,14.0
+astar_time_aware,50,20x20,SELF,68,70,1082,865.0,True,217.0
+astar_time_aware,51,20x20,SELF,62,64,856,846.0,True,10.0
+astar_time_aware,52,20x20,SELF,101,103,1775,470.0,True,1305.0
+astar_time_aware,53,20x20,SELF,36,38,490,472.0,True,18.0
+astar_time_aware,54,20x20,SELF,57,59,895,680.0,True,215.0
+astar_time_aware,55,20x20,SELF,46,48,578,548.0,True,30.0
+astar_time_aware,56,20x20,SELF,58,60,864,853.0,True,11.0
+astar_time_aware,57,20x20,SELF,32,34,380,364.0,True,16.0
+astar_time_aware,58,20x20,SELF,44,46,654,629.0,True,25.0
+astar_time_aware,59,20x20,SELF,60,62,875,470.0,True,405.0
+astar_time_aware,60,20x20,SELF,73,75,1195,1100.0,True,95.0
+astar_time_aware,61,20x20,SELF,68,70,1466,842.0,True,624.0
+astar_time_aware,62,20x20,SELF,76,78,1183,887.0,True,296.0
+astar_time_aware,63,20x20,SELF,42,44,541,539.0,True,2.0
+astar_tail_check,0,20x20,STEP_LIMIT,337,340,20000,636.0,False,
+astar_tail_check,1,20x20,STEP_LIMIT,337,340,20000,1167.0,False,
+astar_tail_check,2,20x20,STEP_LIMIT,343,346,20000,1297.0,False,
+astar_tail_check,3,20x20,STEP_LIMIT,360,363,20000,1037.0,False,
+astar_tail_check,4,20x20,STEP_LIMIT,353,356,20000,863.0,False,
+astar_tail_check,5,20x20,STEP_LIMIT,344,347,20000,493.0,False,
+astar_tail_check,6,20x20,STEP_LIMIT,361,364,20000,715.0,False,
+astar_tail_check,7,20x20,STEP_LIMIT,343,346,20000,841.0,False,
+astar_tail_check,8,20x20,STEP_LIMIT,363,366,20000,1126.0,False,
+astar_tail_check,9,20x20,STEP_LIMIT,368,371,20000,667.0,False,
+astar_tail_check,10,20x20,STEP_LIMIT,336,339,20000,1117.0,False,
+astar_tail_check,11,20x20,STEP_LIMIT,356,359,20000,757.0,False,
+astar_tail_check,12,20x20,STEP_LIMIT,346,349,20000,973.0,False,
+astar_tail_check,13,20x20,STEP_LIMIT,342,345,20000,1042.0,False,
+astar_tail_check,14,20x20,STEP_LIMIT,354,357,20000,411.0,False,
+astar_tail_check,15,20x20,STEP_LIMIT,360,363,20000,1183.0,False,
+astar_tail_check,16,20x20,STEP_LIMIT,355,358,20000,686.0,False,
+astar_tail_check,17,20x20,STEP_LIMIT,331,334,20000,1251.0,False,
+astar_tail_check,18,20x20,STEP_LIMIT,345,348,20000,1313.0,False,
+astar_tail_check,19,20x20,STEP_LIMIT,369,372,20000,854.0,False,
+astar_tail_check,20,20x20,STEP_LIMIT,334,337,20000,1369.0,False,
+astar_tail_check,21,20x20,STEP_LIMIT,367,370,20000,1210.0,False,
+astar_tail_check,22,20x20,STEP_LIMIT,350,353,20000,1300.0,False,
+astar_tail_check,23,20x20,SELF,208,210,6908,1078.0,True,5830.0
+astar_tail_check,24,20x20,STEP_LIMIT,359,362,20000,735.0,False,
+astar_tail_check,25,20x20,STEP_LIMIT,361,364,20000,744.0,False,
+astar_tail_check,26,20x20,STEP_LIMIT,354,357,20000,753.0,False,
+astar_tail_check,27,20x20,STEP_LIMIT,342,345,20000,1132.0,False,
+astar_tail_check,28,20x20,STEP_LIMIT,361,364,20000,1275.0,False,
+astar_tail_check,29,20x20,STEP_LIMIT,339,342,20000,673.0,False,
+astar_tail_check,30,20x20,STEP_LIMIT,341,344,20000,516.0,False,
+astar_tail_check,31,20x20,STEP_LIMIT,340,343,20000,829.0,False,
+astar_tail_check,32,20x20,STEP_LIMIT,356,359,20000,509.0,False,
+astar_tail_check,33,20x20,STARVED,345,348,18574,856.0,False,
+astar_tail_check,34,20x20,STEP_LIMIT,358,361,20000,957.0,False,
+astar_tail_check,35,20x20,STEP_LIMIT,375,378,20000,871.0,False,
+astar_tail_check,36,20x20,STEP_LIMIT,345,348,20000,541.0,False,
+astar_tail_check,37,20x20,STEP_LIMIT,351,354,20000,1164.0,False,
+astar_tail_check,38,20x20,STEP_LIMIT,346,349,20000,731.0,False,
+astar_tail_check,39,20x20,STEP_LIMIT,376,379,20000,973.0,False,
+astar_tail_check,40,20x20,STEP_LIMIT,341,344,20000,658.0,False,
+astar_tail_check,41,20x20,STEP_LIMIT,362,365,20000,969.0,False,
+astar_tail_check,42,20x20,STEP_LIMIT,344,347,20000,875.0,False,
+astar_tail_check,43,20x20,STEP_LIMIT,343,346,20000,1383.0,False,
+astar_tail_check,44,20x20,STEP_LIMIT,340,343,20000,979.0,False,
+astar_tail_check,45,20x20,STEP_LIMIT,356,359,20000,1103.0,False,
+astar_tail_check,46,20x20,STEP_LIMIT,352,355,20000,1074.0,False,
+astar_tail_check,47,20x20,STEP_LIMIT,361,364,20000,1107.0,False,
+astar_tail_check,48,20x20,STEP_LIMIT,353,356,20000,958.0,False,
+astar_tail_check,49,20x20,STEP_LIMIT,347,350,20000,1016.0,False,
+astar_tail_check,50,20x20,STEP_LIMIT,361,364,20000,1138.0,False,
+astar_tail_check,51,20x20,STEP_LIMIT,350,353,20000,918.0,False,
+astar_tail_check,52,20x20,STEP_LIMIT,352,355,20000,470.0,False,
+astar_tail_check,53,20x20,STEP_LIMIT,352,355,20000,1047.0,False,
+astar_tail_check,54,20x20,STARVED,252,255,11700,680.0,False,
+astar_tail_check,55,20x20,STEP_LIMIT,358,361,20000,582.0,False,
+astar_tail_check,56,20x20,STEP_LIMIT,356,359,20000,899.0,False,
+astar_tail_check,57,20x20,STEP_LIMIT,351,354,20000,397.0,False,
+astar_tail_check,58,20x20,SELF,344,346,17993,1671.0,True,16322.0
+astar_tail_check,59,20x20,STEP_LIMIT,339,342,20000,470.0,False,
+astar_tail_check,60,20x20,STEP_LIMIT,349,352,20000,1100.0,False,
+astar_tail_check,61,20x20,STEP_LIMIT,355,358,20000,842.0,False,
+astar_tail_check,62,20x20,STEP_LIMIT,351,354,20000,887.0,False,
+astar_tail_check,63,20x20,SELF,274,276,11077,734.0,True,10343.0
+astar_space_check,0,20x20,SELF,118,120,2332,1332.0,True,1000.0
+astar_space_check,1,20x20,STEP_LIMIT,347,350,20000,1865.0,False,
+astar_space_check,2,20x20,STEP_LIMIT,346,349,20000,1297.0,False,
+astar_space_check,3,20x20,STEP_LIMIT,359,362,20000,1068.0,False,
+astar_space_check,4,20x20,STEP_LIMIT,348,351,20000,863.0,False,
+astar_space_check,5,20x20,SELF,95,97,1798,1550.0,True,248.0
+astar_space_check,6,20x20,SELF,86,88,1588,893.0,True,695.0
+astar_space_check,7,20x20,STEP_LIMIT,335,338,20000,1230.0,False,
+astar_space_check,8,20x20,WALL,151,154,4409,1126.0,True,3283.0
+astar_space_check,9,20x20,STEP_LIMIT,344,347,20000,1035.0,False,
+astar_space_check,10,20x20,STEP_LIMIT,350,353,20000,2008.0,False,
+astar_space_check,11,20x20,STEP_LIMIT,339,342,20000,1099.0,False,
+astar_space_check,12,20x20,SELF,77,79,1509,1168.0,True,341.0
+astar_space_check,13,20x20,SELF,130,132,3521,2125.0,True,1396.0
+astar_space_check,14,20x20,SELF,114,116,2398,1261.0,True,1137.0
+astar_space_check,15,20x20,STEP_LIMIT,343,346,20000,1634.0,False,
+astar_space_check,16,20x20,SELF,153,155,4710,686.0,True,4024.0
+astar_space_check,17,20x20,STEP_LIMIT,364,367,20000,1591.0,False,
+astar_space_check,18,20x20,SELF,119,121,2640,1614.0,True,1026.0
+astar_space_check,19,20x20,STEP_LIMIT,353,356,20000,1269.0,False,
+astar_space_check,20,20x20,STEP_LIMIT,358,361,20000,1543.0,False,
+astar_space_check,21,20x20,SELF,116,118,2875,1211.0,True,1664.0
+astar_space_check,22,20x20,STEP_LIMIT,352,355,20000,1462.0,False,
+astar_space_check,23,20x20,SELF,100,102,2399,1292.0,True,1107.0
+astar_space_check,24,20x20,STEP_LIMIT,362,365,20000,766.0,False,
+astar_space_check,25,20x20,SELF,92,94,1774,1272.0,True,502.0
+astar_space_check,26,20x20,SELF,148,150,3553,1269.0,True,2284.0
+astar_space_check,27,20x20,SELF,154,156,5267,1484.0,True,3783.0
+astar_space_check,28,20x20,SELF,324,326,16301,1443.0,True,14858.0
+astar_space_check,29,20x20,STEP_LIMIT,335,338,20000,1263.0,False,
+astar_space_check,30,20x20,SELF,134,136,3574,1187.0,True,2387.0
+astar_space_check,31,20x20,WALL,112,115,2220,1034.0,True,1186.0
+astar_space_check,32,20x20,STARVED,188,191,5987,2010.0,False,
+astar_space_check,33,20x20,SELF,123,125,2944,1547.0,True,1397.0
+astar_space_check,34,20x20,STEP_LIMIT,332,335,20000,1665.0,False,
+astar_space_check,35,20x20,SELF,111,113,2520,1824.0,True,696.0
+astar_space_check,36,20x20,SELF,148,150,3818,1514.0,True,2304.0
+astar_space_check,37,20x20,SELF,111,113,2349,1291.0,True,1058.0
+astar_space_check,38,20x20,STEP_LIMIT,348,351,20000,1252.0,False,
+astar_space_check,39,20x20,SELF,125,127,2966,1106.0,True,1860.0
+astar_space_check,40,20x20,STEP_LIMIT,368,371,20000,2156.0,False,
+astar_space_check,41,20x20,SELF,130,132,3671,969.0,True,2702.0
+astar_space_check,42,20x20,STEP_LIMIT,340,343,20000,1369.0,False,
+astar_space_check,43,20x20,STEP_LIMIT,341,344,20000,1463.0,False,
+astar_space_check,44,20x20,SELF,159,161,4642,1494.0,True,3148.0
+astar_space_check,45,20x20,SELF,117,119,2830,1173.0,True,1657.0
+astar_space_check,46,20x20,SELF,170,172,4630,1074.0,True,3556.0
+astar_space_check,47,20x20,STEP_LIMIT,359,362,20000,1585.0,False,
+astar_space_check,48,20x20,STEP_LIMIT,357,360,20000,1217.0,False,
+astar_space_check,49,20x20,STEP_LIMIT,345,348,20000,1483.0,False,
+astar_space_check,50,20x20,STEP_LIMIT,348,351,20000,1461.0,False,
+astar_space_check,51,20x20,SELF,113,115,2644,1334.0,True,1310.0
+astar_space_check,52,20x20,STEP_LIMIT,355,358,20000,1186.0,False,
+astar_space_check,53,20x20,STEP_LIMIT,359,362,20000,1047.0,False,
+astar_space_check,54,20x20,SELF,159,161,5265,1046.0,True,4219.0
+astar_space_check,55,20x20,STEP_LIMIT,354,357,20000,1971.0,False,
+astar_space_check,56,20x20,STEP_LIMIT,358,361,20000,1394.0,False,
+astar_space_check,57,20x20,STEP_LIMIT,343,346,20000,1466.0,False,
+astar_space_check,58,20x20,STEP_LIMIT,345,348,20000,1671.0,False,
+astar_space_check,59,20x20,SELF,155,157,5070,1569.0,True,3501.0
+astar_space_check,60,20x20,SELF,87,89,1855,1627.0,True,228.0
+astar_space_check,61,20x20,STEP_LIMIT,342,345,20000,842.0,False,
+astar_space_check,62,20x20,SELF,124,126,2299,1855.0,True,444.0
+astar_space_check,63,20x20,SELF,89,91,1643,1257.0,True,386.0

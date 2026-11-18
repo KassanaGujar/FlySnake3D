@@ -128,3 +128,16 @@ Full write-up: [RESEARCH_REPORT_03_body_vision.md](RESEARCH_REPORT_03_body_visio
 - **ANN with the new vision** self-traps in 94 % of full-game deaths, so the A* long-length comparison can now be run with the ANN.
 
 **Next, in order:** per-neuron gains and more readout types; average several brain samples per decision; A* long-length comparison with the ANN; degree-preserving wiring control.
+
+## Endpoint, 18 November 2026 (stage 7 complete)
+
+Full write-up: [RESEARCH_REPORT_04_learning.md](RESEARCH_REPORT_04_learning.md).
+
+- **Added:** dopamine three-factor plasticity on 62,261 Kenyon cell → MBON synapses (FlyWire DAN → MBON map; food drives PAM, crashes drive PPL1), smell (6 glomeruli), mushroom-body vision (8 types), 72 ms readout (6.6 spikes per decision, was 2.1).
+- **Calibration (disclosed, stage 7 only):** spike-frequency adaptation + Kenyon cell threshold +8 mV, chosen by the user, to stop an olfactory lock-up in the published model. Costs the old stage 5 champion 17.4 → 13.7 food, hence a matched control.
+- **Learning vs matched no-learning control:** unseen games 20.3 / 2.33 vs 19.7 / 1.73 (food / deaths per 300 moves); full games 7.8 vs 8.8 (paired difference −0.9, CI −3.2 to +1.3); 50×50 17.7 vs 15.3 (+2.4, CI −1.2 to +6.1). **No measurable benefit from learning.** Same champion with learning switched off: food 20.2 vs 19.8 (paired −0.34, CI −0.84 to +0.16), although about 930 synapses per brain weaken by more than 10 % during play.
+- **Both beat stage 6** (16.7 / 2.3), so the gain is from readout, smell and extra vision. ANN with smell: 21.4 / 0.41; 23.4 per full game.
+- **Still a steering failure:** 99–100 % of crashes avoidable, death at about 9 cells; decisions now consistent (97–98 %).
+- **Compute note:** generations took 13–17 min on a quiet machine and about 50 min while Ollama and game launchers ran (17 Nov, 8 am–9 pm); stuck `remember` plugin hook scripts were also cleaned up.
+
+**Next, in order:** make the mushroom body matter to steering (MBON readout gains in the decoder, or punishment delivered at the moment of the bad turn); repeat seeds for learn vs control; A* long-length comparison with the ANN; degree-preserving wiring control.

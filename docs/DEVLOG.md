@@ -219,3 +219,25 @@ Queued (scripts/stage7_queue.sh, resumable; resume_stage7.bat): ann_v7_odour (AN
 fly_v7_learn and fly_v7_control (identical, learning forced off), both from the
 fly_v6_body_penalty2 champion, death costs 2 food, 600 moves, 40 generations; then diagnosis
 and full evaluation of both. About 11 h per fly run.
+
+## 18 Nov 2026: stage 7 results; learning changes synapses but not play
+
+Runs (scripts/stage7_queue.sh): ann_v7_odour, fly_v7_learn, fly_v7_control (identical,
+--no_plasticity), each 40 generations (ANN 80) from the fly_v6_body_penalty2 champion.
+Generation time 13-17 min on a quiet machine, about 50 min on 17 Nov 8 am-9 pm while Ollama
+(llama-server, about 2 cores and GPU memory) and game launchers ran and RAM was full (0.2 of
+16 GB free). The brains were not the cause: generation 2 and 17 champions produce the same
+activity (63 spikes, 16,000 synaptic events per step per brain). Stuck `remember` plugin
+session-start scripts (orphaned, one core each) were stopped by a 10-minute cleanup loop
+until the queue finished.
+
+Unseen games (500000-500063, 300 moves): learn 20.3 food / 2.33 deaths, control 19.7 / 1.73,
+ANN with smell 21.4 / 0.41. Full games: learn 7.8, control 8.8 (paired -0.9, CI -3.2 to +1.3);
+50x50: 17.7 vs 15.3 (+2.4, CI -1.2 to +6.1). Death diagnosis: 99-100 % avoidable, length 9,
+97-98 % decision agreement. experiments/learning_ablation_probe.py: same learning champion,
+learning on vs off: 19.8 vs 20.2 food (paired -0.34, CI -0.84 to +0.16); about 1.5 % of
+plastic synapses (about 930 per brain) weakened by more than 10 % during play.
+Evolution lowered the learning rate about 5-fold and recovery about 2.6-fold.
+Conclusion: no measurable benefit from learning; gains over stage 6 come from the readout,
+smell and mushroom-body vision. Likely reason: MBONs have a weak hold on the steering readout
+(902 synapses vs 2,105 from vision). Report: docs/RESEARCH_REPORT_04_learning.md.

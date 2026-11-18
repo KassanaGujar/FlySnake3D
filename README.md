@@ -20,7 +20,8 @@ This is a research project, not a game demo. The controller is the **FlyWire who
 | 3–4. Visual encoder / motor decoder connected to the brain | ✅ done |
 | 5. Evolution (fly, ANN and shuffled-wiring controls, held-out evaluation) | ✅ done: [report](docs/RESEARCH_REPORT_02_evolution.md) |
 | 6. Body-vs-wall vision, food-per-life scoring, repeats, 50×50 test | ✅ done: [report](docs/RESEARCH_REPORT_03_body_vision.md) |
-| 7. Experiments, analysis, dashboard | |
+| 7. Dopamine learning, smell, mushroom-body vision (with a matched no-learning control) | ✅ done: [report](docs/RESEARCH_REPORT_04_learning.md) |
+| 8. Experiments, analysis, dashboard | |
 
 Headline findings from Milestone 0 (details in the report):
 * The GPU simulator reproduces the published Brian2 model (per-neuron firing-rate r = 0.97).
@@ -33,6 +34,8 @@ Headline findings from Stage 2: greedy A\* (the primary baseline) dies by self-t
 Headline findings from Stage 5: evolution works (the evolved interface beats the un-evolved one on 64 of 64 unseen games), but the fly plays like a beginner. It eats 18 food per 300 moves with 3.7 deaths, against 22 food and 2.6 deaths for a small neural network on the same inputs, and dies at about 7 cells, long before it could self-trap. On shuffled wiring no visual signal reaches the steering neurons at all. Next steps are in [PROGRESS_AND_NEXT_STEPS.md](docs/PROGRESS_AND_NEXT_STEPS.md).
 
 Headline findings from Stage 6: letting the fly tell its own body from a wall, and scoring food per life, both cut deaths (to 1.3–2.3 per 300 moves over three seeds) but also cut food (13–15), so the fly is not a better player overall. 95–98 % of its crashes are still avoidable and it still dies at 7–9 cells. The same vision makes the small network nearly deathless in short games, and 94 % of its full-game deaths become self-traps, so the long-length A* question is now testable for the network but not yet for the fly.
+
+Headline findings from Stage 7: the fly brain can now learn during play (dopamine-driven Kenyon cell → MBON plasticity on 62,261 FlyWire synapses), smell food, and see through the mushroom body, on a disclosed calibration of the model (adaptation, sparser Kenyon cells) that stops an olfactory lock-up. Learning did **not** help: the learning fly and an identical fly with learning switched off are within each other's confidence intervals on every test (about 20 food and 2 deaths per 300 unseen moves; 8–9 food per full game against 62 for greedy A\*). Both beat the stage 6 fly, so the gain came from the longer readout, smell and extra vision. Crashes are still nearly all avoidable, now with consistent (97 %) decisions.
 
 ![evolution results](docs/images/evolution_results.png)
 

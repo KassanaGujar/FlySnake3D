@@ -1,0 +1,23 @@
+{
+ "controller": "fly",
+ "run": "fly_v7_control",
+ "generations": 40,
+ "pop": 64,
+ "decisions": 600,
+ "size": 20,
+ "dt": 0.6,
+ "window_ms": 72.0,
+ "sigma0": 0.15,
+ "seed": 0,
+ "device": null,
+ "readout_from_ms": 12.0,
+ "regular_input": true,
+ "fitness": "penalty",
+ "death_penalty": 2.0,
+ "learning": true,
+ "no_plasticity": true,
+ "theta_scale": 8.0,
+ "odour": false,
+ "init_from": "results/evolution/fly_v6_body_penalty2/champion.npy",
+ "genome_size": 162
+}
