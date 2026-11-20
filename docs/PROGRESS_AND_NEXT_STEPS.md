@@ -141,3 +141,15 @@ Full write-up: [RESEARCH_REPORT_04_learning.md](RESEARCH_REPORT_04_learning.md).
 - **Compute note:** generations took 13–17 min on a quiet machine and about 50 min while Ollama and game launchers ran (17 Nov, 8 am–9 pm); stuck `remember` plugin hook scripts were also cleaned up.
 
 **Next, in order:** make the mushroom body matter to steering (MBON readout gains in the decoder, or punishment delivered at the moment of the bad turn); repeat seeds for learn vs control; A* long-length comparison with the ANN; degree-preserving wiring control.
+
+## Endpoint, 20 November 2026 (stage 8 complete, final learning trial)
+
+Full write-up: [RESEARCH_REPORT_05_move_feedback.md](RESEARCH_REPORT_05_move_feedback.md).
+
+- **Added:** per-move dopamine (danger ahead drives PPL1, closer to food drives PAM; engineered shaping, disclosed) and an MBON readout (35 FlyWire types, one weight each). Pre-test: learning could flip up to 90 % of moves.
+- **Learning vs matched no-learning control, full games:** 20x20 6.7 vs 8.9 food (paired -2.2, CI -4.3 to -0.2); 50x50 9.4 vs 16.8 (-7.4, CI -10.9 to -4.1). **Learning made play worse.**
+- **Unseen games (300 moves):** learn 19.0 / 2.03, control 20.1 / 1.89 (food / deaths); neither improved on its starting genome.
+- **Evolution set the danger (punishment) drive to 0 Hz** in the learning champion.
+- **Still a steering failure:** 97-100 % of crashes avoidable, death at 8-9 cells.
+- **Conclusion:** the fly can be evolved to play Snake poorly but not well with this interface; within-life learning does not help; the long-length A* comparison is out of reach.
+- Not done: repeat seeds; same-champion learning on/off ablation for stage 8.

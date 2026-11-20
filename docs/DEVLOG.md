@@ -241,3 +241,50 @@ Evolution lowered the learning rate about 5-fold and recovery about 2.6-fold.
 Conclusion: no measurable benefit from learning; gains over stage 6 come from the readout,
 smell and mushroom-body vision. Likely reason: MBONs have a weak hold on the steering readout
 (902 synapses vs 2,105 from vision). Report: docs/RESEARCH_REPORT_04_learning.md.
+
+## 2026-11-18 (later): stage 8, the final learning trial (user: "last trial before just saying that the fly cannot")
+
+User chose both changes:
+1. Per-move teaching signals (engineered, disclosed; not controller rules). After every move:
+   cell straight ahead of the head blocked -> PPL1 (punishment); head closer to food without
+   eating -> PAM (reward). Two evolved drive genes. Death and food dopamine unchanged.
+2. MBON readout: the decoder also reads all 35 FlyWire MBON types (96 neurons, every type
+   bilateral), one evolved weight per type on right - left spikes, same form as the DN
+   readout. Weights start at 0, so the starting brain plays exactly like the stage 7 champion.
+Genome 162 -> 199 (agents/policies.py to_v8_genome). Flags --mbon_readout --move_feedback.
+
+Bug found and fixed while building the probe: FlyPolicy.feedback stored the caller's arrays,
+and act() clears them in place, so a second policy fed the same arrays never got dopamine.
+Training runs one policy and was not affected; feedback now copies.
+
+Pre-test (experiments/move_feedback_probe.py, 64 brains, 300 moves, seeds 600000+): learning
+copy and frozen copy in lockstep on the same games (sanity mode with both frozen: identical).
+Learned change in MBON (right - left) spikes summed over types: 4.6 per decision in the first
+50 moves, 6.2 in the last 100, against a descending-neuron distance to threshold of 1.7-1.9.
+With |w| = 1 learning could flip 71 % -> 90 % of moves. Caveat: the change is as large as the
+MBON signal itself (6.4), so part of it may be spike-timing divergence rather than useful
+memory; it is an upper bound on influence, not evidence of useful learning.
+6.1 danger moves and 260 closer moves per brain per 300 moves (the reward fires on most moves).
+
+Started fly_v8_learn and fly_v8_control (--no_plasticity), both from the fly_v7_learn champion,
+40 generations, 600 moves, death penalty 2, all stage 7 settings, running in parallel.
+54 tests pass.
+
+Speed: about 27 min per generation each (GPU 91 % busy; together about the same total time as
+one after the other). The user agreed to stop at generation 20 if both runs are flat.
+Stopping rule, fixed before generation 20 is seen (gens 0-19, population mean fitness):
+  flat     = least-squares slope over gens 10-19 below +0.5 fitness per generation, in BOTH runs
+  learning ahead = learn minus control, averaged over gens 15-19, more than 2 standard errors
+           above 0 (standard error from the 5 per-generation differences)
+Stop both at generation 20 only if both are flat AND learning is not ahead; otherwise run to 40.
+Either way the champions are evaluated the same way afterwards.
+
+2026-11-18 22:30: both runs were paused by the resource-allocation session at about 22:02 and the PC then rebooted. Resumed from checkpoint.npz with the same command (learn at generation 12, control at 9); new output in results/stage8/*_resume.log. No generation was lost.
+
+2026-11-19 05:34, generation-20 check (pre-registered rule): population mean fitness slope over gens 10-19 learn +0.94, control +0.75 per generation, so NOT flat; learn minus control over gens 15-19 = -2.22 (2 SE = 0.77), i.e. the control is ahead. Rule says continue to 40; both runs continue.
+
+## 2026-11-20: stage 8 results and conclusion
+
+Both runs finished 40 generations (19-20 Nov). Evaluated with evaluate_evolution.py (--stage stage8 / stage8_control, --big, --skip_dt_check) and diagnose_deaths.py --quick; paired comparison in experiments/compare_stage8.py -> results/stage8/comparison.json.
+Full games learn - control: 20x20 -2.2 (CI -4.3 to -0.2), 50x50 -7.4 (-10.9 to -4.1). Unseen 300 moves: learn 19.0 food / 2.03 deaths, control 20.1 / 1.89; both equal to their starting genome. Learning champion: danger drive 0 Hz, closer 27 Hz, mean |MBON weight| 0.24 (control 0.15). Learning fly dies on its own body more (69 vs 40 of 150 / 121 deaths).
+Conclusion recorded in Report 05: the fly can be evolved to play poorly but not well; learning did not help (stage 7) and hurt (stage 8). 54 tests pass.

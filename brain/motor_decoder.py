@@ -28,20 +28,26 @@ THETA_SCALE = 4.0     # theta gene in [0, 1] -> threshold in weighted spikes per
 
 
 class Decoder:
-    def __init__(self, conn, torch, device):
+    """extra: optional list of (name, left_indices, right_indices) read the same way
+    as the descending neurons (stage 8: the mushroom-body output neurons)."""
+
+    def __init__(self, conn, torch, device, extra=None):
         self.t = torch
         slot = np.full(conn.W.shape[0], -1, np.int64)
         self.indices = {}
-        for k, ctype in enumerate(READOUT_TYPES):
-            for s, side in enumerate(("left", "right")):
-                ii = conn.indices_of_type(ctype, side=side)
+        groups = [(c, conn.indices_of_type(c, side="left"), conn.indices_of_type(c, side="right"))
+                  for c in READOUT_TYPES] + list(extra or [])
+        for k, (ctype, left, right) in enumerate(groups):
+            for s, (side, ii) in enumerate((("left", left), ("right", right))):
+                assert (slot[ii] < 0).all(), f"{ctype} {side} overlaps another readout group"
                 slot[ii] = 2 * k + s
                 self.indices[(ctype, side)] = ii
+        self.n_types = len(groups)
         self.slot = torch.as_tensor(slot, device=device)
         self.device = device
 
     def new_counts(self, B: int):
-        return self.t.zeros(2 * N_OUT * B, device=self.device)
+        return self.t.zeros(2 * self.n_types * B, device=self.device)
 
     def accumulate(self, counts, pre, b, B: int):
         """Add this step's spikes (pre, b) of readout neurons to ``counts``."""
@@ -51,8 +57,8 @@ class Decoder:
             counts.index_add_(0, s[m] * B + b[m], self.t.ones(int(m.sum()), device=self.device))
 
     def actions(self, counts, weights, theta, B: int, theta_scale: float = THETA_SCALE) -> np.ndarray:
-        """counts (2*N_OUT*B,), weights (B, N_OUT) in [-1, 1], theta (B,) in [0, 1] -> actions (B,)."""
-        c = counts.view(N_OUT, 2, B)
+        """counts (2*n_types*B,), weights (B, n_types) in [-1, 1], theta (B,) in [0, 1] -> actions (B,)."""
+        c = counts.view(self.n_types, 2, B)
         turn = ((c[:, 1] - c[:, 0]).T * weights).sum(1)          # right minus left
         th = theta * theta_scale
         act = self.t.ones(B, dtype=self.t.long, device=self.device)      # STRAIGHT

@@ -26,7 +26,8 @@ import numpy as np
 
 from agents.policies import AnnPolicy, FlyPolicy
 from brain.visual_encoder import FEATURES, N_FEAT, view_features
-from evolution.rollout import DEATHS, LIFE_SEED_STEP, act, feedback, new_evaluation
+from brain.mushroom_body import food_distance, move_signals
+from evolution.rollout import DEATHS, LIFE_SEED_STEP, act, feedback, new_evaluation, wants_move_signals
 from experiments.evolve import train_config
 from game.environment import SnakeGame
 
@@ -56,6 +57,7 @@ def play_logged(policy, cfg, reset_each: bool = False):
     lives = np.zeros(B, np.int64)
     food = deaths = 0
     log, views = [], []
+    ms = wants_move_signals(policy)
     new_evaluation(policy)
     policy.reset(np.ones(B, bool))
     feats = np.zeros((B, 2, N_FEAT), np.float32)
@@ -70,12 +72,18 @@ def play_logged(policy, cfg, reset_each: bool = False):
         restart = np.zeros(B, bool)
         ate = np.zeros(B, bool)
         died = np.zeros(B, bool)
+        danger = np.zeros(B, bool)
+        closer = np.zeros(B, bool)
         for b, g in enumerate(games):
             safe = safe_actions(g)
             a = int(acts[b])
             before = g.food_eaten
+            dist = food_distance(g) if ms else None
             g.step(a)
             ate[b] = g.food_eaten > before
+            if ms:
+                danger[b], closer[b] = move_signals(g, dist)
+                closer[b] = closer[b] and not ate[b]
             if g.done:
                 food += g.food_eaten
                 if g.outcome in DEATHS:
@@ -88,7 +96,7 @@ def play_logged(policy, cfg, reset_each: bool = False):
                 games[b] = SnakeGame(cfg, int(SEEDS[b]) + LIFE_SEED_STEP * int(lives[b]))
                 prev[b] = None
                 restart[b] = True
-        feedback(policy, ate, died)
+        feedback(policy, ate, died, danger, closer)
         if restart.any():
             policy.reset(restart)
     food += sum(g.food_eaten for g in games)
@@ -139,7 +147,8 @@ def main():
     rc = json.loads((EVO / a.run / "config.json").read_text())
     kw = dict(dt=rc["dt"], window_ms=rc["window_ms"], readout_from_ms=rc.get("readout_from_ms", 0.0),
               regular_input=rc.get("regular_input", False), learning=rc.get("learning", False),
-              plasticity=not rc.get("no_plasticity", False), theta_scale=rc.get("theta_scale"))
+              plasticity=not rc.get("no_plasticity", False), theta_scale=rc.get("theta_scale"),
+              mbon_readout=rc.get("mbon_readout", False), move_feedback=rc.get("move_feedback", False))
     champ = np.load(EVO / a.run / "champion.npy")
     genomes = np.repeat(champ[None], B, 0)
     conn = load_connectome()

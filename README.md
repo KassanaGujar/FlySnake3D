@@ -21,7 +21,7 @@ This is a research project, not a game demo. The controller is the **FlyWire who
 | 5. Evolution (fly, ANN and shuffled-wiring controls, held-out evaluation) | ✅ done: [report](docs/RESEARCH_REPORT_02_evolution.md) |
 | 6. Body-vs-wall vision, food-per-life scoring, repeats, 50×50 test | ✅ done: [report](docs/RESEARCH_REPORT_03_body_vision.md) |
 | 7. Dopamine learning, smell, mushroom-body vision (with a matched no-learning control) | ✅ done: [report](docs/RESEARCH_REPORT_04_learning.md) |
-| 8. Experiments, analysis, dashboard | |
+| 8. Final learning trial: per-move dopamine signals + mushroom-body readout (matched control) | ✅ done: [report](docs/RESEARCH_REPORT_05_move_feedback.md) |
 
 Headline findings from Milestone 0 (details in the report):
 * The GPU simulator reproduces the published Brian2 model (per-neuron firing-rate r = 0.97).
@@ -36,6 +36,8 @@ Headline findings from Stage 5: evolution works (the evolved interface beats the
 Headline findings from Stage 6: letting the fly tell its own body from a wall, and scoring food per life, both cut deaths (to 1.3–2.3 per 300 moves over three seeds) but also cut food (13–15), so the fly is not a better player overall. 95–98 % of its crashes are still avoidable and it still dies at 7–9 cells. The same vision makes the small network nearly deathless in short games, and 94 % of its full-game deaths become self-traps, so the long-length A* question is now testable for the network but not yet for the fly.
 
 Headline findings from Stage 7: the fly brain can now learn during play (dopamine-driven Kenyon cell → MBON plasticity on 62,261 FlyWire synapses), smell food, and see through the mushroom body, on a disclosed calibration of the model (adaptation, sparser Kenyon cells) that stops an olfactory lock-up. Learning did **not** help: the learning fly and an identical fly with learning switched off are within each other's confidence intervals on every test (about 20 food and 2 deaths per 300 unseen moves; 8–9 food per full game against 62 for greedy A\*). Both beat the stage 6 fly, so the gain came from the longer readout, smell and extra vision. Crashes are still nearly all avoidable, now with consistent (97 %) decisions.
+
+Headline findings from Stage 8 (the final learning trial): dopamine now arrives after every move (punishment when a wall or body is straight ahead, reward when the snake got closer to food; disclosed as engineered shaping signals), and all 35 mushroom-body output types feed the steering decision. A pre-test showed learning could now flip up to 90 % of moves. Result: learning made the fly **worse**. Against an identical fly without learning it eats 2.2 less food per full game on 20×20 (95 % CI −4.3 to −0.2) and 7.4 less on 50×50 (−10.9 to −4.1), and evolution switched the punishment signal off. **Conclusion:** with this interface, the FlyWire connectome can be evolved to play Snake poorly (7–9 food per full game against 62 for greedy A\*, death at 8–9 cells from avoidable crashes) but not well, its learning does not help, and the long-length comparison with A\* cannot be reached.
 
 ![evolution results](docs/images/evolution_results.png)
 

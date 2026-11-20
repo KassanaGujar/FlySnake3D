@@ -47,7 +47,7 @@ FLY_INIT_MEAN = np.concatenate([np.full(N_FEAT * N_POP, 0.25), np.full(N_OUT, 0.
 #   gains feature -> mushroom-body visual type   N_FEAT * N_MBV
 #   gains odour -> ORN type                      N_ODOUR
 #   learning genes (see brain/mushroom_body.py)  N_LEARN
-from brain.mushroom_body import N_LEARN, N_MBV, N_ODOUR  # noqa: E402
+from brain.mushroom_body import MAX_RATE_HZ, N_LEARN, N_MBV, N_ODOUR  # noqa: E402
 FLY_GENOME_LEARN = FLY_GENOME + N_FEAT * N_MBV + N_ODOUR + N_LEARN
 LEARN_DEFAULTS = np.concatenate([np.full(N_FEAT * N_MBV, 0.1), np.full(N_ODOUR, 0.25),
                                  np.full(N_LEARN, 0.5)]).astype(np.float32)
@@ -61,6 +61,24 @@ def to_learning_genome(g: np.ndarray) -> np.ndarray:
         return g
     g = upgrade_fly_genome(g)
     return np.concatenate([g, np.broadcast_to(LEARN_DEFAULTS, g.shape[:-1] + LEARN_DEFAULTS.shape)], -1)
+
+
+# Stage 8 (final learning trial): the stage 7 genome, then
+#   MBON readout weights, 2*g - 1                N_MBON   (default 0.5 = weight 0)
+#   per-move teaching-signal drives              N_SHAPING
+from brain.mushroom_body import N_MBON, N_SHAPING  # noqa: E402
+FLY_GENOME_V8 = FLY_GENOME_LEARN + N_MBON + N_SHAPING
+V8_DEFAULTS = np.concatenate([np.full(N_MBON, 0.5), np.full(N_SHAPING, 0.5)]).astype(np.float32)
+
+
+def to_v8_genome(g: np.ndarray) -> np.ndarray:
+    """Any earlier fly genome -> stage 8 layout. MBON weights start at 0, so the
+    brain plays exactly as before until evolution gives them a value."""
+    g = np.asarray(g, np.float32)
+    if g.shape[-1] == FLY_GENOME_V8:
+        return g
+    g = to_learning_genome(g)
+    return np.concatenate([g, np.broadcast_to(V8_DEFAULTS, g.shape[:-1] + V8_DEFAULTS.shape)], -1)
 
 
 def fly_genome_names() -> list[str]:
@@ -87,7 +105,8 @@ class FlyPolicy:
                  device: str | None = None, seed: int = 0, W=None, record_col: int | None = None,
                  readout_from_ms: float = 0.0, regular_input: bool = False,
                  learning: bool = False, theta_scale: float | None = None,
-                 calibrated: bool | None = None, plasticity: bool = True):
+                 calibrated: bool | None = None, plasticity: bool = True,
+                 mbon_readout: bool = False, move_feedback: bool = False):
         import torch
 
         from brain.event_simulator import EventLIF
@@ -97,7 +116,15 @@ class FlyPolicy:
                             batch=self.B, device=device, seed=seed)
         dev = self.sim.device
         self.enc = Encoder(conn, torch, dev)
-        self.dec = Decoder(conn, torch, dev)
+        # Stage 8: both options use the stage 8 genome and need the learning brain.
+        self.v8 = mbon_readout or move_feedback
+        self.mbon_readout, self.move_feedback = mbon_readout, move_feedback
+        assert learning or not self.v8, "stage 8 options need learning=True"
+        extra = None
+        if mbon_readout:
+            from brain.mushroom_body import mbon_readout_groups
+            extra = mbon_readout_groups(conn)
+        self.dec = Decoder(conn, torch, dev, extra=extra)
         self.steps = int(round(window_ms / dt))
         # Descending-neuron spikes before this time are not counted: early in the
         # window they still reflect the previous view (signals need several
@@ -127,17 +154,33 @@ class FlyPolicy:
             self.sim.enable_plasticity(self.mb["kc"], self.mb["mbon"], self.mb["dan"], self.mb["M"])
             self.ate = np.zeros(self.B, bool)
             self.died = np.zeros(self.B, bool)
+            self.danger = np.zeros(self.B, bool)
+            self.closer = np.zeros(self.B, bool)
         self.set_genomes(genomes)
         self.record_col = record_col
         self.spike_log: list[np.ndarray] = []      # per decision: neurons that spiked in record_col
         self.last_counts = None
 
     def set_genomes(self, genomes: np.ndarray):
-        genomes = to_learning_genome(genomes) if self.learning else upgrade_fly_genome(genomes)
+        if self.v8:
+            genomes = to_v8_genome(genomes)
+        elif self.learning:
+            genomes = to_learning_genome(genomes)
+        else:
+            genomes = upgrade_fly_genome(genomes)
         g = self.t.as_tensor(genomes, device=self.sim.device)
         k = N_FEAT * N_POP
         self.gains = g[:, :k].reshape(self.B, N_FEAT, N_POP).contiguous()
         self.weights = g[:, k:k + N_OUT] * 2 - 1
+        if self.mbon_readout:
+            i = FLY_GENOME_LEARN
+            self.weights = self.t.cat([self.weights, g[:, i:i + N_MBON] * 2 - 1], 1).contiguous()
+        if self.v8:
+            from brain.mushroom_body import shaping_params
+            i = FLY_GENOME_LEARN + N_MBON
+            sp = shaping_params(genomes[:, i:i + N_SHAPING])
+            self.danger_hz = self.t.as_tensor(sp["danger_hz"], device=self.sim.device, dtype=self.t.float32)
+            self.closer_hz = self.t.as_tensor(sp["closer_hz"], device=self.sim.device, dtype=self.t.float32)
         self.theta = g[:, k + N_OUT]
         if self.learning:
             from brain.mushroom_body import learning_params
@@ -160,12 +203,21 @@ class FlyPolicy:
             self.sim.reset_plasticity(np.ones(self.B, bool))
             self.ate[:] = False
             self.died[:] = False
+            self.danger[:] = False
+            self.closer[:] = False
 
-    def feedback(self, ate: np.ndarray, died: np.ndarray):
-        """What happened after the last move. Drives dopamine during the next move."""
+    def feedback(self, ate: np.ndarray, died: np.ndarray, danger=None, closer=None):
+        """What happened after the last move. Drives dopamine during the next move.
+
+        danger / closer (stage 8, per move) are used only with move_feedback=True."""
         if self.learning:
-            self.ate = np.asarray(ate, bool)
-            self.died = np.asarray(died, bool)
+            # Copies: act() clears these in place, and the caller's arrays may be
+            # shared with another policy (lockstep probes).
+            self.ate = np.array(ate, bool)
+            self.died = np.array(died, bool)
+            if self.move_feedback and danger is not None:
+                self.danger = np.array(danger, bool)
+                self.closer = np.array(closer, bool)
 
     def reset(self, mask):
         self.sim.reset_columns(mask)
@@ -186,10 +238,17 @@ class FlyPolicy:
             ate = t.as_tensor(self.ate, device=dev, dtype=t.float32)
             died = t.as_tensor(self.died, device=dev, dtype=t.float32)
             pam, ppl1 = self.mb["pam"], self.mb["ppl1"]
-            sim.set_poisson_input(pam, (self.reward_hz * ate)[None].expand(len(pam), self.B).contiguous())
-            sim.set_poisson_input(ppl1, (self.punish_hz * died)[None].expand(len(ppl1), self.B).contiguous())
+            pam_hz = self.reward_hz * ate
+            ppl1_hz = self.punish_hz * died
+            if self.move_feedback:
+                pam_hz = pam_hz + self.closer_hz * t.as_tensor(self.closer, device=dev, dtype=t.float32)
+                ppl1_hz = ppl1_hz + self.danger_hz * t.as_tensor(self.danger, device=dev, dtype=t.float32)
+            sim.set_poisson_input(pam, pam_hz.clamp(max=MAX_RATE_HZ)[None].expand(len(pam), self.B).contiguous())
+            sim.set_poisson_input(ppl1, ppl1_hz.clamp(max=MAX_RATE_HZ)[None].expand(len(ppl1), self.B).contiguous())
             self.ate[:] = False
             self.died[:] = False
+            self.danger[:] = False
+            self.closer[:] = False
         counts = self.dec.new_counts(self.B)
         rec = []
         for i in range(self.steps):

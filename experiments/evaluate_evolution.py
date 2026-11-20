@@ -85,7 +85,8 @@ def main():
     late = fly_cfg.get("readout_from_ms", 0.0)
     reg = fly_cfg.get("regular_input", False)
     s7 = dict(learning=fly_cfg.get("learning", False), plasticity=not fly_cfg.get("no_plasticity", False),
-              theta_scale=fly_cfg.get("theta_scale"))
+              theta_scale=fly_cfg.get("theta_scale"),
+              mbon_readout=fly_cfg.get("mbon_readout", False), move_feedback=fly_cfg.get("move_feedback", False))
     report: dict = {"held_out_seeds": [int(HELD_OUT[0]), int(HELD_OUT[-1])], "decisions": DECISIONS,
                     "fly_settings": {"dt_ms": dt, "window_ms": window}}
 

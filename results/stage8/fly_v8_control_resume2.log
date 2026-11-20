@@ -1,0 +1,33 @@
+resumed fly_v8_control at generation 9
+gen   9  champ   38.0  best   39.0  mean   26.3  food(mean)  41.1  deaths(mean)   7.4  sigma 0.074  1633s
+gen  10  champ   38.0  best   40.0  mean   26.4  food(mean)  37.8  deaths(mean)   5.7  sigma 0.072  1654s
+gen  11  champ   26.0  best   38.0  mean   28.0  food(mean)  38.2  deaths(mean)   5.1  sigma 0.069  1636s
+gen  12  champ   30.0  best   39.0  mean   29.6  food(mean)  38.9  deaths(mean)   4.7  sigma 0.067  1616s
+gen  13  champ   34.0  best   40.0  mean   28.6  food(mean)  39.7  deaths(mean)   5.6  sigma 0.064  1616s
+gen  14  champ   37.0  best   42.0  mean   33.8  food(mean)  42.5  deaths(mean)   4.4  sigma 0.061  1617s
+gen  15  champ   34.0  best   40.0  mean   31.2  food(mean)  40.7  deaths(mean)   4.8  sigma 0.058  1669s
+gen  16  champ   30.0  best   45.0  mean   35.3  food(mean)  43.2  deaths(mean)   3.9  sigma 0.057  1626s
+gen  17  champ   37.0  best   41.0  mean   35.4  food(mean)  42.8  deaths(mean)   3.7  sigma 0.055  1616s
+gen  18  champ   35.0  best   40.0  mean   32.7  food(mean)  40.9  deaths(mean)   4.1  sigma 0.053  1631s
+gen  19  champ   29.0  best   39.0  mean   31.2  food(mean)  42.3  deaths(mean)   5.5  sigma 0.052  1634s
+gen  20  champ   30.0  best   37.0  mean   32.1  food(mean)  40.1  deaths(mean)   4.0  sigma 0.051  1624s
+gen  21  champ   33.0  best   40.0  mean   28.9  food(mean)  39.3  deaths(mean)   5.2  sigma 0.049  1632s
+gen  22  champ   39.0  best   45.0  mean   32.1  food(mean)  44.0  deaths(mean)   6.0  sigma 0.048  1642s
+gen  23  champ   30.0  best   38.0  mean   26.6  food(mean)  38.6  deaths(mean)   6.0  sigma 0.047  1645s
+gen  24  champ   29.0  best   39.0  mean   29.0  food(mean)  38.4  deaths(mean)   4.7  sigma 0.045  1633s
+gen  25  champ   29.0  best   38.0  mean   28.3  food(mean)  38.7  deaths(mean)   5.2  sigma 0.044  1660s
+gen  26  champ   32.0  best   40.0  mean   29.4  food(mean)  38.0  deaths(mean)   4.3  sigma 0.043  1688s
+gen  27  champ   35.0  best   40.0  mean   33.2  food(mean)  43.5  deaths(mean)   5.1  sigma 0.042  1629s
+gen  28  champ   27.0  best   33.0  mean   26.0  food(mean)  37.0  deaths(mean)   5.5  sigma 0.040  1638s
+gen  29  champ   33.0  best   38.0  mean   31.1  food(mean)  39.3  deaths(mean)   4.1  sigma 0.039  1638s
+gen  30  champ   31.0  best   37.0  mean   29.7  food(mean)  40.2  deaths(mean)   5.2  sigma 0.038  1631s
+gen  31  champ   30.0  best   36.0  mean   28.2  food(mean)  38.1  deaths(mean)   5.0  sigma 0.037  1608s
+gen  32  champ   31.0  best   38.0  mean   30.5  food(mean)  39.7  deaths(mean)   4.6  sigma 0.036  1705s
+gen  33  champ   25.0  best   43.0  mean   26.5  food(mean)  37.5  deaths(mean)   5.5  sigma 0.035  1928s
+gen  34  champ   32.0  best   40.0  mean   33.2  food(mean)  41.4  deaths(mean)   4.1  sigma 0.034  1893s
+gen  35  champ   34.0  best   36.0  mean   27.4  food(mean)  37.3  deaths(mean)   5.0  sigma 0.033  1867s
+gen  36  champ   38.0  best   41.0  mean   32.0  food(mean)  40.8  deaths(mean)   4.4  sigma 0.032  2026s
+gen  37  champ   31.0  best   41.0  mean   31.1  food(mean)  40.0  deaths(mean)   4.5  sigma 0.032  849s
+gen  38  champ   31.0  best   37.0  mean   29.2  food(mean)  40.1  deaths(mean)   5.4  sigma 0.031  722s
+gen  39  champ   28.0  best   38.0  mean   30.8  food(mean)  38.7  deaths(mean)   4.0  sigma 0.029  719s
+done

@@ -1,0 +1,600 @@
+{
+ "held_out_seeds": [
+  500000,
+  500063
+ ],
+ "decisions": 300,
+ "fly_settings": {
+  "dt_ms": 0.6,
+  "window_ms": 72.0
+ },
+ "fly_held_out_progress": {
+  "start (not evolved)": {
+   "fitness_mean": -14.28,
+   "fitness_ci95": [
+    -14.48,
+    -14.06
+   ],
+   "food_mean": 0.72,
+   "food_ci95": [
+    0.52,
+    0.94
+   ],
+   "deaths_mean": 30.0,
+   "max_length": 4
+  },
+  "gen 0": {
+   "fitness_mean": 18.62,
+   "fitness_ci95": [
+    17.98,
+    19.23
+   ],
+   "food_mean": 19.72,
+   "food_ci95": [
+    19.06,
+    20.33
+   ],
+   "deaths_mean": 2.2,
+   "max_length": 27
+  },
+  "gen 12": {
+   "fitness_mean": 18.64,
+   "fitness_ci95": [
+    18.08,
+    19.21
+   ],
+   "food_mean": 19.77,
+   "food_ci95": [
+    19.25,
+    20.3
+   ],
+   "deaths_mean": 2.25,
+   "max_length": 23
+  },
+  "gen 19": {
+   "fitness_mean": 18.5,
+   "fitness_ci95": [
+    17.86,
+    19.16
+   ],
+   "food_mean": 19.59,
+   "food_ci95": [
+    18.95,
+    20.25
+   ],
+   "deaths_mean": 2.19,
+   "max_length": 22
+  },
+  "gen 25": {
+   "fitness_mean": 18.62,
+   "fitness_ci95": [
+    18.08,
+    19.14
+   ],
+   "food_mean": 19.7,
+   "food_ci95": [
+    19.11,
+    20.27
+   ],
+   "deaths_mean": 2.16,
+   "max_length": 22
+  },
+  "gen 32": {
+   "fitness_mean": 18.36,
+   "fitness_ci95": [
+    17.68,
+    19.02
+   ],
+   "food_mean": 19.5,
+   "food_ci95": [
+    18.86,
+    20.11
+   ],
+   "deaths_mean": 2.28,
+   "max_length": 26
+  },
+  "gen 39": {
+   "fitness_mean": 18.86,
+   "fitness_ci95": [
+    18.19,
+    19.49
+   ],
+   "food_mean": 19.84,
+   "food_ci95": [
+    19.2,
+    20.45
+   ],
+   "deaths_mean": 1.97,
+   "max_length": 26
+  },
+  "final": {
+   "fitness_mean": 19.16,
+   "fitness_ci95": [
+    18.53,
+    19.81
+   ],
+   "food_mean": 20.11,
+   "food_ci95": [
+    19.48,
+    20.75
+   ],
+   "deaths_mean": 1.89,
+   "max_length": 26
+  }
+ },
+ "fly_final_minus_start": {
+  "mean": 33.45,
+  "ci95": [
+   32.8,
+   34.09
+  ],
+  "seeds_improved": 64,
+  "seeds": 64
+ },
+ "fly_training_trend": {
+  "generations": 40,
+  "spearman_generation_vs_champion_fitness": -0.075,
+  "mean_fitness_first5": 0.68,
+  "mean_fitness_last5": 30.1,
+  "champion_fitness_first5": 32.4,
+  "champion_fitness_last5": 32.4
+ },
+ "controls_held_out": {
+  "random": {
+   "fitness_mean": -1.63,
+   "fitness_ci95": [
+    -1.84,
+    -1.41
+   ],
+   "food_mean": 0.67,
+   "food_ci95": [
+    0.5,
+    0.86
+   ],
+   "deaths_mean": 4.61,
+   "max_length": 5
+  },
+  "reactive (hand-written)": {
+   "fitness_mean": 16.95,
+   "fitness_ci95": [
+    16.04,
+    17.83
+   ],
+   "food_mean": 17.14,
+   "food_ci95": [
+    16.28,
+    17.98
+   ],
+   "deaths_mean": 0.39,
+   "max_length": 27
+  },
+  "ann (evolved)": {
+   "fitness_mean": 21.19,
+   "fitness_ci95": [
+    20.63,
+    21.74
+   ],
+   "food_mean": 21.39,
+   "food_ci95": [
+    20.83,
+    21.97
+   ],
+   "deaths_mean": 0.41,
+   "max_length": 28
+  },
+  "ann start (not evolved)": {
+   "fitness_mean": -1.45,
+   "fitness_ci95": [
+    -1.5,
+    -1.38
+   ],
+   "food_mean": 0.03,
+   "food_ci95": [
+    0.0,
+    0.08
+   ],
+   "deaths_mean": 2.97,
+   "max_length": 4
+  }
+ },
+ "full_episodes": {
+  "fly (evolved)": {
+   "episodes": 64,
+   "food_mean": 8.9,
+   "food_ci95": [
+    7.39,
+    10.45
+   ],
+   "food_max": 26,
+   "steps_mean": 131.0,
+   "outcomes": {
+    "WALL": 41,
+    "SELF": 23
+   },
+   "self_trap_death_rate": 0.016
+  },
+  "random": {
+   "episodes": 64,
+   "food_mean": 0.2,
+   "food_ci95": [
+    0.09,
+    0.3
+   ],
+   "food_max": 2,
+   "steps_mean": 61.9,
+   "outcomes": {
+    "WALL": 63,
+    "SELF": 1
+   },
+   "self_trap_death_rate": 0.0
+  },
+  "reactive (hand-written)": {
+   "episodes": 64,
+   "food_mean": 29.7,
+   "food_ci95": [
+    25.62,
+    33.89
+   ],
+   "food_max": 66,
+   "steps_mean": 686.1,
+   "outcomes": {
+    "SELF": 37,
+    "STARVED": 26,
+    "WALL": 1
+   },
+   "self_trap_death_rate": 0.594
+  },
+  "ann (evolved)": {
+   "episodes": 64,
+   "food_mean": 23.4,
+   "food_ci95": [
+    20.91,
+    25.78
+   ],
+   "food_max": 46,
+   "steps_mean": 336.6,
+   "outcomes": {
+    "SELF": 59,
+    "WALL": 5
+   },
+   "self_trap_death_rate": 0.328
+  },
+  "ann start (not evolved)": {
+   "episodes": 64,
+   "food_mean": 0.0,
+   "food_ci95": [
+    0.0,
+    0.0
+   ],
+   "food_max": 0,
+   "steps_mean": 400.0,
+   "outcomes": {
+    "STARVED": 64
+   },
+   "self_trap_death_rate": 0.0
+  },
+  "astar_greedy": {
+   "episodes": 64,
+   "food_mean": 61.7,
+   "food_ci95": [
+    57.45,
+    65.89
+   ],
+   "food_max": 103,
+   "steps_mean": 973.7,
+   "outcomes": {
+    "SELF": 57,
+    "WALL": 7
+   },
+   "self_trap_death_rate": 1.0
+  },
+  "astar_time_aware": {
+   "episodes": 64,
+   "food_mean": 66.4,
+   "food_ci95": [
+    62.14,
+    70.59
+   ],
+   "food_max": 105,
+   "steps_mean": 1048.4,
+   "outcomes": {
+    "SELF": 56,
+    "WALL": 8
+   },
+   "self_trap_death_rate": 1.0
+  },
+  "astar_tail_check": {
+   "episodes": 64,
+   "food_mean": 346.2,
+   "food_ci95": [
+    339.42,
+    351.52
+   ],
+   "food_max": 376,
+   "steps_mean": 19472.7,
+   "outcomes": {
+    "STEP_LIMIT": 59,
+    "SELF": 3,
+    "STARVED": 2
+   },
+   "self_trap_death_rate": 0.047
+  },
+  "astar_space_check": {
+   "episodes": 64,
+   "food_mean": 236.9,
+   "food_ci95": [
+    209.86,
+    264.75
+   ],
+   "food_max": 368,
+   "steps_mean": 11531.3,
+   "outcomes": {
+    "STEP_LIMIT": 31,
+    "SELF": 30,
+    "WALL": 2,
+    "STARVED": 1
+   },
+   "self_trap_death_rate": 0.5
+  }
+ },
+ "full_episodes_50x50": {
+  "fly (evolved)": {
+   "episodes": 64,
+   "food_mean": 16.8,
+   "food_ci95": [
+    13.8,
+    19.95
+   ],
+   "food_max": 49,
+   "steps_mean": 580.3,
+   "outcomes": {
+    "SELF": 32,
+    "WALL": 32
+   },
+   "self_trap_death_rate": 0.031
+  },
+  "reactive (hand-written)": {
+   "episodes": 64,
+   "food_mean": 68.7,
+   "food_ci95": [
+    61.19,
+    76.13
+   ],
+   "food_max": 126,
+   "steps_mean": 3186.0,
+   "outcomes": {
+    "SELF": 52,
+    "STARVED": 12
+   },
+   "self_trap_death_rate": 0.797
+  },
+  "ann (evolved)": {
+   "episodes": 64,
+   "food_mean": 38.2,
+   "food_ci95": [
+    33.41,
+    43.19
+   ],
+   "food_max": 97,
+   "steps_mean": 1325.9,
+   "outcomes": {
+    "SELF": 62,
+    "WALL": 2
+   },
+   "self_trap_death_rate": 0.406
+  }
+ },
+ "recorded_game": {
+  "agent": "fly (evolved)",
+  "seed": 0,
+  "board": "20x20",
+  "outcome": "WALL",
+  "food_eaten": 0,
+  "final_length": 3,
+  "steps": 19,
+  "first_trap_step": null,
+  "self_trap_death": false,
+  "moves_trap_to_death": null
+ },
+ "fly_champion_genome": [
+  0.035,
+  0.37,
+  0.052,
+  0.056,
+  0.732,
+  0.015,
+  0.344,
+  0.164,
+  0.023,
+  0.905,
+  0.05,
+  0.036,
+  0.35,
+  0.0,
+  0.222,
+  0.178,
+  0.185,
+  0.505,
+  0.456,
+  0.511,
+  0.13,
+  0.0,
+  0.366,
+  0.174,
+  0.762,
+  0.674,
+  0.283,
+  0.242,
+  0.276,
+  0.033,
+  0.54,
+  0.412,
+  0.981,
+  0.234,
+  0.464,
+  0.914,
+  0.183,
+  0.963,
+  0.797,
+  0.981,
+  0.05,
+  0.086,
+  0.326,
+  0.06,
+  0.452,
+  0.007,
+  0.126,
+  0.669,
+  0.071,
+  0.267,
+  0.096,
+  0.24,
+  0.091,
+  0.052,
+  0.149,
+  0.083,
+  0.145,
+  0.293,
+  0.32,
+  0.168,
+  0.269,
+  0.0,
+  0.147,
+  0.157,
+  0.179,
+  0.151,
+  0.246,
+  0.113,
+  0.276,
+  0.23,
+  0.091,
+  0.29,
+  0.361,
+  0.42,
+  0.46,
+  0.436,
+  0.95,
+  0.201,
+  0.224,
+  0.312,
+  0.113,
+  0.429,
+  0.125,
+  0.074,
+  0.199,
+  0.234,
+  0.217,
+  0.344,
+  0.153,
+  0.321,
+  0.507,
+  0.496,
+  0.435,
+  0.36,
+  0.159,
+  0.206,
+  0.116,
+  0.169,
+  0.087,
+  0.029,
+  0.02,
+  0.084,
+  0.2,
+  0.169,
+  0.177,
+  0.303,
+  0.085,
+  0.379,
+  0.253,
+  0.119,
+  0.3,
+  0.104,
+  0.347,
+  0.028,
+  0.591,
+  0.073,
+  0.508,
+  0.218,
+  0.434,
+  0.087,
+  0.065,
+  0.174,
+  0.32,
+  0.041,
+  0.172,
+  0.211,
+  0.7,
+  0.156,
+  0.083,
+  0.321,
+  0.091,
+  0.182,
+  0.312,
+  0.103,
+  0.167,
+  0.489,
+  0.4,
+  0.242,
+  0.375,
+  0.028,
+  0.14,
+  0.093,
+  0.47,
+  0.264,
+  0.368,
+  0.21,
+  0.231,
+  0.138,
+  0.157,
+  0.042,
+  0.29,
+  0.296,
+  0.473,
+  0.409,
+  0.103,
+  0.102,
+  0.241,
+  0.182,
+  0.763,
+  0.559,
+  0.669,
+  0.604,
+  0.48,
+  0.49,
+  0.432,
+  0.612,
+  0.495,
+  0.336,
+  0.517,
+  0.449,
+  0.381,
+  0.653,
+  0.465,
+  0.361,
+  0.496,
+  0.41,
+  0.468,
+  0.624,
+  0.551,
+  0.795,
+  0.649,
+  0.441,
+  0.522,
+  0.591,
+  0.506,
+  0.486,
+  0.406,
+  0.66,
+  0.535,
+  0.491,
+  0.45,
+  0.535,
+  0.454,
+  0.324,
+  0.709,
+  0.492,
+  0.471,
+  0.439,
+  0.424
+ ]
+}

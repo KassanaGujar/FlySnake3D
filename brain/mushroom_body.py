@@ -138,6 +138,64 @@ def mushroom_body_wiring(conn):
     return {"kc": kc, "mbon": mbon, "pam": pam, "ppl1": ppl1, "dan": dan, "M": M}
 
 
+# ------------------------------------------------------------------ stage 8
+# 4. MBON READOUT  The decoder also reads the mushroom-body output neurons, the
+#    same way as the descending neurons: one evolved signed weight per MBON
+#    type on (right - left) spikes. All 35 FlyWire v783 MBON types have a left
+#    and a right member (96 neurons). This gives the plastic synapses a direct
+#    route to the choice of move; it adds no game knowledge.
+# 5. PER-MOVE TEACHING SIGNALS  (engineered, disclosed; NOT controller rules)
+#    After every move, not only at death:
+#      danger  -> PPL1 (punishment): the cell straight ahead of the head is now
+#                 blocked (wall, body or obstacle), i.e. the move led to a spot
+#                 where carrying on straight kills. A touch-like signal about
+#                 the head's immediate surroundings; no look-ahead.
+#      closer  -> PAM (reward): the head is now nearer the food (city-block),
+#                 without eating it.
+#    The fly is never told which move to make; it has to learn that itself.
+MBON_TYPES = ["MBON01", "MBON02", "MBON03", "MBON04", "MBON05", "MBON06", "MBON07", "MBON09",
+              "MBON10", "MBON11", "MBON12", "MBON13", "MBON14", "MBON15", "MBON15-like", "MBON16",
+              "MBON17", "MBON17-like", "MBON18", "MBON19", "MBON20", "MBON21", "MBON22", "MBON23",
+              "MBON24", "MBON25,MBON34", "MBON26", "MBON27", "MBON28", "MBON29", "MBON30", "MBON31",
+              "MBON32", "MBON33", "MBON35"]
+N_MBON = len(MBON_TYPES)
+N_SHAPING = 2             # danger -> PPL1 drive, closer-to-food -> PAM drive
+
+
+def mbon_readout_groups(conn) -> list:
+    """(type, left indices, right indices) for every MBON type, for Decoder(extra=...)."""
+    out = []
+    for t in MBON_TYPES:
+        left, right = _type_index(conn, t, "left"), _type_index(conn, t, "right")
+        assert len(left) and len(right), f"MBON type {t} missing on one side"
+        out.append((t, left, right))
+    return out
+
+
+def move_signals(game: SnakeGame, food_dist_before: int | None) -> tuple[bool, bool]:
+    """(danger, closer) after a move, for a game that is still running."""
+    if game.done:
+        return False, False
+    hx, hy = game.head
+    ahead = (hx + game.heading[0], hy + game.heading[1])
+    danger = bool(game.is_blocked(ahead))
+    closer = False
+    if game.food is not None and food_dist_before is not None:
+        closer = food_distance(game) < food_dist_before
+    return danger, closer
+
+
+def food_distance(game: SnakeGame) -> int | None:
+    if game.food is None:
+        return None
+    return abs(game.food[0] - game.head[0]) + abs(game.food[1] - game.head[1])
+
+
+def shaping_params(genes: np.ndarray) -> dict:
+    g = np.clip(np.asarray(genes, np.float64), 0, 1)
+    return {"danger_hz": MAX_RATE_HZ * g[:, 0], "closer_hz": MAX_RATE_HZ * g[:, 1]}
+
+
 def learning_params(genes: np.ndarray) -> dict:
     """Six genes in [0, 1] -> learning parameters (arrays over the batch)."""
     g = np.clip(np.asarray(genes, np.float64), 0, 1)

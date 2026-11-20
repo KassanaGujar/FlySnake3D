@@ -1,0 +1,34 @@
+{
+ "run": "fly_v7_learn",
+ "decisions": 300,
+ "brains": 64,
+ "seeds": [
+  600000,
+  600063
+ ],
+ "food_per_brain": 20.56,
+ "deaths_per_brain": 1.95,
+ "danger_moves_per_brain": 6.1,
+ "closer_moves_per_brain": 260.3,
+ "first_50_moves": {
+  "mbon_spikes_on": 21.0047,
+  "mbon_spikes_off": 21.06,
+  "mbon_lr_abs_off": 7.3488,
+  "mbon_lr_change": 4.5516,
+  "dn_turn_abs": 2.4628,
+  "margin": 1.9283,
+  "flip_possible": 0.7094
+ },
+ "last_100_moves": {
+  "mbon_spikes_on": 17.3503,
+  "mbon_spikes_off": 17.3631,
+  "mbon_lr_abs_off": 6.3519,
+  "mbon_lr_change": 6.1534,
+  "dn_turn_abs": 2.0476,
+  "margin": 1.6781,
+  "flip_possible": 0.9019
+ },
+ "plastic_synapses_below_0.9": 0.06353,
+ "mean_depression": 0.02746,
+ "note": "MBON weights are 0 here, so moves are the stage 7 champion's; the numbers say how much learning COULD change a move once evolution weights the MBONs (|w| up to 1)."
+}

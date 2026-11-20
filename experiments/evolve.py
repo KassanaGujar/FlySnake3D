@@ -25,7 +25,7 @@ import numpy as np
 import pandas as pd
 
 from agents.policies import (ANN_INIT_MEAN, ANN_INIT_MEAN_ODOUR, FLY_INIT_MEAN, FLY_INIT_MEAN_LEARN, AnnPolicy,
-                             FlyPolicy, to_learning_genome, upgrade_fly_genome)
+                             FlyPolicy, to_learning_genome, to_v8_genome, upgrade_fly_genome)
 from evolution.es import ES
 from evolution.rollout import play_budget
 from game.environment import GameConfig
@@ -79,6 +79,10 @@ def main():
                     help="with --learning: everything the same but synapses never change (control)")
     ap.add_argument("--theta_scale", type=float, default=None,
                     help="decoder threshold range in weighted spikes (default 4)")
+    ap.add_argument("--mbon_readout", action="store_true",
+                    help="stage 8: the decoder also reads the 35 MBON types (needs --learning)")
+    ap.add_argument("--move_feedback", action="store_true",
+                    help="stage 8: per-move dopamine (danger ahead -> PPL1, closer to food -> PAM)")
     ap.add_argument("--odour", action="store_true", help="ANN control also smells (stage 7)")
     ap.add_argument("--init_from", default=None,
                     help="start the search at a saved genome (.npy) instead of the default")
@@ -93,8 +97,13 @@ def main():
     else:
         default = ANN_INIT_MEAN_ODOUR if a.odour else ANN_INIT_MEAN
     init = np.load(a.init_from) if a.init_from else default
+    v8 = a.mbon_readout or a.move_feedback
+    assert a.learning or not v8, "--mbon_readout / --move_feedback need --learning"
     if is_fly:
-        init = to_learning_genome(init) if a.learning else upgrade_fly_genome(init)
+        if v8:
+            init = to_v8_genome(init)
+        else:
+            init = to_learning_genome(init) if a.learning else upgrade_fly_genome(init)
     es = ES(init, sigma0=a.sigma0, pop=a.pop, seed=a.seed)
     hist_path, ck_path = run / "history.csv", run / "checkpoint.npz"
     history = []
@@ -113,7 +122,8 @@ def main():
         policy = FlyPolicy(conn, es.ask(), dt=a.dt, window_ms=a.window_ms, device=a.device,
                            seed=a.seed, W=W, readout_from_ms=a.readout_from_ms,
                            regular_input=a.regular_input, learning=a.learning,
-                           plasticity=not a.no_plasticity, theta_scale=a.theta_scale)
+                           plasticity=not a.no_plasticity, theta_scale=a.theta_scale,
+                           mbon_readout=a.mbon_readout, move_feedback=a.move_feedback)
 
     while es.generation < a.generations:
         gen = es.generation
@@ -139,6 +149,7 @@ def main():
                "frac_left": float(res["action_fractions"][0]),
                "frac_straight": float(res["action_fractions"][1]),
                "frac_right": float(res["action_fractions"][2]),
+               "mean_danger_moves": float(res["danger_moves"].mean()),
                "seconds": round(time.time() - t0, 1)}
         history.append(row)
         pd.DataFrame(history).to_csv(hist_path, index=False)

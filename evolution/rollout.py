@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from brain.mushroom_body import odour_features
+from brain.mushroom_body import food_distance, move_signals, odour_features
 from brain.visual_encoder import N_FEAT, view_features
 from game.environment import GameConfig, Outcome, SnakeGame
 from game.runner import _measure
@@ -41,11 +41,18 @@ def act(policy, feats, games, alive=None):
     return policy.act(feats, od)
 
 
-def feedback(policy, ate, died):
+def feedback(policy, ate, died, danger=None, closer=None):
     """Tell learning policies what happened after the last move (no-op for others)."""
     f = getattr(policy, "feedback", None)
     if f is not None:
-        f(ate, died)
+        if getattr(policy, "move_feedback", False):
+            f(ate, died, danger, closer)
+        else:
+            f(ate, died)
+
+
+def wants_move_signals(policy) -> bool:
+    return bool(getattr(policy, "move_feedback", False))
 
 
 def new_evaluation(policy):
@@ -63,6 +70,9 @@ def play_budget(policy, cfg: GameConfig, seeds, n_decisions: int) -> dict:
     deaths = np.zeros(B)
     max_len = np.zeros(B, np.int64)
     acts_hist = np.zeros(3, np.int64)
+    ms = wants_move_signals(policy)
+    n_danger = np.zeros(B)
+    n_closer = np.zeros(B)
     new_evaluation(policy)
     policy.reset(np.ones(B, bool))
     feats = np.zeros((B, 2, N_FEAT), np.float32)
@@ -74,10 +84,16 @@ def play_budget(policy, cfg: GameConfig, seeds, n_decisions: int) -> dict:
         restart = np.zeros(B, bool)
         ate = np.zeros(B, bool)
         died = np.zeros(B, bool)
+        danger = np.zeros(B, bool)
+        closer = np.zeros(B, bool)
         for b, g in enumerate(games):
             before = g.food_eaten
+            dist = food_distance(g) if ms else None
             g.step(int(acts[b]))
             ate[b] = g.food_eaten > before
+            if ms:
+                danger[b], closer[b] = move_signals(g, dist)
+                closer[b] = closer[b] and not ate[b]   # food respawned: distance meaningless
             if g.done:
                 died[b] = g.outcome in DEATHS
                 food[b] += g.food_eaten
@@ -87,14 +103,17 @@ def play_budget(policy, cfg: GameConfig, seeds, n_decisions: int) -> dict:
                 games[b] = SnakeGame(cfg, int(seeds[b]) + LIFE_SEED_STEP * int(lives[b]))
                 prev[b] = None
                 restart[b] = True
-        feedback(policy, ate, died)
+        feedback(policy, ate, died, danger, closer)
+        n_danger += danger
+        n_closer += closer
         if restart.any():
             policy.reset(restart)
     for b, g in enumerate(games):
         food[b] += g.food_eaten
         max_len[b] = max(max_len[b], g.length)
     return {"fitness": fitness(food, deaths), "food": food, "deaths": deaths,
-            "max_length": max_len, "action_fractions": acts_hist / acts_hist.sum()}
+            "max_length": max_len, "action_fractions": acts_hist / acts_hist.sum(),
+            "danger_moves": n_danger, "closer_moves": n_closer}
 
 
 def play_episodes(policy, cfg: GameConfig, seeds, max_decisions: int, name: str | None = None,
@@ -106,6 +125,7 @@ def play_episodes(policy, cfg: GameConfig, seeds, max_decisions: int, name: str 
     first_trap = [None] * B
     alive = np.ones(B, bool)
     frames = [games[record_col].snapshot()] if record_col is not None else None
+    ms = wants_move_signals(policy)
     new_evaluation(policy)
     policy.reset(np.ones(B, bool))
     feats = np.zeros((B, 2, N_FEAT), np.float32)
@@ -119,17 +139,23 @@ def play_episodes(policy, cfg: GameConfig, seeds, max_decisions: int, name: str 
         acts = act(policy, feats, games, alive)
         ate = np.zeros(B, bool)
         died = np.zeros(B, bool)
+        danger = np.zeros(B, bool)
+        closer = np.zeros(B, bool)
         for b, g in enumerate(games):
             if alive[b]:
                 before = g.food_eaten
+                dist = food_distance(g) if ms else None
                 g.step(int(acts[b]))
                 ate[b] = g.food_eaten > before
+                if ms:
+                    danger[b], closer[b] = move_signals(g, dist)
+                    closer[b] = closer[b] and not ate[b]   # food respawned: distance meaningless
                 if b == record_col:
                     frames.append(g.snapshot())
                 if g.done:
                     alive[b] = False
                     died[b] = g.outcome in DEATHS
-        feedback(policy, ate, died)
+        feedback(policy, ate, died, danger, closer)
         if not alive.any():
             break
     out = []
